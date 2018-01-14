@@ -11,7 +11,7 @@
 ## Installation
 
 ```
-composer install odan/slim-session
+composer require odan/slim-session
 ```
 
 ## Integration
