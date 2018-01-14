@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="plates-assets-cache" default="phpunit" basedir=".">
+    
+    <condition property="ext" value=".bat">
+        <os family="windows"/>
+    </condition>
+    
+    <target name="prepare" description="Prepare for build">
+    </target>
+  
+    <target name="phpunit" description="Run PHPUnit">
+        <exec executable="${basedir}/vendor/bin/phpunit${ext}" searchpath="true" resolveexecutable="true" failonerror="true" taskname="phpunit">
+            <arg value="--configuration"/>
+            <arg path="${basedir}/phpunit.xml"/>
+        </exec>
+    </target>
+    
+    <target name="phpunit-coverage" description="Run PHPUnit with coverage">
+        <delete dir="${basedir}/build/coverage"/>
+        <mkdir dir="${basedir}/build/coverage"/>
+        <exec executable="${basedir}/vendor/bin/phpunit${ext}" searchpath="true" resolveexecutable="true" failonerror="true" taskname="phpunit-coverage">
+            <arg value="--configuration"/>
+            <arg path="${basedir}/phpunit.xml"/>
+            <arg value="--coverage-clover"/>
+            <arg path="${basedir}/build/logs/clover.xml"/>
+            <arg value="--coverage-html"/>
+            <arg path="${basedir}/build/coverage"/>
+        </exec>
+    </target>
+    
+    <target name="php-cs-fixer" description="Code style fixer">
+        <mkdir dir="${basedir}/build"/>
+        <get src="https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.0.0/php-cs-fixer.phar" dest="${basedir}/build/php-cs-fixer.phar" skipexisting="true"/>
+        <exec executable="php" searchpath="true" resolveexecutable="true">
+            <arg value="${basedir}/build/php-cs-fixer.phar"/>
+            <arg value="fix"/>
+            <arg value="${basedir}/src/"/>
+            <arg value="--rules=@PSR2"/>
+            <arg value="--using-cache=no"/>
+        </exec>   
+        <exec executable="php" searchpath="true" resolveexecutable="true">
+            <arg value="${basedir}/build/php-cs-fixer.phar"/>
+            <arg value="fix"/>
+            <arg value="${basedir}/tests/"/>
+            <arg value="--rules=@PSR2"/>
+            <arg value="--using-cache=no"/>
+        </exec>   
+    </target>
+
+    <target name="phpstan" description="PHP Static Analysis Tool - discover bugs in your code without running it">
+        <mkdir dir="${basedir}/build"/>
+        <get src="https://github.com/phpstan/phpstan/releases/download/0.9/phpstan.phar"
+             dest="${basedir}/build/phpstan.phar" skipexisting="true"/>
+        <exec executable="php" searchpath="true" resolveexecutable="true">
+            <arg value="${basedir}/build/phpstan.phar"/>
+            <arg value="analyse"/>
+            <arg value="-l"/>
+            <arg value="5"/>
+            <arg value="-c"/>
+            <arg path="${basedir}/phpstan.neon"/>
+            <arg value="src"/>
+            <arg value="tests"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-progress"/>
+        </exec>
+    </target>
+</project>
