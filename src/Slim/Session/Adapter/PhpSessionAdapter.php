@@ -2,6 +2,8 @@
 
 namespace Odan\Slim\Session\Adapter;
 
+use RuntimeException;
+
 /**
  * A PHP Session handler adapter
  */
@@ -36,12 +38,12 @@ class PhpSessionAdapter implements SessionAdapterInterface
      */
     public function destroy(): bool
     {
-        if ($this->getId()) {
-            return true;
-        }
+        $this->clear();
 
-        session_unset();
-        session_destroy();
+        if ($this->isStarted()) {
+            session_destroy();
+            session_unset();
+        }
         session_write_close();
 
         if (ini_get('session.use_cookies')) {
@@ -89,6 +91,9 @@ class PhpSessionAdapter implements SessionAdapterInterface
      */
     public function setName(string $name): void
     {
+        if ($this->isStarted()) {
+            throw new RuntimeException('Cannot change session name when session is active');
+        }
         session_name($name);
     }
 
@@ -160,5 +165,46 @@ class PhpSessionAdapter implements SessionAdapterInterface
     public function save(): void
     {
         session_write_close();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setConfig(array $config): void
+    {
+        foreach ($config as $key => $value) {
+            ini_set('session.' . $key, $value);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getConfig(): array
+    {
+        $config = [];
+
+        foreach (ini_get_all('session') as $key => $value) {
+            $key = substr($key, 8);
+            $config[$key] = $value['local_value'];
+        }
+
+        return $config;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCookieParams(int $lifetime, string $path, string $domain, bool $secure, bool $httpOnly): void
+    {
+        session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCookieParams(): array
+    {
+        return session_get_cookie_params();
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Odan\Slim\Session\Adapter;
 
+use RuntimeException;
+
 /**
  * Interface SessionAdapterInterface
  */
@@ -58,7 +60,7 @@ interface SessionAdapterInterface
      * @param string $id
      * @return void
      */
-    public function setId(string $id):void;
+    public function setId(string $id): void;
 
     /**
      * Returns the session name.
@@ -72,6 +74,7 @@ interface SessionAdapterInterface
      *
      * @param string $name
      * @return void
+     * @throws RuntimeException Cannot change session name when session is active
      */
     public function setName(string $name): void;
 
@@ -137,4 +140,43 @@ interface SessionAdapterInterface
      * @return void
      */
     public function save(): void;
+
+    /**
+     * Set session runtime configuration
+     *
+     * @param array $config
+     * @return void
+     * @link http://php.net/manual/en/session.configuration.php
+     */
+    public function setConfig(array $config): void;
+
+    /**
+     * Get session runtime configuration
+     *
+     * @return array
+     */
+    public function getConfig(): array;
+
+    /**
+     * Set cookie parameters.
+     *
+     * @link http://php.net/manual/en/function.session-set-cookie-params.php
+     *
+     * @param int $lifetime The lifetime of the cookie in seconds.
+     * @param string $path The path where information is stored.
+     * @param string $domain The domain of the cookie.
+     * @param bool $secure The cookie should only be sent over secure connections.
+     * @param bool $httpOnly The cookie can only be accessed through the HTTP protocol.
+     * @return void
+     */
+    public function setCookieParams(int $lifetime, string $path, string $domain, bool $secure, bool $httpOnly): void;
+
+    /**
+     * Get cookie parameters.
+     *
+     * @see http://php.net/manual/en/function.session-get-cookie-params.php
+     *
+     * @return array
+     */
+    public function getCookieParams(): array;
 }

@@ -2,6 +2,8 @@
 
 namespace Odan\Slim\Session\Adapter;
 
+use RuntimeException;
+
 /**
  * A memory (array) session handler adapter
  */
@@ -15,11 +17,25 @@ class MemorySessionAdapter implements SessionAdapterInterface
 
     private $name = '';
 
+    private $config = [];
+
+    private $cookie = [];
+
+    public function __construct()
+    {
+        $this->setCookieParams(0, '/', '', false, true);
+        $this->setConfig(ini_get_all('session'));
+    }
+
     /**
      * {@inheritDoc}
      */
     public function start(): bool
     {
+        if (!$this->id) {
+            $this->regenerateId();
+        }
+
         $this->started = true;
 
         return true;
@@ -38,7 +54,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
      */
     public function regenerateId(): bool
     {
-        $this->id = uniqid('session', true);
+        $this->id = str_replace('.', '', uniqid('sess_', true));
         return true;
     }
 
@@ -82,6 +98,9 @@ class MemorySessionAdapter implements SessionAdapterInterface
      */
     public function setName(string $name): void
     {
+        if ($this->isStarted()) {
+            throw new RuntimeException('Cannot change session name when session is active');
+        }
         $this->name = $name;
     }
 
@@ -154,5 +173,45 @@ class MemorySessionAdapter implements SessionAdapterInterface
      */
     public function save(): void
     {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setConfig(array $config): void
+    {
+        foreach ($config as $key => $value) {
+            $this->config[$key] = $value;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCookieParams(int $lifetime, string $path, string $domain, bool $secure, bool $httpOnly): void
+    {
+        $this->cookie = [
+            'lifetime' => $lifetime,
+            'path' => $path,
+            'domain' => $domain,
+            'secure' => $secure,
+            'httponly' => $httpOnly,
+        ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCookieParams(): array
+    {
+        return $this->cookie;
     }
 }

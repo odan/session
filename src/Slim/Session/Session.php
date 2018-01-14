@@ -202,4 +202,55 @@ final class Session
     {
         $this->adapter->save();
     }
+
+    /**
+     * Set session runtime configuration
+     *
+     * @param array $config
+     * @return void
+     * @link http://php.net/manual/en/session.configuration.php
+     */
+    public function setConfig(array $config)
+    {
+        $this->adapter->setConfig($config);
+    }
+
+    /**
+     * Get session runtime configuration
+     *
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->adapter->getConfig();
+    }
+
+    /**
+     * Set cookie parameters.
+     *
+     * @link http://php.net/manual/en/function.session-set-cookie-params.php
+     *
+     * @param int $lifetime The lifetime of the cookie in seconds.
+     * @param string $path The path where information is stored.
+     * @param string $domain The domain of the cookie.
+     * @param bool $secure The cookie should only be sent over secure connections.
+     * @param bool $httpOnly The cookie can only be accessed through the HTTP protocol.
+     * @return void
+     */
+    public function setCookieParams(int $lifetime, string $path, string $domain, bool $secure, bool $httpOnly): void
+    {
+        $this->adapter->setCookieParams($lifetime, $path, $domain, $secure, $httpOnly);
+    }
+
+    /**
+     * Get cookie parameters.
+     *
+     * @see http://php.net/manual/en/function.session-get-cookie-params.php
+     *
+     * @return array
+     */
+    public function getCookieParams(): array
+    {
+        return $this->adapter->getCookieParams();
+    }
 }
