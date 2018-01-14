@@ -51,7 +51,7 @@
         <mkdir dir="${basedir}/build"/>
         <get src="https://github.com/phpstan/phpstan/releases/download/0.9/phpstan.phar"
              dest="${basedir}/build/phpstan.phar" skipexisting="true"/>
-        <exec executable="php" searchpath="true" resolveexecutable="true">
+        <exec executable="php" searchpath="true" resolveexecutable="true" failonerror="true">
             <arg value="${basedir}/build/phpstan.phar"/>
             <arg value="analyse"/>
             <arg value="-l"/>
