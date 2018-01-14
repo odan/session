@@ -13,7 +13,7 @@ use Odan\Slim\Session\Session;
 class PhpSessionAdapterTest extends AbstractTestCase
 {
     /**
-     * @var Session
+     * @var Session|null
      */
     private $session;
 
@@ -28,7 +28,6 @@ class PhpSessionAdapterTest extends AbstractTestCase
 
     public static function tearDownAfterClass()
     {
-
     }
 
     /** {@inheritdoc} */
@@ -107,5 +106,4 @@ class PhpSessionAdapterTest extends AbstractTestCase
         $this->assertTrue($this->session->destroy());
         $this->session->save();
     }
-
 }

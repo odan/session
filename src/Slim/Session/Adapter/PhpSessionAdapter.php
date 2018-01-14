@@ -34,7 +34,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function destroy():bool
+    public function destroy(): bool
     {
         if ($this->getId()) {
             return true;
@@ -71,7 +71,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function setId(string $id):void
+    public function setId(string $id): void
     {
         session_id($id);
     }
@@ -87,7 +87,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function setName(string $name):void
+    public function setName(string $name): void
     {
         session_name($name);
     }
@@ -125,7 +125,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function replace(array $values):void
+    public function replace(array $values): void
     {
         $_SESSION = array_replace_recursive($_SESSION, $values);
     }
@@ -133,7 +133,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function remove(string $name):void
+    public function remove(string $name): void
     {
         unset($_SESSION[$name]);
     }
@@ -141,7 +141,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function clear():void
+    public function clear(): void
     {
         $_SESSION = [];
     }
@@ -157,7 +157,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function save():void
+    public function save(): void
     {
         session_write_close();
     }

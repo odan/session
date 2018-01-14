@@ -142,7 +142,7 @@ final class Session
      * Sets an attribute by key.
      *
      * @param string $name
-     * @param $value
+     * @param mixed $value
      * @return void
      */
     public function set(string $name, $value)
@@ -187,7 +187,7 @@ final class Session
      */
     public function count(): int
     {
-        return 0;
+        return $this->adapter->count();
     }
 
     /**
@@ -200,7 +200,6 @@ final class Session
      */
     public function save()
     {
-
+        $this->adapter->save();
     }
-
 }

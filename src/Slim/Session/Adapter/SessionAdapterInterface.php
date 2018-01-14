@@ -5,7 +5,8 @@ namespace Odan\Slim\Session\Adapter;
 /**
  * Interface SessionAdapterInterface
  */
-interface SessionAdapterInterface {
+interface SessionAdapterInterface
+{
 
     /**
      * Starts the session - do not use session_start().

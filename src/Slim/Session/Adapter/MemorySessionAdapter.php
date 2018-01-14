@@ -154,6 +154,5 @@ class MemorySessionAdapter implements SessionAdapterInterface
      */
     public function save(): void
     {
-
     }
 }
