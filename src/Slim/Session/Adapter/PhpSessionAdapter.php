@@ -185,8 +185,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
         $config = [];
 
         foreach (ini_get_all('session') as $key => $value) {
-            $key = substr($key, 8);
-            $config[$key] = $value['local_value'];
+            $config[substr($key, 8)] = $value['local_value'];
         }
 
         return $config;

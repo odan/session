@@ -24,7 +24,13 @@ class MemorySessionAdapter implements SessionAdapterInterface
     public function __construct()
     {
         $this->setCookieParams(0, '/', '', false, true);
-        $this->setConfig(ini_get_all('session'));
+
+        $config = [];
+        foreach (ini_get_all('session') as $key => $value) {
+            $config[substr($key, 8)] = $value['local_value'];
+        }
+
+        $this->setConfig($config);
     }
 
     /**
