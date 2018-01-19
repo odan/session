@@ -122,3 +122,30 @@ $session->setCookieParams(4200, '/', '', false, false);
 // Get cookie parameters
 $session->getCookieParams();
 ```
+
+## Adapter
+
+### PhpSessionAdapter
+
+Class: \Odan\Slim\Session\Adapter\PhpSessionAdapter
+
+* The default PHP session handler
+* Uses the native PHP session functions
+
+### PhpSessionAdapter
+
+Class: \Odan\Slim\Session\Adapter\MemorySessionAdapter
+
+* Optimized for integration tests (with phpunit)
+* Prevent output buffer issues
+* Run sessions only in memory
+
+### PhpSecureSessionAdapter
+
+@todo
+
+Class: \Odan\Slim\Session\Adapter\PhpSecureSessionAdapter
+
+* Longer and more secure session id's
+* Session data encryption
+* Set session cookie path, domain and secure values automatically
