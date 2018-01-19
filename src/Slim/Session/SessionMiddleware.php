@@ -2,8 +2,6 @@
 
 namespace Odan\Slim\Session;
 
-use Odan\Slim\Session\Adapter\MemorySessionAdapter;
-use Odan\Slim\Session\Adapter\PhpSessionAdapter;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -20,31 +18,11 @@ final class SessionMiddleware
     /**
      * Constructor
      *
-     * @param array $options
+     * @param Session $session The session object
      */
-    public function __construct($options = [])
+    public function __construct(Session $session)
     {
-        if (!empty($options['adapter'])) {
-            $adapter = $options['adapter'];
-            unset($options['adapter']);
-        } else {
-            $adapter = php_sapi_name() === 'cli' ? new MemorySessionAdapter() : new PhpSessionAdapter();
-        }
-        $this->session = new Session($adapter);
-        $this->session->setOptions($options);
-
-        if (isset($options['cookie_lifetime'])) {
-            $lifetime = $options['cookie_lifetime'];
-            $path = $options['cookie_path'];
-            $domain = $options['cookie_domain'];
-            $secure = (bool)$options['cookie_secure'];
-            $httpOnly = (bool)$options['cookie_httponly'];
-            $this->session->setCookieParams($lifetime, $path, $domain, $secure, $httpOnly);
-        }
-
-        if (isset($options['name'])) {
-            $this->session->setName($options['name']);
-        }
+        $this->session = $session;
     }
 
     /**

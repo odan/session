@@ -21,44 +21,45 @@ composer require odan/slim-session
 In your `config/container.php` or wherever you add your service factories:
 
 ```php
-$container[SessionMiddleware::class] = function (Container $container) {
+use Odan\Slim\Session\Adapter\MemorySessionAdapter;
+use Odan\Slim\Session\Adapter\PhpSessionAdapter;
+use Odan\Slim\Session\SessionMiddleware;
+use Odan\Slim\Session\Session;
+
+$container[Session::class] = function (Container $container) {
     $settings = $container->get('settings');
-    return new \Odan\Slim\Session\SessionMiddleware($settings['session']);
+    $adapter = php_sapi_name() === 'cli' ? new MemorySessionAdapter() : new PhpSessionAdapter();
+    $session = new Session($adapter);
+    $session->setOptions($settings['session']);
+    return $session;
+};
+
+$container[SessionMiddleware::class] = function (Container $container) {
+    return new SessionMiddleware($container->get(Session::class));
 };
 ```
 
 Add middleware as usual:
 
 ```php
+use Odan\Slim\Session\SessionMiddleware;
+
 $app->add($container->get(SessionMiddleware::class));
 ```
 
-or without the container like this:
-
-```php
-$app->add(new \Odan\Slim\Session\SessionMiddleware(['name' => 'my-session-name']));
-```
-
 ### Using a custom middleware
-
-In your `config/container.php` or wherever you add your service factories:
-
-```php
-$container[\Odan\Slim\Session\Session::class] = function (Container $container) {
-    $settings = $container->get('settings');
-    $session = new Session(new \Odan\Slim\Session\Adapter\PhpSessionAdapter());
-    $session->setOptions($settings['session']);
-    return $session;
-};
-```
 
 ```php
 $app->add(function (Request $request, Response $response, $next) {
     $session = $this->get(Session::class);
     $session->start();
+    
     // do something...
+    
     $response = $next($request, $response);
+    
     // do something...
+    
     $session->save();
     return $response;
 });
