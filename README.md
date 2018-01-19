@@ -21,11 +21,79 @@ composer require odan/slim-session
 In your `config/container.php` or wherever you add your service factories:
 
 ```php
-// todo
+$container[SessionMiddleware::class] = function (Container $container) {
+    $settings = $container->get('settings');
+    return new \Odan\Slim\Session\SessionMiddleware($settings['session']);
+};
 ```
 
-Add the middleware in `config/middleware.php`.
+Add middleware as usual:
 
 ```php
-// todo
+$app->add($container->get(SessionMiddleware::class));
+```
+
+or without the container like this:
+
+```php
+$app->add(new \Odan\Slim\Session\SessionMiddleware(['name' => 'my-session-name']));
+```
+
+## Usage
+
+```php
+// Get session variable:
+$foo = $session->get('foo', 'some-default');
+
+// Set session variable:
+$session->set('bar', 'that');
+
+// Delete a session variable
+$session->remove('key');
+
+// Clear all session variables
+$session->clear();
+
+// Generate a new session ID
+$session->regenerateId();
+
+// Clears all session data and regenerates session ID
+$session->destroy();
+
+// Get the current session ID
+$session->getId();
+
+// Set the session ID
+$session->setId('...');
+
+// Get the session name
+$session->getName();
+
+// Set the session name
+$session->setName('my-app');
+
+// Returns true if the attribute exists
+$session->has('foo');
+
+// Sets multiple values at once
+$session->replace(['foo' => 'value1', 'bar' => 'value2']);
+
+// Get the number of values.
+$session->count();
+
+// Force the session to be saved and closed
+$session->save();
+
+// Set session runtime configuration
+// Alle supported keys: http://php.net/manual/en/session.configuration.php
+$session->setOptions($options);
+
+// Get session runtime configuration
+$session->getOptions();
+
+// Set cookie parameters
+$session->setCookieParams();
+
+// Get cookie parameters
+$session->getCookieParams();
 ```
