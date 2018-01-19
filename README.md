@@ -47,7 +47,7 @@ In your `config/container.php` or wherever you add your service factories:
 $container[\Odan\Slim\Session\Session::class] = function (Container $container) {
     $settings = $container->get('settings');
     $session = new Session(new \Odan\Slim\Session\Adapter\PhpSessionAdapter());
-    $session->setConfig($settings['session']);
+    $session->setOptions($settings['session']);
     return $session;
 };
 ```
