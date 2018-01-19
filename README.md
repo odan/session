@@ -171,8 +171,8 @@ http://php.net/manual/en/session.configuration.php
 
 Example:
 
-```
-session = new Session(new PhpSessionAdapter());
+```php
+$session = new Session(new PhpSessionAdapter());
 
 $this->session->setOptions([
     'name' => 'slim_app',
@@ -184,4 +184,5 @@ $this->session->setOptions([
     'gc_maxlifetime' => 30 * 24 * 60 * 60,
 ]);
 
-session->start();
+$session->start();
+```
