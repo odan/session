@@ -39,6 +39,31 @@ or without the container like this:
 $app->add(new \Odan\Slim\Session\SessionMiddleware(['name' => 'my-session-name']));
 ```
 
+### Using a custom middleware
+
+In your `config/container.php` or wherever you add your service factories:
+
+```php
+$container[\Odan\Slim\Session\Session::class] = function (Container $container) {
+    $settings = $container->get('settings');
+    $session = new Session(new \Odan\Slim\Session\Adapter\PhpSessionAdapter());
+    $session->setConfig($settings['session']);
+    return $session;
+};
+```
+
+```php
+$app->add(function (Request $request, Response $response, $next) {
+    $session = $this->get(Session::class);
+    $session->start();
+    // do something...
+    $response = $next($request, $response);
+    // do something...
+    $session->save();
+    return $response;
+});
+```
+
 ## Usage
 
 ```php
