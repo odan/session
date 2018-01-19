@@ -133,6 +133,15 @@ Class: \Odan\Slim\Session\Adapter\PhpSessionAdapter
 * The default PHP session handler
 * Uses the native PHP session functions
 
+Example:
+
+```php
+use Odan\Slim\Session\Adapter\PhpSessionAdapter;
+use Odan\Slim\Session\Session;
+
+$session = new Session(new PhpSessionAdapter());
+```
+
 ### PhpSecureSessionAdapter
 
 Class: \Odan\Slim\Session\Adapter\PhpSecureSessionAdapter
@@ -163,6 +172,13 @@ Class: \Odan\Slim\Session\Adapter\MemorySessionAdapter
 * Prevent output buffer issues
 * Run sessions only in memory
 
+```php
+use Odan\Slim\Session\Adapter\MemorySessionAdapter;
+use Odan\Slim\Session\Session;
+
+$session = new Session(new MemorySessionAdapter());
+```
+
 ## Options
 
 You can use all the standard PHP session configuration options: 
@@ -174,7 +190,7 @@ Example:
 ```php
 $session = new Session(new PhpSessionAdapter());
 
-$this->session->setOptions([
+$session->setOptions([
     'name' => 'slim_app',
     // turn off automatic sending of cache headers entirely
     'cache_limiter' => '',
