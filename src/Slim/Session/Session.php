@@ -131,7 +131,7 @@ final class Session
      *
      * @param string $name The attribute name
      * @param mixed|null $default The default value if not found
-     * @return string|null
+     * @return mixed|null
      */
     public function get(string $name, $default = null)
     {
