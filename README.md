@@ -23,7 +23,6 @@ In your `config/container.php` or wherever you add your service factories:
 ```php
 use Odan\Slim\Session\Adapter\MemorySessionAdapter;
 use Odan\Slim\Session\Adapter\PhpSessionAdapter;
-use Odan\Slim\Session\SessionMiddleware;
 use Odan\Slim\Session\Session;
 
 $container[Session::class] = function (Container $container) {
@@ -33,33 +32,17 @@ $container[Session::class] = function (Container $container) {
     $session->setOptions($settings['session']);
     return $session;
 };
-
-$container[SessionMiddleware::class] = function (Container $container) {
-    return new SessionMiddleware($container->get(Session::class));
-};
 ```
 
-Add middleware as usual:
+Add a custom middleware as usual:
 
 ```php
-use Odan\Slim\Session\SessionMiddleware;
-
-$app->add($container->get(SessionMiddleware::class));
-```
-
-### Using a custom middleware
-
-```php
+// Session middleware
 $app->add(function (Request $request, Response $response, $next) {
+    /* @var Container $this */
     $session = $this->get(Session::class);
     $session->start();
-    
-    // do something...
-    
     $response = $next($request, $response);
-    
-    // do something...
-    
     $session->save();
     return $response;
 });
