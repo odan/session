@@ -162,3 +162,26 @@ Class: \Odan\Slim\Session\Adapter\MemorySessionAdapter
 * Optimized for integration tests (with phpunit)
 * Prevent output buffer issues
 * Run sessions only in memory
+
+## Options
+
+You can use all the standard PHP session configuration options: 
+
+http://php.net/manual/en/session.configuration.php
+
+Example:
+
+```
+session = new Session(new PhpSessionAdapter());
+
+$this->session->setOptions([
+    'name' => 'slim_app',
+    // turn off automatic sending of cache headers entirely
+    'cache_limiter' => '',
+    // garbage collection
+    'gc_probability' => 1,
+    'gc_divisor' => 1,
+    'gc_maxlifetime' => 30 * 24 * 60 * 60,
+]);
+
+session->start();
