@@ -128,8 +128,6 @@ $session->getCookieParams();
 
 ### PhpSessionAdapter
 
-Class: \Odan\Slim\Session\Adapter\PhpSessionAdapter
-
 * The default PHP session handler
 * Uses the native PHP session functions
 
@@ -143,8 +141,6 @@ $session = new Session(new PhpSessionAdapter());
 ```
 
 ### PhpSecureSessionAdapter
-
-Class: \Odan\Slim\Session\Adapter\PhpSecureSessionAdapter
 
 * Longer and more secure session id's
 * Session data encryption
@@ -165,8 +161,6 @@ $session = new Session(new PhpSecureSessionAdapter($key));
 ```
 
 ### MemorySessionAdapter
-
-Class: \Odan\Slim\Session\Adapter\MemorySessionAdapter
 
 * Optimized for integration tests (with phpunit)
 * Prevent output buffer issues
