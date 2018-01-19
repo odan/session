@@ -85,7 +85,7 @@ $session->count();
 $session->save();
 
 // Set session runtime configuration
-// Alle supported keys: http://php.net/manual/en/session.configuration.php
+// All supported keys: http://php.net/manual/en/session.configuration.php
 $session->setOptions($options);
 
 // Get session runtime configuration
