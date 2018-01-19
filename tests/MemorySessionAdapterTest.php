@@ -17,7 +17,7 @@ class MemorySessionAdapterTest extends PhpSessionAdapterTest
     {
         $this->session = new Session(new MemorySessionAdapter());
 
-        $this->session->setConfig([
+        $this->session->setOptions([
             'name' => 'slim_app',
             // turn off automatic sending of cache headers entirely
             'cache_limiter' => '',

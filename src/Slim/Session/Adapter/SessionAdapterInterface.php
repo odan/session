@@ -148,14 +148,14 @@ interface SessionAdapterInterface
      * @return void
      * @link http://php.net/manual/en/session.configuration.php
      */
-    public function setConfig(array $config): void;
+    public function setOptions(array $config): void;
 
     /**
      * Get session runtime configuration
      *
      * @return array
      */
-    public function getConfig(): array;
+    public function getOptions(): array;
 
     /**
      * Set cookie parameters.

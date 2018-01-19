@@ -25,7 +25,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
 
         $this->session = new Session(new PhpSessionAdapter());
 
-        $this->session->setConfig([
+        $this->session->setOptions([
             'name' => 'slim_app',
             // turn off automatic sending of cache headers entirely
             'cache_limiter' => '',
@@ -211,10 +211,10 @@ class PhpSessionAdapterTest extends AbstractTestCase
      *
      * @return void
      * @covers ::__construct
-     * @covers ::setConfig
-     * @covers ::getConfig
-     * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::setConfig
-     * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::getConfig
+     * @covers ::setOptions
+     * @covers ::getOptions
+     * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::setOptions
+     * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::getOptions
      */
     public function testConfig()
     {
@@ -226,8 +226,8 @@ class PhpSessionAdapterTest extends AbstractTestCase
             'gc_maxlifetime' => 60,
         ];
 
-        $this->session->setConfig($config);
-        $actual = $this->session->getConfig();
+        $this->session->setOptions($config);
+        $actual = $this->session->getOptions();
         $this->assertNotEmpty($actual);
         $this->assertSame('slim_app', $actual['name']);
     }

@@ -40,24 +40,24 @@ class PhpSessionAdapter implements SessionAdapterInterface
     {
         $this->clear();
 
-        if ($this->isStarted()) {
-            session_destroy();
-            session_unset();
-        }
-        session_write_close();
-
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
             setcookie(
                 $this->getName(),
                 '',
-                time() - 4200,
+                time() - 42000,
                 $params['path'],
                 $params['domain'],
                 $params['secure'],
                 $params['httponly']
             );
         }
+
+        if ($this->isStarted()) {
+            session_destroy();
+            session_unset();
+        }
+        session_write_close();
 
         return true;
     }
@@ -170,7 +170,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function setConfig(array $config): void
+    public function setOptions(array $config): void
     {
         foreach ($config as $key => $value) {
             ini_set('session.' . $key, $value);
@@ -180,7 +180,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfig(): array
+    public function getOptions(): array
     {
         $config = [];
 

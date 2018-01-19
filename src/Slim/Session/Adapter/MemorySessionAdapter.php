@@ -30,7 +30,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
             $config[substr($key, 8)] = $value['local_value'];
         }
 
-        $this->setConfig($config);
+        $this->setOptions($config);
     }
 
     /**
@@ -184,7 +184,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function setConfig(array $config): void
+    public function setOptions(array $config): void
     {
         foreach ($config as $key => $value) {
             $this->config[$key] = $value;
@@ -194,7 +194,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfig(): array
+    public function getOptions(): array
     {
         return $this->config;
     }

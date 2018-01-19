@@ -204,25 +204,25 @@ final class Session
     }
 
     /**
-     * Set session runtime configuration
+     * Set session runtime options
      *
      * @param array $config
      * @return void
      * @link http://php.net/manual/en/session.configuration.php
      */
-    public function setConfig(array $config)
+    public function setOptions(array $config)
     {
-        $this->adapter->setConfig($config);
+        $this->adapter->setOptions($config);
     }
 
     /**
-     * Get session runtime configuration
+     * Get session runtime options
      *
      * @return array
      */
-    public function getConfig()
+    public function getOptions()
     {
-        return $this->adapter->getConfig();
+        return $this->adapter->getOptions();
     }
 
     /**
