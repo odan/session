@@ -202,7 +202,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function setCookieParams(int $lifetime, string $path, string $domain, bool $secure, bool $httpOnly): void
+    public function setCookieParams(int $lifetime, string $path = null, string $domain = null, bool $secure = false, bool $httpOnly = false): void
     {
         $this->cookie = [
             'lifetime' => $lifetime,

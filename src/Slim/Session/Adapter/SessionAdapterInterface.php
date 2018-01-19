@@ -170,7 +170,7 @@ interface SessionAdapterInterface
      * @param bool $httpOnly The cookie can only be accessed through the HTTP protocol.
      * @return void
      */
-    public function setCookieParams(int $lifetime, string $path, string $domain, bool $secure, bool $httpOnly): void;
+    public function setCookieParams(int $lifetime, string $path = null, string $domain = null, bool $secure = false, bool $httpOnly = false): void;
 
     /**
      * Get cookie parameters.

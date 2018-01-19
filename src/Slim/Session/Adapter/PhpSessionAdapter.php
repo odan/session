@@ -194,7 +194,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritDoc}
      */
-    public function setCookieParams(int $lifetime, string $path, string $domain, bool $secure, bool $httpOnly): void
+    public function setCookieParams(int $lifetime, string $path = null, string $domain = null, bool $secure = false, bool $httpOnly = false): void
     {
         session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
     }

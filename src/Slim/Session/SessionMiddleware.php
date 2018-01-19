@@ -2,6 +2,7 @@
 
 namespace Odan\Slim\Session;
 
+use Odan\Slim\Session\Adapter\MemorySessionAdapter;
 use Odan\Slim\Session\Adapter\PhpSessionAdapter;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -27,19 +28,23 @@ final class SessionMiddleware
             $adapter = $options['adapter'];
             unset($options['adapter']);
         } else {
-            $adapter = new PhpSessionAdapter();
+            $adapter = php_sapi_name() === 'cli' ? new MemorySessionAdapter() : new PhpSessionAdapter();
         }
         $this->session = new Session($adapter);
         $this->session->setOptions($options);
 
-        $lifetime = $options['cookie_lifetime'];
-        $path = $options['cookie_path'];
-        $domain = $options['cookie_domain'];
-        $secure = (bool)$options['cookie_secure'];
-        $httpOnly = (bool)$options['cookie_httponly'];
+        if (isset($options['cookie_lifetime'])) {
+            $lifetime = $options['cookie_lifetime'];
+            $path = $options['cookie_path'];
+            $domain = $options['cookie_domain'];
+            $secure = (bool)$options['cookie_secure'];
+            $httpOnly = (bool)$options['cookie_httponly'];
+            $this->session->setCookieParams($lifetime, $path, $domain, $secure, $httpOnly);
+        }
 
-        $this->session->setCookieParams($lifetime, $path, $domain, $secure, $httpOnly);
-        $this->session->setName($options['name']);
+        if (isset($options['name'])) {
+            $this->session->setName($options['name']);
+        }
     }
 
     /**
