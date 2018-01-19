@@ -21,6 +21,10 @@
   "require-dev": {
     "phpunit/phpunit": "^6.0"
   },
+  "suggest": {
+    "ext-mbstring": "You need the Multibyte String extension to use PhpSecureSessionAdapter",
+    "ext-openssl": "You need the OpenSSL extension to use PhpSecureSessionAdapter"
+  },
   "scripts": {
     "test": "phpunit",
     "test-coverage": "phpunit --coverage-clover build/logs/clover.xml --coverage-html build/coverage",

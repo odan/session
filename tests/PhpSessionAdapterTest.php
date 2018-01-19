@@ -150,8 +150,27 @@ class PhpSessionAdapterTest extends AbstractTestCase
     public function testSetAndGet()
     {
         $this->session->start();
+
+        // string
         $this->session->set('key', 'value');
         $this->assertSame('value', $this->session->get('key'));
+
+        // int
+        $valueInt = 1;
+        $this->session->set('key', $valueInt);
+        $valueInt = $this->session->get('key');
+        $this->assertSame($valueInt, $valueInt);
+
+        // float
+        $this->session->set('key', 3.14);
+        $this->assertSame(3.14, $this->session->get('key'));
+
+        // bool
+        $this->session->set('key', true);
+        $this->assertTrue($this->session->get('key'));
+
+        $this->session->set('key', false);
+        $this->assertFalse($this->session->get('key'));
     }
 
     /**

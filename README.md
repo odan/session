@@ -1,7 +1,7 @@
 # Slim 3 Session
 
 [![Latest Version on Packagist](https://img.shields.io/github/release/odan/slim-session.svg)](https://github.com/odan/slim-session/releases)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/odan/slim-session.svg?branch=master)](https://travis-ci.org/odan/slim-session)
 [![Code Coverage](https://scrutinizer-ci.com/g/odan/slim-session/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/odan/slim-session/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/odan/slim-session/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/odan/slim-session/?branch=master)
@@ -132,20 +132,32 @@ Class: \Odan\Slim\Session\Adapter\PhpSessionAdapter
 * The default PHP session handler
 * Uses the native PHP session functions
 
-### PhpSessionAdapter
-
-Class: \Odan\Slim\Session\Adapter\MemorySessionAdapter
-
-* Optimized for integration tests (with phpunit)
-* Prevent output buffer issues
-* Run sessions only in memory
-
 ### PhpSecureSessionAdapter
-
-@todo
 
 Class: \Odan\Slim\Session\Adapter\PhpSecureSessionAdapter
 
 * Longer and more secure session id's
 * Session data encryption
 * Set session cookie path, domain and secure values automatically
+
+Example:
+
+```php
+use Odan\Slim\Session\Adapter\PhpSecureSessionAdapter;
+use Odan\Slim\Session\Session;
+
+// Generate a random encryption key.
+// Load this key from your settings.
+$key = random_bytes(64);
+
+// Create a secure session instance
+$session = new Session(new PhpSecureSessionAdapter($key));
+```
+
+### MemorySessionAdapter
+
+Class: \Odan\Slim\Session\Adapter\MemorySessionAdapter
+
+* Optimized for integration tests (with phpunit)
+* Prevent output buffer issues
+* Run sessions only in memory

@@ -91,7 +91,7 @@ interface SessionAdapterInterface
      *
      * @param string $name The attribute name
      * @param mixed|null $default The default value if not found
-     * @return mixed
+     * @return string|null
      */
     public function get(string $name, $default = null);
 
@@ -99,6 +99,7 @@ interface SessionAdapterInterface
      * Sets an attribute by key.
      *
      * @param string $name
+     * @param mixed $value
      * @return void
      */
     public function set(string $name, $value);
