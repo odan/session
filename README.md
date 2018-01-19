@@ -92,7 +92,7 @@ $session->setOptions($options);
 $session->getOptions();
 
 // Set cookie parameters
-$session->setCookieParams();
+$session->setCookieParams(4200, '/', '', false, false);
 
 // Get cookie parameters
 $session->getCookieParams();
