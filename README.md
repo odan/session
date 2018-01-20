@@ -16,8 +16,6 @@ composer require odan/slim-session
 
 ## Integration
 
-### Register the middleware
-
 In your `config/container.php` or wherever you add your service factories:
 
 ```php
@@ -34,7 +32,7 @@ $container[Session::class] = function (Container $container) {
 };
 ```
 
-Add a custom middleware as usual:
+Register the middleware:
 
 ```php
 // Session middleware
