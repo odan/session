@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="plates-assets-cache" default="phpunit" basedir=".">
+<project name="plates-assets-cache" basedir=".">
 
     <condition property="ext" value=".bat">
         <os family="windows"/>
     </condition>
-
-    <target name="prepare" description="Prepare for build">
-    </target>
 
     <target name="phpunit" description="Run PHPUnit">
         <exec executable="${basedir}/vendor/bin/phpunit${ext}" searchpath="true" resolveexecutable="true" failonerror="true" taskname="phpunit">
