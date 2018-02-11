@@ -70,7 +70,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
         $oldId = $this->session->getId();
         $this->assertTrue($this->session->regenerateId());
         $newId = $this->session->getId();
-        $this->assertNotEquals($oldId, $newId);
+        $this->assertNotSame($oldId, $newId);
 
         $this->session->setId($oldId);
         $this->assertSame($oldId, $this->session->getId());
