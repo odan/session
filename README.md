@@ -23,7 +23,7 @@ use Odan\Slim\Session\Adapter\MemorySessionAdapter;
 use Odan\Slim\Session\Adapter\PhpSessionAdapter;
 use Odan\Slim\Session\Session;
 
-$container[Session::class] = function (Container $container) {
+$container['session'] = function (Container $container) {
     $settings = $container->get('settings');
     $adapter = php_sapi_name() === 'cli' ? new MemorySessionAdapter() : new PhpSessionAdapter();
     $session = new Session($adapter);
@@ -38,7 +38,7 @@ Register the middleware:
 // Session middleware
 $app->add(function (Request $request, Response $response, $next) {
     /* @var Container $this */
-    $session = $this->get(Session::class);
+    $session = $this->get('session');
     $session->start();
     $response = $next($request, $response);
     $session->save();
