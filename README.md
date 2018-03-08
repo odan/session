@@ -14,6 +14,20 @@
 composer require odan/slim-session
 ```
 
+## Configuration
+
+Add your application-specific settings. These are stored in the `settings` configuration key of Slim.
+
+```php
+// Session
+$config['session'] = [
+    'name' => 'webapp',
+    'cache_expire' => 0,
+];
+```
+
+You can use all the standard [PHP session configuration options](http://php.net/manual/en/session.configuration.php) as key and value.
+
 ## Integration
 
 In your `config/container.php` or wherever you add your service factories:
