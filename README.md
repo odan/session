@@ -39,9 +39,10 @@ use Odan\Slim\Session\Session;
 
 $container['session'] = function (Container $container) {
     $settings = $container->get('settings');
-    $adapter = php_sapi_name() === 'cli' ? new MemorySessionAdapter() : new PhpSessionAdapter();
+    $adapter = new PhpSessionAdapter();
     $session = new Session($adapter);
     $session->setOptions($settings['session']);
+    
     return $session;
 };
 ```
@@ -56,6 +57,7 @@ $app->add(function (Request $request, Response $response, $next) {
     $session->start();
     $response = $next($request, $response);
     $session->save();
+    
     return $response;
 });
 ```
