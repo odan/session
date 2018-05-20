@@ -184,13 +184,16 @@ Example:
 $session = new Session(new PhpSessionAdapter());
 
 $session->setOptions([
-    'name' => 'slim_app',
+    'name' => 'app',
     // turn off automatic sending of cache headers entirely
     'cache_limiter' => '',
     // garbage collection
     'gc_probability' => 1,
     'gc_divisor' => 1,
     'gc_maxlifetime' => 30 * 24 * 60 * 60,
+    // security on
+    'cookie_httponly' => true,
+    'cookie_secure' => true,
 ]);
 
 $session->start();
