@@ -23,6 +23,8 @@ Add your application-specific settings. These are stored in the `settings` confi
 $config['session'] = [
     'name' => 'webapp',
     'cache_expire' => 0,
+    'cookie_httponly' => true,
+    'cookie_secure' => true,
 ];
 ```
 
