@@ -30,40 +30,6 @@ $config['session'] = [
 
 You can use all the standard [PHP session configuration options](http://php.net/manual/en/session.configuration.php) as key and value.
 
-## Integration
-
-In your `config/container.php` or wherever you add your service factories:
-
-```php
-use Odan\Slim\Session\Adapter\MemorySessionAdapter;
-use Odan\Slim\Session\Adapter\PhpSessionAdapter;
-use Odan\Slim\Session\Session;
-
-$container['session'] = function (Container $container) {
-    $settings = $container->get('settings');
-    $adapter = new PhpSessionAdapter();
-    $session = new Session($adapter);
-    $session->setOptions($settings['session']);
-    
-    return $session;
-};
-```
-
-Register the middleware:
-
-```php
-// Session middleware
-$app->add(function (Request $request, Response $response, $next) {
-    /* @var Container $this */
-    $session = $this->get('session');
-    $session->start();
-    $response = $next($request, $response);
-    $session->save();
-    
-    return $response;
-});
-```
-
 ## Usage
 
 ```php
@@ -197,4 +163,40 @@ $session->setOptions([
 ]);
 
 $session->start();
+```
+
+## Integration
+
+### Slim 3 framework integration
+
+In your `config/container.php` or wherever you add your service factories:
+
+```php
+use Odan\Slim\Session\Adapter\MemorySessionAdapter;
+use Odan\Slim\Session\Adapter\PhpSessionAdapter;
+use Odan\Slim\Session\Session;
+
+$container['session'] = function (Container $container) {
+    $settings = $container->get('settings');
+    $adapter = new PhpSessionAdapter();
+    $session = new Session($adapter);
+    $session->setOptions($settings['session']);
+    
+    return $session;
+};
+```
+
+Register the middleware:
+
+```php
+// Session middleware
+$app->add(function (Request $request, Response $response, $next) {
+    /* @var Container $this */
+    $session = $this->get('session');
+    $session->start();
+    $response = $next($request, $response);
+    $session->save();
+    
+    return $response;
+});
 ```
