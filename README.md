@@ -20,33 +20,37 @@ composer require odan/slim-session
 use Odan\Slim\Session\Adapter\PhpSessionAdapter;
 use Odan\Slim\Session\Session;
 
-$settings = [
-    'name' => 'webapp',
-    'cache_expire' => 0,
+// Set session options befor we start
+// You can use all the standard PHP session configuration options
+// https://secure.php.net/manual/en/session.configuration.php
+
+$session->setOptions([
+    'name' => 'app',
+    // turn off automatic sending of cache headers entirely
+    'cache_limiter' => '',
+    // garbage collection
+    'gc_probability' => 1,
+    'gc_divisor' => 1,
+    'gc_maxlifetime' => 30 * 24 * 60 * 60,
+    // security on
     'cookie_httponly' => true,
     'cookie_secure' => true,
-];
+]);
 
+// Create a standard session hanndler
 $session = new Session(new PhpSessionAdapter());
+
+// Start the session
+$session->start();
 
 // Set session value
 $session->set('bar', 'foo');
 
 // Get session value
 echo $session->get('bar'); // foo
-```
 
-## Configuration
-
-Just use all the standard [PHP session configuration options](http://php.net/manual/en/session.configuration.php) as key and value.
-
-```php
-$settings = [
-    'name' => 'webapp',
-    'cache_expire' => 0,
-    'cookie_httponly' => true,
-    'cookie_secure' => true,
-];
+// Optional: Force the session to be saved and closed
+$session->save();
 ```
 
 ## Methods
@@ -155,33 +159,6 @@ use Odan\Slim\Session\Adapter\MemorySessionAdapter;
 use Odan\Slim\Session\Session;
 
 $session = new Session(new MemorySessionAdapter());
-```
-
-## Options
-
-You can use all the standard PHP session configuration options: 
-
-http://php.net/manual/en/session.configuration.php
-
-Example:
-
-```php
-$session = new Session(new PhpSessionAdapter());
-
-$session->setOptions([
-    'name' => 'app',
-    // turn off automatic sending of cache headers entirely
-    'cache_limiter' => '',
-    // garbage collection
-    'gc_probability' => 1,
-    'gc_divisor' => 1,
-    'gc_maxlifetime' => 30 * 24 * 60 * 60,
-    // security on
-    'cookie_httponly' => true,
-    'cookie_secure' => true,
-]);
-
-$session->start();
 ```
 
 ## Integration
