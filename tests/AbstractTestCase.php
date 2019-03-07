@@ -5,7 +5,7 @@ namespace Odan\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * BaseTest
+ * BaseTest.
  */
 abstract class AbstractTestCase extends TestCase
 {

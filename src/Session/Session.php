@@ -5,18 +5,17 @@ namespace Odan\Session;
 use Odan\Session\Adapter\SessionAdapterInterface;
 
 /**
- * Session handler
+ * Session handler.
  */
 final class Session
 {
-
     /**
      * @var SessionAdapterInterface
      */
     private $adapter;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param SessionAdapterInterface $adapter
      */
@@ -88,6 +87,7 @@ final class Session
      * Sets the session ID.
      *
      * @param string $id
+     *
      * @return void
      */
     public function setId(string $id)
@@ -108,6 +108,8 @@ final class Session
     /**
      * Sets the session name.
      *
+     * @param string $name
+     *
      * @return void
      */
     public function setName(string $name)
@@ -119,6 +121,7 @@ final class Session
      * Returns true if the attribute exists.
      *
      * @param string $name
+     *
      * @return bool true if the attribute is defined, false otherwise
      */
     public function has(string $name): bool
@@ -131,6 +134,7 @@ final class Session
      *
      * @param string $name The attribute name
      * @param mixed|null $default The default value if not found
+     *
      * @return mixed|null
      */
     public function get(string $name, $default = null)
@@ -143,6 +147,7 @@ final class Session
      *
      * @param string $name
      * @param mixed $value
+     *
      * @return void
      */
     public function set(string $name, $value)
@@ -154,6 +159,7 @@ final class Session
      * Sets multiple attributes at once: takes a keyed array and sets each key => value pair.
      *
      * @param array $values
+     *
      * @return void
      */
     public function replace(array $values)
@@ -165,6 +171,7 @@ final class Session
      * Deletes an attribute by key.
      *
      * @param string $name
+     *
      * @return void
      */
     public function remove(string $name): void
@@ -204,11 +211,13 @@ final class Session
     }
 
     /**
-     * Set session runtime options
+     * Set session runtime options.
      *
      * @param array $config
+     *
      * @return void
-     * @link http://php.net/manual/en/session.configuration.php
+     *
+     * @see http://php.net/manual/en/session.configuration.php
      */
     public function setOptions(array $config)
     {
@@ -216,7 +225,7 @@ final class Session
     }
 
     /**
-     * Get session runtime options
+     * Get session runtime options.
      *
      * @return array
      */
@@ -228,13 +237,14 @@ final class Session
     /**
      * Set cookie parameters.
      *
-     * @link http://php.net/manual/en/function.session-set-cookie-params.php
+     * @see http://php.net/manual/en/function.session-set-cookie-params.php
      *
-     * @param int $lifetime The lifetime of the cookie in seconds.
-     * @param string $path The path where information is stored.
-     * @param string $domain The domain of the cookie.
-     * @param bool $secure The cookie should only be sent over secure connections.
-     * @param bool $httpOnly The cookie can only be accessed through the HTTP protocol.
+     * @param int $lifetime the lifetime of the cookie in seconds
+     * @param string $path the path where information is stored
+     * @param string $domain the domain of the cookie
+     * @param bool $secure the cookie should only be sent over secure connections
+     * @param bool $httpOnly the cookie can only be accessed through the HTTP protocol
+     *
      * @return void
      */
     public function setCookieParams(int $lifetime, string $path, string $domain, bool $secure, bool $httpOnly): void

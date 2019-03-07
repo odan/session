@@ -7,7 +7,7 @@ use Odan\Session\Session;
 use RuntimeException;
 
 /**
- * MemorySessionTest
+ * MemorySessionTest.
  *
  * @coversDefaultClass \Odan\Session\Session
  */
@@ -212,7 +212,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
 
         $this->session->replace([
             'key' => 'value-new',
-            'key2' => 'value2-new'
+            'key2' => 'value2-new',
         ]);
         $this->assertSame('value-new', $this->session->get('key'));
         $this->assertSame('value2-new', $this->session->get('key2'));

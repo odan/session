@@ -6,30 +6,30 @@ use Exception;
 use RuntimeException;
 
 /**
- * A secure PHP Session handler adapter
+ * A secure PHP Session handler adapter.
  */
 class PhpSecureSessionAdapter extends PhpSessionAdapter
 {
     /**
-     * Encryption and authentication key
+     * Encryption and authentication key.
      *
      * @var string
      */
     protected $key = '';
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $key The encryption key. Please use random_bytes(64).
      */
     public function __construct(string $key = '')
     {
         if (!extension_loaded('openssl')) {
-            throw new RuntimeException(sprintf("You need the OpenSSL extension to use %s", __CLASS__));
+            throw new RuntimeException(sprintf('You need the OpenSSL extension to use %s', __CLASS__));
         }
 
         if (!extension_loaded('mbstring')) {
-            throw new RuntimeException(sprintf("You need the Multibytes extension to use %s", __CLASS__));
+            throw new RuntimeException(sprintf('You need the Multibytes extension to use %s', __CLASS__));
         }
 
         if (!empty($key) && strlen($key) < 64) {
@@ -40,16 +40,17 @@ class PhpSecureSessionAdapter extends PhpSessionAdapter
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get(string $name, $default = null)
     {
         $data = parent::get($name, $default);
+
         return $data === $default ? $default : $this->decrypt($data, $this->key);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function set(string $name, $value)
     {
@@ -57,7 +58,7 @@ class PhpSecureSessionAdapter extends PhpSessionAdapter
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function replace(array $values): void
     {
@@ -67,12 +68,14 @@ class PhpSecureSessionAdapter extends PhpSessionAdapter
     }
 
     /**
-     * Encrypt and authenticate
+     * Encrypt and authenticate.
      *
      * @param string $data
      * @param string $key
-     * @return string
+     *
      * @throws Exception
+     *
+     * @return string
      */
     protected function encrypt($data, $key): string
     {
@@ -91,10 +94,11 @@ class PhpSecureSessionAdapter extends PhpSessionAdapter
     }
 
     /**
-     * Authenticate and decrypt
+     * Authenticate and decrypt.
      *
      * @param string $data
      * @param string $key
+     *
      * @return mixed
      */
     protected function decrypt($data, $key)

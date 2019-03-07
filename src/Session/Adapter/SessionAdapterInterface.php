@@ -5,11 +5,10 @@ namespace Odan\Session\Adapter;
 use RuntimeException;
 
 /**
- * Interface SessionAdapterInterface
+ * Interface SessionAdapterInterface.
  */
 interface SessionAdapterInterface
 {
-
     /**
      * Starts the session - do not use session_start().
      *
@@ -58,6 +57,7 @@ interface SessionAdapterInterface
      * Sets the session ID.
      *
      * @param string $id
+     *
      * @return void
      */
     public function setId(string $id): void;
@@ -73,8 +73,10 @@ interface SessionAdapterInterface
      * Sets the session name.
      *
      * @param string $name
-     * @return void
+     *
      * @throws RuntimeException Cannot change session name when session is active
+     *
+     * @return void
      */
     public function setName(string $name): void;
 
@@ -82,6 +84,7 @@ interface SessionAdapterInterface
      * Returns true if the attribute exists.
      *
      * @param string $salt
+     *
      * @return bool true if the attribute is defined, false otherwise
      */
     public function has(string $salt): bool;
@@ -91,6 +94,7 @@ interface SessionAdapterInterface
      *
      * @param string $name The attribute name
      * @param mixed|null $default The default value if not found
+     *
      * @return mixed|null
      */
     public function get(string $name, $default = null);
@@ -100,6 +104,7 @@ interface SessionAdapterInterface
      *
      * @param string $name
      * @param mixed $value
+     *
      * @return void
      */
     public function set(string $name, $value);
@@ -108,6 +113,7 @@ interface SessionAdapterInterface
      * Sets multiple attributes at once: takes a keyed array and sets each key => value pair.
      *
      * @param array $attributes
+     *
      * @return void
      */
     public function replace(array $attributes): void;
@@ -116,6 +122,7 @@ interface SessionAdapterInterface
      * Deletes an attribute by key.
      *
      * @param string $name
+     *
      * @return void
      */
     public function remove(string $name): void;
@@ -143,16 +150,18 @@ interface SessionAdapterInterface
     public function save(): void;
 
     /**
-     * Set session runtime configuration
+     * Set session runtime configuration.
      *
      * @param array $config
+     *
      * @return void
-     * @link http://php.net/manual/en/session.configuration.php
+     *
+     * @see http://php.net/manual/en/session.configuration.php
      */
     public function setOptions(array $config): void;
 
     /**
-     * Get session runtime configuration
+     * Get session runtime configuration.
      *
      * @return array
      */
@@ -161,13 +170,14 @@ interface SessionAdapterInterface
     /**
      * Set cookie parameters.
      *
-     * @link http://php.net/manual/en/function.session-set-cookie-params.php
+     * @see http://php.net/manual/en/function.session-set-cookie-params.php
      *
-     * @param int $lifetime The lifetime of the cookie in seconds.
-     * @param string $path The path where information is stored.
-     * @param string $domain The domain of the cookie.
-     * @param bool $secure The cookie should only be sent over secure connections.
-     * @param bool $httpOnly The cookie can only be accessed through the HTTP protocol.
+     * @param int $lifetime the lifetime of the cookie in seconds
+     * @param string $path the path where information is stored
+     * @param string $domain the domain of the cookie
+     * @param bool $secure the cookie should only be sent over secure connections
+     * @param bool $httpOnly the cookie can only be accessed through the HTTP protocol
+     *
      * @return void
      */
     public function setCookieParams(int $lifetime, string $path = null, string $domain = null, bool $secure = false, bool $httpOnly = false): void;

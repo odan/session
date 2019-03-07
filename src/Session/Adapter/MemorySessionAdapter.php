@@ -5,7 +5,7 @@ namespace Odan\Session\Adapter;
 use RuntimeException;
 
 /**
- * A memory (array) session handler adapter
+ * A memory (array) session handler adapter.
  */
 class MemorySessionAdapter implements SessionAdapterInterface
 {
@@ -34,7 +34,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function start(): bool
     {
@@ -48,7 +48,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isStarted(): bool
     {
@@ -56,16 +56,17 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function regenerateId(): bool
     {
         $this->id = str_replace('.', '', uniqid('sess_', true));
+
         return true;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function destroy(): bool
     {
@@ -76,7 +77,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -84,7 +85,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setId(string $id): void
     {
@@ -92,7 +93,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName(): string
     {
@@ -100,7 +101,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setName(string $name): void
     {
@@ -111,7 +112,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function has(string $name): bool
     {
@@ -123,7 +124,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get(string $name, $default = null)
     {
@@ -135,7 +136,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function set(string $name, $value)
     {
@@ -143,7 +144,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function replace(array $values): void
     {
@@ -151,7 +152,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function remove(string $name): void
     {
@@ -159,7 +160,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function clear(): void
     {
@@ -167,7 +168,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function count(): int
     {
@@ -175,14 +176,14 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function save(): void
     {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setOptions(array $config): void
     {
@@ -192,7 +193,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOptions(): array
     {
@@ -200,7 +201,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setCookieParams(int $lifetime, string $path = null, string $domain = null, bool $secure = false, bool $httpOnly = false): void
     {
@@ -214,7 +215,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getCookieParams(): array
     {

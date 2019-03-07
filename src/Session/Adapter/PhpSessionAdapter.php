@@ -5,12 +5,12 @@ namespace Odan\Session\Adapter;
 use RuntimeException;
 
 /**
- * A PHP Session handler adapter
+ * A PHP Session handler adapter.
  */
 class PhpSessionAdapter implements SessionAdapterInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function start(): bool
     {
@@ -18,7 +18,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isStarted(): bool
     {
@@ -26,7 +26,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function regenerateId(): bool
     {
@@ -34,7 +34,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function destroy(): bool
     {
@@ -63,7 +63,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -71,7 +71,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setId(string $id): void
     {
@@ -79,7 +79,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName(): string
     {
@@ -87,7 +87,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setName(string $name): void
     {
@@ -98,7 +98,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function has(string $name): bool
     {
@@ -110,7 +110,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get(string $name, $default = null)
     {
@@ -120,7 +120,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function set(string $name, $value)
     {
@@ -128,7 +128,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function replace(array $values): void
     {
@@ -136,7 +136,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function remove(string $name): void
     {
@@ -144,7 +144,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function clear(): void
     {
@@ -152,7 +152,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function count(): int
     {
@@ -160,7 +160,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function save(): void
     {
@@ -168,7 +168,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setOptions(array $config): void
     {
@@ -178,7 +178,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOptions(): array
     {
@@ -192,7 +192,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setCookieParams(int $lifetime, string $path = null, string $domain = null, bool $secure = false, bool $httpOnly = false): void
     {
@@ -200,7 +200,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getCookieParams(): array
     {

@@ -11,8 +11,8 @@ ob_start();
 $phpunit = new \PHPUnit\TextUI\TestRunner();
 
 try {
-    $testResults = $phpunit->doRun($phpunit->getTest(__DIR__, '', 'Test.php'), array(), false);
+    $testResults = $phpunit->doRun($phpunit->getTest(__DIR__, '', 'Test.php'), [], false);
 } catch (\PHPUnit\Framework\Exception $e) {
-    print $e->getMessage() . "\n";
-    echo "Unit tests failed.";
+    echo $e->getMessage() . "\n";
+    echo 'Unit tests failed.';
 }

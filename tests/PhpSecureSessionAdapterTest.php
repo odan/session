@@ -6,7 +6,7 @@ use Odan\Session\Adapter\PhpSecureSessionAdapter;
 use Odan\Session\Session;
 
 /**
- * MemorySessionTest
+ * MemorySessionTest.
  *
  * @coversDefaultClass \Odan\Session\Adapter\PhpSecureSessionAdapter
  */
