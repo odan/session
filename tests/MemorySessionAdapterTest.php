@@ -13,12 +13,12 @@ use Odan\Slim\Session\Session;
 class MemorySessionAdapterTest extends PhpSessionAdapterTest
 {
     /** {@inheritdoc} */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->session = new Session(new MemorySessionAdapter());
 
         $this->session->setOptions([
-            'name' => 'slim_app',
+            'name' => 'app',
             // turn off automatic sending of cache headers entirely
             'cache_limiter' => '',
             // garbage collection
@@ -30,6 +30,6 @@ class MemorySessionAdapterTest extends PhpSessionAdapterTest
         $lifetime = strtotime('20 minutes') - time();
         $this->session->setCookieParams($lifetime, '/', '', false, false);
 
-        $this->session->setName('slim_app');
+        $this->session->setName('app');
     }
 }

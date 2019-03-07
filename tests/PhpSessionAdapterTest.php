@@ -19,14 +19,14 @@ class PhpSessionAdapterTest extends AbstractTestCase
     protected $session;
 
     /** {@inheritdoc} */
-    protected function setUp()
+    protected function setUp(): void
     {
         $_SESSION = [];
 
         $this->session = new Session(new PhpSessionAdapter());
 
         $this->session->setOptions([
-            'name' => 'slim_app',
+            'name' => 'app',
             // turn off automatic sending of cache headers entirely
             'cache_limiter' => '',
             // garbage collection
@@ -38,7 +38,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
         $lifetime = strtotime('20 minutes') - time();
         $this->session->setCookieParams($lifetime, '/', '', false, false);
 
-        $this->session->setName('slim_app');
+        $this->session->setName('app');
     }
 
     /**
@@ -61,7 +61,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::regenerateId
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::setId
      */
-    public function testStart()
+    public function testStart(): void
     {
         $this->assertTrue($this->session->start());
         $this->assertTrue($this->session->isStarted());
@@ -90,11 +90,11 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::setName
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::getName
      */
-    public function testSetAndGetName()
+    public function testSetAndGetName(): void
     {
-        $this->session->setName('slim_app');
+        $this->session->setName('app');
         $this->session->start();
-        $this->assertSame('slim_app', $this->session->getName());
+        $this->assertSame('app', $this->session->getName());
     }
 
     /**
@@ -109,16 +109,16 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::start
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::setName
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::getName
-     * @expectedException RuntimeException
      */
-    public function testSetAndGetNameError()
+    public function testSetAndGetNameError(): void
     {
+        $this->expectException(RuntimeException::class);
         $this->session->start();
-        $this->session->setName('slim_app');
+        $this->session->setName('app');
     }
 
     /** {@inheritdoc} */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->session->destroy();
         $this->session = null;
@@ -130,7 +130,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @return void
      * @covers ::__construct
      */
-    public function testInstance()
+    public function testInstance(): void
     {
         $this->assertInstanceOf(Session::class, $this->session);
     }
@@ -147,7 +147,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::set
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::get
      */
-    public function testSetAndGet()
+    public function testSetAndGet(): void
     {
         $this->session->start();
 
@@ -195,7 +195,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::has
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::replace
      */
-    public function testRemoveAndClear()
+    public function testRemoveAndClear(): void
     {
         $this->session->start();
         $this->assertFalse($this->session->has('key'));
@@ -235,10 +235,10 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::setOptions
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::getOptions
      */
-    public function testConfig()
+    public function testConfig(): void
     {
         $config = [
-            'name' => 'slim_app',
+            'name' => 'app',
             'cache_limiter' => '',
             'gc_probability' => 1,
             'gc_divisor' => 1,
@@ -248,7 +248,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
         $this->session->setOptions($config);
         $actual = $this->session->getOptions();
         $this->assertNotEmpty($actual);
-        $this->assertSame('slim_app', $actual['name']);
+        $this->assertSame('app', $actual['name']);
     }
 
     /**
@@ -261,7 +261,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::setCookieParams
      * @covers \Odan\Slim\Session\Adapter\PhpSessionAdapter::getCookieParams
      */
-    public function testCookieParams()
+    public function testCookieParams(): void
     {
         $this->session->setCookieParams(60, '/', '', false, false);
         $actual = $this->session->getCookieParams();

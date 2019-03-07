@@ -13,13 +13,13 @@ use Odan\Slim\Session\Session;
 class PhpSecureSessionAdapterTest extends PhpSessionAdapterTest
 {
     /** {@inheritdoc} */
-    protected function setUp()
+    protected function setUp(): void
     {
         $key = random_bytes(64);
         $this->session = new Session(new PhpSecureSessionAdapter($key));
 
         $this->session->setOptions([
-            'name' => 'slim_app',
+            'name' => 'app',
             //'encryption_key' => random_bytes(64),
             // turn off automatic sending of cache headers entirely
             'cache_limiter' => '',
@@ -32,7 +32,7 @@ class PhpSecureSessionAdapterTest extends PhpSessionAdapterTest
         $lifetime = strtotime('20 minutes') - time();
         $this->session->setCookieParams($lifetime, '/', '', false, false);
 
-        $this->session->setName('slim_app');
+        $this->session->setName('app');
     }
 
     /**
@@ -45,7 +45,7 @@ class PhpSecureSessionAdapterTest extends PhpSessionAdapterTest
      * @covers ::encrypt
      * @covers ::decrypt
      */
-    public function testSetAndGet()
+    public function testSetAndGet(): void
     {
         parent::testSetAndGet();
     }
@@ -61,7 +61,7 @@ class PhpSecureSessionAdapterTest extends PhpSessionAdapterTest
      * @covers ::encrypt
      * @covers ::decrypt
      */
-    public function testRemoveAndClear()
+    public function testRemoveAndClear(): void
     {
         parent::testRemoveAndClear();
     }
