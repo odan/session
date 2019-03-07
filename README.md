@@ -17,8 +17,8 @@ composer require odan/slim-session
 ## Usage
 
 ```php
-use Odan\Slim\Session\Adapter\PhpSessionAdapter;
-use Odan\Slim\Session\Session;
+use Odan\Session\Adapter\PhpSessionAdapter;
+use Odan\Session\Session;
 
 // Set session options before we start
 // You can use all the standard PHP session configuration options
@@ -122,8 +122,8 @@ $session->getCookieParams();
 Example:
 
 ```php
-use Odan\Slim\Session\Adapter\PhpSessionAdapter;
-use Odan\Slim\Session\Session;
+use Odan\Session\Adapter\PhpSessionAdapter;
+use Odan\Session\Session;
 
 $session = new Session(new PhpSessionAdapter());
 ```
@@ -137,8 +137,8 @@ $session = new Session(new PhpSessionAdapter());
 Example:
 
 ```php
-use Odan\Slim\Session\Adapter\PhpSecureSessionAdapter;
-use Odan\Slim\Session\Session;
+use Odan\Session\Adapter\PhpSecureSessionAdapter;
+use Odan\Session\Session;
 
 // Generate a random encryption key.
 // Load this key from your settings.
@@ -155,8 +155,8 @@ $session = new Session(new PhpSecureSessionAdapter($key));
 * Run sessions only in memory
 
 ```php
-use Odan\Slim\Session\Adapter\MemorySessionAdapter;
-use Odan\Slim\Session\Session;
+use Odan\Session\Adapter\MemorySessionAdapter;
+use Odan\Session\Session;
 
 $session = new Session(new MemorySessionAdapter());
 ```
@@ -184,9 +184,9 @@ $config['session'] = [
 In your `config/container.php` or wherever you add your service factories:
 
 ```php
-use Odan\Slim\Session\Adapter\MemorySessionAdapter;
-use Odan\Slim\Session\Adapter\PhpSessionAdapter;
-use Odan\Slim\Session\Session;
+use Odan\Session\Adapter\MemorySessionAdapter;
+use Odan\Session\Adapter\PhpSessionAdapter;
+use Odan\Session\Session;
 
 $container['session'] = function (Container $container) {
     $settings = $container->get('settings');
