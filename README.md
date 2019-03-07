@@ -38,7 +38,7 @@ echo $session->get('bar'); // foo
 
 ## Configuration
 
-Add your application-specific settings.
+Just use all the standard [PHP session configuration options](http://php.net/manual/en/session.configuration.php) as key and value.
 
 ```php
 $settings = [
@@ -48,8 +48,6 @@ $settings = [
     'cookie_secure' => true,
 ];
 ```
-
-You can also use all the standard [PHP session configuration options](http://php.net/manual/en/session.configuration.php) as key and value.
 
 ## Methods
 
