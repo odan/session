@@ -1,12 +1,12 @@
 {
-  "name": "odan/slim-session",
+  "name": "odan/session",
   "type": "library",
   "description": "A Slim session handler",
   "keywords": [
     "slim",
     "session"
   ],
-  "homepage": "http://github.com/odan/slim-session",
+  "homepage": "https://github.com/odan/session",
   "license": "MIT",
   "authors": [
     {
