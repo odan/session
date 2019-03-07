@@ -139,7 +139,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
     protected function tearDown(): void
     {
         $this->session->destroy();
-        $this->session = null;
+        unset($this->session);
     }
 
     /**
