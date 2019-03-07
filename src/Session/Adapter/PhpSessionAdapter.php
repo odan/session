@@ -65,7 +65,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): ?string
     {
         return session_id() ?: '';
     }
@@ -122,7 +122,7 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function set(string $name, $value)
+    public function set(string $name, $value): void
     {
         $_SESSION[$name] = $value;
     }

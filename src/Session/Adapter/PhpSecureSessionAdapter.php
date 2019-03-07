@@ -52,7 +52,7 @@ class PhpSecureSessionAdapter extends PhpSessionAdapter
     /**
      * {@inheritdoc}
      */
-    public function set(string $name, $value)
+    public function set(string $name, $value): void
     {
         parent::set($name, $this->encrypt($value, $this->key));
     }
@@ -70,14 +70,14 @@ class PhpSecureSessionAdapter extends PhpSessionAdapter
     /**
      * Encrypt and authenticate.
      *
-     * @param string $data
-     * @param string $key
+     * @param string $data the data to encrypt
+     * @param string $key the secret key
      *
      * @throws Exception
      *
      * @return string
      */
-    protected function encrypt($data, $key): string
+    protected function encrypt(string $data, string $key): string
     {
         $data = serialize($data);
 
@@ -96,12 +96,12 @@ class PhpSecureSessionAdapter extends PhpSessionAdapter
     /**
      * Authenticate and decrypt.
      *
-     * @param string $data
-     * @param string $key
+     * @param string $data the encrypted data
+     * @param string $key the secret key
      *
-     * @return mixed
+     * @return mixed the decrypted data
      */
-    protected function decrypt($data, $key)
+    protected function decrypt(string $data, string $key)
     {
         $hmac = mb_substr($data, 0, 32, '8bit');
         $iv = mb_substr($data, 32, 16, '8bit');

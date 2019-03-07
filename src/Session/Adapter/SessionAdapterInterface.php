@@ -51,7 +51,7 @@ interface SessionAdapterInterface
      *
      * @return string|null The session ID
      */
-    public function getId();
+    public function getId(): ?string;
 
     /**
      * Sets the session ID.
@@ -107,7 +107,7 @@ interface SessionAdapterInterface
      *
      * @return void
      */
-    public function set(string $name, $value);
+    public function set(string $name, $value): void;
 
     /**
      * Sets multiple attributes at once: takes a keyed array and sets each key => value pair.

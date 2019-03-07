@@ -21,6 +21,9 @@ class MemorySessionAdapter implements SessionAdapterInterface
 
     private $cookie = [];
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->setCookieParams(0, '/', '', false, true);
@@ -79,7 +82,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -138,7 +141,7 @@ class MemorySessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function set(string $name, $value)
+    public function set(string $name, $value): void
     {
         $this->data[$name] = $value;
     }
