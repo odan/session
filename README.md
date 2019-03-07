@@ -1,5 +1,7 @@
 # Session handler
 
+A session handler for PHP
+
 [![Latest Version on Packagist](https://img.shields.io/github/release/odan/slim-session.svg)](https://github.com/odan/slim-session/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/odan/slim-session.svg?branch=master)](https://travis-ci.org/odan/slim-session)
@@ -7,6 +9,9 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/odan/slim-session/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/odan/slim-session/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/odan/slim-session.svg)](https://packagist.org/packages/odan/slim-session)
 
+## Requirements
+
+* PHP 7.2+
 
 ## Installation
 
