@@ -70,14 +70,14 @@ class PhpSecureSessionAdapter extends PhpSessionAdapter
     /**
      * Encrypt and authenticate.
      *
-     * @param string $data the data to encrypt
+     * @param mixed $data the data to encrypt
      * @param string $key the secret key
      *
      * @throws Exception
      *
      * @return string
      */
-    protected function encrypt(string $data, string $key): string
+    protected function encrypt($data, string $key): string
     {
         $data = serialize($data);
 
@@ -99,6 +99,8 @@ class PhpSecureSessionAdapter extends PhpSessionAdapter
      * @param string $data the encrypted data
      * @param string $key the secret key
      *
+     * @throws RuntimeException
+     *
      * @return mixed the decrypted data
      */
     protected function decrypt(string $data, string $key)
@@ -115,6 +117,10 @@ class PhpSecureSessionAdapter extends PhpSessionAdapter
 
         // Decrypt
         $data = openssl_decrypt($cipherText, 'AES-256-CBC', mb_substr($key, 0, 32, '8bit'), OPENSSL_RAW_DATA, $iv);
+
+        if ($data === false) {
+            throw new RuntimeException('Decryption failed');
+        }
 
         $data = unserialize($data);
 

@@ -3,6 +3,7 @@
 namespace Odan\Session;
 
 use Odan\Session\Adapter\SessionAdapterInterface;
+use RuntimeException;
 
 /**
  * Session handler.
@@ -52,7 +53,7 @@ final class Session
      *
      * @return bool True if session migrated, false if error
      */
-    public function regenerateId()
+    public function regenerateId(): bool
     {
         return $this->adapter->regenerateId();
     }
@@ -68,7 +69,7 @@ final class Session
      *
      * @return bool True if session invalidated, false if error
      */
-    public function destroy()
+    public function destroy(): bool
     {
         return $this->adapter->destroy();
     }
@@ -76,9 +77,9 @@ final class Session
     /**
      * Returns the session ID.
      *
-     * @return string|null The session ID
+     * @return string The session ID
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->adapter->getId();
     }
@@ -90,8 +91,12 @@ final class Session
      *
      * @return void
      */
-    public function setId(string $id)
+    public function setId(string $id): void
     {
+        if ($this->isStarted()) {
+            throw new RuntimeException('Cannot change session id when session is active');
+        }
+
         $this->adapter->setId($id);
     }
 
@@ -112,7 +117,7 @@ final class Session
      *
      * @return void
      */
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->adapter->setName($name);
     }
@@ -150,7 +155,7 @@ final class Session
      *
      * @return void
      */
-    public function set(string $name, $value)
+    public function set(string $name, $value): void
     {
         $this->adapter->set($name, $value);
     }
@@ -162,7 +167,7 @@ final class Session
      *
      * @return void
      */
-    public function replace(array $values)
+    public function replace(array $values): void
     {
         $this->adapter->replace($values);
     }
@@ -182,7 +187,7 @@ final class Session
     /**
      * Clear all attributes.
      */
-    public function clear()
+    public function clear(): void
     {
         $this->adapter->clear();
     }
@@ -205,7 +210,7 @@ final class Session
      *
      * @return void
      */
-    public function save()
+    public function save(): void
     {
         $this->adapter->save();
     }
@@ -219,7 +224,7 @@ final class Session
      *
      * @see http://php.net/manual/en/session.configuration.php
      */
-    public function setOptions(array $config)
+    public function setOptions(array $config): void
     {
         $this->adapter->setOptions($config);
     }
@@ -229,7 +234,7 @@ final class Session
      *
      * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->adapter->getOptions();
     }

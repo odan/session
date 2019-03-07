@@ -65,9 +65,9 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function getId(): ?string
+    public function getId(): string
     {
-        return session_id() ?: '';
+        return session_id() ?? '';
     }
 
     /**
@@ -194,9 +194,14 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function setCookieParams(int $lifetime, string $path = null, string $domain = null, bool $secure = false, bool $httpOnly = false): void
-    {
-        session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
+    public function setCookieParams(
+        int $lifetime,
+        string $path = null,
+        string $domain = null,
+        bool $secure = false,
+        bool $httpOnly = false
+    ): void {
+        session_set_cookie_params($lifetime, $path ?? '/', $domain, $secure, $httpOnly);
     }
 
     /**

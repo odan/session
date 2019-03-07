@@ -49,9 +49,9 @@ interface SessionAdapterInterface
     /**
      * Returns the session ID.
      *
-     * @return string|null The session ID
+     * @return string The session ID
      */
-    public function getId(): ?string;
+    public function getId(): string;
 
     /**
      * Sets the session ID.

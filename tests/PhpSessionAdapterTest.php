@@ -14,7 +14,7 @@ use RuntimeException;
 class PhpSessionAdapterTest extends AbstractTestCase
 {
     /**
-     * @var Session|null
+     * @var Session
      */
     protected $session;
 
@@ -72,11 +72,29 @@ class PhpSessionAdapterTest extends AbstractTestCase
         $newId = $this->session->getId();
         $this->assertNotSame($oldId, $newId);
 
-        $this->session->setId($oldId);
-        $this->assertSame($oldId, $this->session->getId());
-
         $this->assertTrue($this->session->destroy());
         $this->session->save();
+    }
+
+    /**
+     * Test.
+     *
+     * @return void
+     */
+    public function testSetIdWithError(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->assertTrue($this->session->start());
+        $this->assertTrue($this->session->isStarted());
+        $this->assertNotEmpty($this->session->getId());
+
+        $oldId = $this->session->getId();
+        $this->assertTrue($this->session->regenerateId());
+        $newId = $this->session->getId();
+        $this->assertNotSame($oldId, $newId);
+
+        $this->session->setId($oldId);
+        $this->assertSame($oldId, $this->session->getId());
     }
 
     /**
