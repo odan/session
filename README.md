@@ -14,13 +14,34 @@
 composer require odan/slim-session
 ```
 
-## Configuration
-
-Add your application-specific settings. These are stored in the `settings` configuration key of Slim.
+## Usage
 
 ```php
-// Session
-$config['session'] = [
+use Odan\Slim\Session\Adapter\PhpSessionAdapter;
+use Odan\Slim\Session\Session;
+
+$settings = [
+    'name' => 'webapp',
+    'cache_expire' => 0,
+    'cookie_httponly' => true,
+    'cookie_secure' => true,
+];
+
+$session = new Session(new PhpSessionAdapter());
+
+// Set session value
+$session->set('bar', 'foo');
+
+// Get session value
+echo $session->get('bar'); // foo
+```
+
+## Configuration
+
+Add your application-specific settings.
+
+```php
+$settings = [
     'name' => 'webapp',
     'cache_expire' => 0,
     'cookie_httponly' => true,
@@ -28,9 +49,9 @@ $config['session'] = [
 ];
 ```
 
-You can use all the standard [PHP session configuration options](http://php.net/manual/en/session.configuration.php) as key and value.
+You can also use all the standard [PHP session configuration options](http://php.net/manual/en/session.configuration.php) as key and value.
 
-## Usage
+## Methods
 
 ```php
 // Get session variable:
@@ -169,6 +190,22 @@ $session->start();
 
 ### Slim 3 framework integration
 
+#### Configuration
+
+Add your application-specific settings. These are stored in the `settings` configuration key of Slim.
+
+```php
+// Session
+$config['session'] = [
+    'name' => 'webapp',
+    'cache_expire' => 0,
+    'cookie_httponly' => true,
+    'cookie_secure' => true,
+];
+```
+
+#### Container setup
+
 In your `config/container.php` or wherever you add your service factories:
 
 ```php
@@ -185,6 +222,8 @@ $container['session'] = function (Container $container) {
     return $session;
 };
 ```
+
+#### Middleware setup
 
 Register the middleware:
 
