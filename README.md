@@ -20,7 +20,7 @@ composer require odan/slim-session
 use Odan\Slim\Session\Adapter\PhpSessionAdapter;
 use Odan\Slim\Session\Session;
 
-// Set session options befor we start
+// Set session options before we start
 // You can use all the standard PHP session configuration options
 // https://secure.php.net/manual/en/session.configuration.php
 
