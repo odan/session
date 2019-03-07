@@ -1,28 +1,49 @@
 <?php
 
-namespace Odan\Slim\Session\Adapter;
+namespace Odan\Session;
 
-use RuntimeException;
+use Odan\Session\Adapter\SessionAdapterInterface;
 
 /**
- * Interface SessionAdapterInterface
+ * Session handler
  */
-interface SessionAdapterInterface
+final class Session
 {
+
+    /**
+     * @var SessionAdapterInterface
+     */
+    private $adapter;
+
+    /**
+     * Constructor
+     *
+     * @param SessionAdapterInterface $adapter
+     */
+    public function __construct(SessionAdapterInterface $adapter)
+    {
+        $this->adapter = $adapter;
+    }
 
     /**
      * Starts the session - do not use session_start().
      *
      * @return bool True if session started
      */
-    public function start(): bool;
+    public function start(): bool
+    {
+        return $this->adapter->start();
+    }
 
     /**
      * Checks if the session was started.
      *
      * @return bool
      */
-    public function isStarted(): bool;
+    public function isStarted(): bool
+    {
+        return $this->adapter->isStarted();
+    }
 
     /**
      * Migrates the current session to a new session id while maintaining all session attributes.
@@ -32,7 +53,10 @@ interface SessionAdapterInterface
      *
      * @return bool True if session migrated, false if error
      */
-    public function regenerateId(): bool;
+    public function regenerateId()
+    {
+        return $this->adapter->regenerateId();
+    }
 
     /**
      * Clears all session data and regenerates session ID.
@@ -45,14 +69,20 @@ interface SessionAdapterInterface
      *
      * @return bool True if session invalidated, false if error
      */
-    public function destroy(): bool;
+    public function destroy()
+    {
+        return $this->adapter->destroy();
+    }
 
     /**
      * Returns the session ID.
      *
      * @return string|null The session ID
      */
-    public function getId();
+    public function getId()
+    {
+        return $this->adapter->getId();
+    }
 
     /**
      * Sets the session ID.
@@ -60,31 +90,41 @@ interface SessionAdapterInterface
      * @param string $id
      * @return void
      */
-    public function setId(string $id): void;
+    public function setId(string $id)
+    {
+        $this->adapter->setId($id);
+    }
 
     /**
      * Returns the session name.
      *
      * @return string The session name
      */
-    public function getName(): string;
+    public function getName(): string
+    {
+        return $this->adapter->getName();
+    }
 
     /**
      * Sets the session name.
      *
-     * @param string $name
      * @return void
-     * @throws RuntimeException Cannot change session name when session is active
      */
-    public function setName(string $name): void;
+    public function setName(string $name)
+    {
+        $this->adapter->setName($name);
+    }
 
     /**
      * Returns true if the attribute exists.
      *
-     * @param string $salt
+     * @param string $name
      * @return bool true if the attribute is defined, false otherwise
      */
-    public function has(string $salt): bool;
+    public function has(string $name): bool
+    {
+        return $this->adapter->has($name);
+    }
 
     /**
      * Gets an attribute by key.
@@ -93,7 +133,10 @@ interface SessionAdapterInterface
      * @param mixed|null $default The default value if not found
      * @return mixed|null
      */
-    public function get(string $name, $default = null);
+    public function get(string $name, $default = null)
+    {
+        return $this->adapter->get($name, $default);
+    }
 
     /**
      * Sets an attribute by key.
@@ -102,15 +145,21 @@ interface SessionAdapterInterface
      * @param mixed $value
      * @return void
      */
-    public function set(string $name, $value);
+    public function set(string $name, $value)
+    {
+        $this->adapter->set($name, $value);
+    }
 
     /**
      * Sets multiple attributes at once: takes a keyed array and sets each key => value pair.
      *
-     * @param array $attributes
+     * @param array $values
      * @return void
      */
-    public function replace(array $attributes): void;
+    public function replace(array $values)
+    {
+        $this->adapter->replace($values);
+    }
 
     /**
      * Deletes an attribute by key.
@@ -118,19 +167,28 @@ interface SessionAdapterInterface
      * @param string $name
      * @return void
      */
-    public function remove(string $name): void;
+    public function remove(string $name): void
+    {
+        $this->adapter->remove($name);
+    }
 
     /**
      * Clear all attributes.
      */
-    public function clear(): void;
+    public function clear()
+    {
+        $this->adapter->clear();
+    }
 
     /**
      * Returns the number of attributes.
      *
      * @return int
      */
-    public function count(): int;
+    public function count(): int
+    {
+        return $this->adapter->count();
+    }
 
     /**
      * Force the session to be saved and closed.
@@ -140,23 +198,32 @@ interface SessionAdapterInterface
      *
      * @return void
      */
-    public function save(): void;
+    public function save()
+    {
+        $this->adapter->save();
+    }
 
     /**
-     * Set session runtime configuration
+     * Set session runtime options
      *
      * @param array $config
      * @return void
      * @link http://php.net/manual/en/session.configuration.php
      */
-    public function setOptions(array $config): void;
+    public function setOptions(array $config)
+    {
+        $this->adapter->setOptions($config);
+    }
 
     /**
-     * Get session runtime configuration
+     * Get session runtime options
      *
      * @return array
      */
-    public function getOptions(): array;
+    public function getOptions()
+    {
+        return $this->adapter->getOptions();
+    }
 
     /**
      * Set cookie parameters.
@@ -170,7 +237,10 @@ interface SessionAdapterInterface
      * @param bool $httpOnly The cookie can only be accessed through the HTTP protocol.
      * @return void
      */
-    public function setCookieParams(int $lifetime, string $path = null, string $domain = null, bool $secure = false, bool $httpOnly = false): void;
+    public function setCookieParams(int $lifetime, string $path, string $domain, bool $secure, bool $httpOnly): void
+    {
+        $this->adapter->setCookieParams($lifetime, $path, $domain, $secure, $httpOnly);
+    }
 
     /**
      * Get cookie parameters.
@@ -179,5 +249,8 @@ interface SessionAdapterInterface
      *
      * @return array
      */
-    public function getCookieParams(): array;
+    public function getCookieParams(): array
+    {
+        return $this->adapter->getCookieParams();
+    }
 }

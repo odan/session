@@ -1,49 +1,28 @@
 <?php
 
-namespace Odan\Slim\Session;
+namespace Odan\Session\Adapter;
 
-use Odan\Slim\Session\Adapter\SessionAdapterInterface;
+use RuntimeException;
 
 /**
- * Session handler
+ * Interface SessionAdapterInterface
  */
-final class Session
+interface SessionAdapterInterface
 {
-
-    /**
-     * @var SessionAdapterInterface
-     */
-    private $adapter;
-
-    /**
-     * Constructor
-     *
-     * @param SessionAdapterInterface $adapter
-     */
-    public function __construct(SessionAdapterInterface $adapter)
-    {
-        $this->adapter = $adapter;
-    }
 
     /**
      * Starts the session - do not use session_start().
      *
      * @return bool True if session started
      */
-    public function start(): bool
-    {
-        return $this->adapter->start();
-    }
+    public function start(): bool;
 
     /**
      * Checks if the session was started.
      *
      * @return bool
      */
-    public function isStarted(): bool
-    {
-        return $this->adapter->isStarted();
-    }
+    public function isStarted(): bool;
 
     /**
      * Migrates the current session to a new session id while maintaining all session attributes.
@@ -53,10 +32,7 @@ final class Session
      *
      * @return bool True if session migrated, false if error
      */
-    public function regenerateId()
-    {
-        return $this->adapter->regenerateId();
-    }
+    public function regenerateId(): bool;
 
     /**
      * Clears all session data and regenerates session ID.
@@ -69,20 +45,14 @@ final class Session
      *
      * @return bool True if session invalidated, false if error
      */
-    public function destroy()
-    {
-        return $this->adapter->destroy();
-    }
+    public function destroy(): bool;
 
     /**
      * Returns the session ID.
      *
      * @return string|null The session ID
      */
-    public function getId()
-    {
-        return $this->adapter->getId();
-    }
+    public function getId();
 
     /**
      * Sets the session ID.
@@ -90,41 +60,31 @@ final class Session
      * @param string $id
      * @return void
      */
-    public function setId(string $id)
-    {
-        $this->adapter->setId($id);
-    }
+    public function setId(string $id): void;
 
     /**
      * Returns the session name.
      *
      * @return string The session name
      */
-    public function getName(): string
-    {
-        return $this->adapter->getName();
-    }
+    public function getName(): string;
 
     /**
      * Sets the session name.
      *
+     * @param string $name
      * @return void
+     * @throws RuntimeException Cannot change session name when session is active
      */
-    public function setName(string $name)
-    {
-        $this->adapter->setName($name);
-    }
+    public function setName(string $name): void;
 
     /**
      * Returns true if the attribute exists.
      *
-     * @param string $name
+     * @param string $salt
      * @return bool true if the attribute is defined, false otherwise
      */
-    public function has(string $name): bool
-    {
-        return $this->adapter->has($name);
-    }
+    public function has(string $salt): bool;
 
     /**
      * Gets an attribute by key.
@@ -133,10 +93,7 @@ final class Session
      * @param mixed|null $default The default value if not found
      * @return mixed|null
      */
-    public function get(string $name, $default = null)
-    {
-        return $this->adapter->get($name, $default);
-    }
+    public function get(string $name, $default = null);
 
     /**
      * Sets an attribute by key.
@@ -145,21 +102,15 @@ final class Session
      * @param mixed $value
      * @return void
      */
-    public function set(string $name, $value)
-    {
-        $this->adapter->set($name, $value);
-    }
+    public function set(string $name, $value);
 
     /**
      * Sets multiple attributes at once: takes a keyed array and sets each key => value pair.
      *
-     * @param array $values
+     * @param array $attributes
      * @return void
      */
-    public function replace(array $values)
-    {
-        $this->adapter->replace($values);
-    }
+    public function replace(array $attributes): void;
 
     /**
      * Deletes an attribute by key.
@@ -167,28 +118,19 @@ final class Session
      * @param string $name
      * @return void
      */
-    public function remove(string $name): void
-    {
-        $this->adapter->remove($name);
-    }
+    public function remove(string $name): void;
 
     /**
      * Clear all attributes.
      */
-    public function clear()
-    {
-        $this->adapter->clear();
-    }
+    public function clear(): void;
 
     /**
      * Returns the number of attributes.
      *
      * @return int
      */
-    public function count(): int
-    {
-        return $this->adapter->count();
-    }
+    public function count(): int;
 
     /**
      * Force the session to be saved and closed.
@@ -198,32 +140,23 @@ final class Session
      *
      * @return void
      */
-    public function save()
-    {
-        $this->adapter->save();
-    }
+    public function save(): void;
 
     /**
-     * Set session runtime options
+     * Set session runtime configuration
      *
      * @param array $config
      * @return void
      * @link http://php.net/manual/en/session.configuration.php
      */
-    public function setOptions(array $config)
-    {
-        $this->adapter->setOptions($config);
-    }
+    public function setOptions(array $config): void;
 
     /**
-     * Get session runtime options
+     * Get session runtime configuration
      *
      * @return array
      */
-    public function getOptions()
-    {
-        return $this->adapter->getOptions();
-    }
+    public function getOptions(): array;
 
     /**
      * Set cookie parameters.
@@ -237,10 +170,7 @@ final class Session
      * @param bool $httpOnly The cookie can only be accessed through the HTTP protocol.
      * @return void
      */
-    public function setCookieParams(int $lifetime, string $path, string $domain, bool $secure, bool $httpOnly): void
-    {
-        $this->adapter->setCookieParams($lifetime, $path, $domain, $secure, $httpOnly);
-    }
+    public function setCookieParams(int $lifetime, string $path = null, string $domain = null, bool $secure = false, bool $httpOnly = false): void;
 
     /**
      * Get cookie parameters.
@@ -249,8 +179,5 @@ final class Session
      *
      * @return array
      */
-    public function getCookieParams(): array
-    {
-        return $this->adapter->getCookieParams();
-    }
+    public function getCookieParams(): array;
 }

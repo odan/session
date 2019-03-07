@@ -4,6 +4,7 @@ composer.phar
 composer.lock
 .DS_STORE
 cache.properties
+.phpunit.result.cache
 .php_cs.cache
 .vscode
 vendor/

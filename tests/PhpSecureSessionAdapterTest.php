@@ -2,13 +2,13 @@
 
 namespace Odan\Test;
 
-use Odan\Slim\Session\Adapter\PhpSecureSessionAdapter;
-use Odan\Slim\Session\Session;
+use Odan\Session\Adapter\PhpSecureSessionAdapter;
+use Odan\Session\Session;
 
 /**
  * MemorySessionTest
  *
- * @coversDefaultClass \Odan\Slim\Session\Adapter\PhpSecureSessionAdapter
+ * @coversDefaultClass \Odan\Session\Adapter\PhpSecureSessionAdapter
  */
 class PhpSecureSessionAdapterTest extends PhpSessionAdapterTest
 {

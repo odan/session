@@ -1,6 +1,6 @@
 <?php
 
-namespace Odan\Slim\Session\Adapter;
+namespace Odan\Session\Adapter;
 
 use RuntimeException;
 
