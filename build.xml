@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="app" basedir=".">
 
-    <condition property="ext" value=".bat">
+    <condition property="ext" value=".bat" else="">
         <os family="windows"/>
     </condition>
 
