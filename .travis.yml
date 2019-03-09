@@ -29,7 +29,7 @@ before_script:
   - cd $TRAVIS_BUILD_DIR
 
 script:
-  - vendor/bin/phpstan.phar analyse src
+  - vendor/bin/phpstan.phar analyse -l max -c phpstan.neon src --no-interaction --no-progress
   - ant check-all
   #- vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
 
