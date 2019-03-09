@@ -29,6 +29,7 @@ before_script:
   - cd $TRAVIS_BUILD_DIR
 
 script:
+  - vendor/bin/phpstan.phar analyse src
   - ant check-all
   #- vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
 
