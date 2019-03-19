@@ -193,7 +193,7 @@ use Odan\Session\Adapter\MemorySessionAdapter;
 use Odan\Session\Adapter\PhpSessionAdapter;
 use Odan\Session\Session;
 
-$container['session'] = function (Container $container) {
+$container[Session::class] = function (Container $container) {
     $settings = $container->get('settings');
     $adapter = new PhpSessionAdapter();
     $session = new Session($adapter);
@@ -208,10 +208,12 @@ $container['session'] = function (Container $container) {
 Register the middleware:
 
 ```php
+use Odan\Session\Session;
+
 // Session middleware
 $app->add(function (Request $request, Response $response, $next) {
     /* @var Container $this */
-    $session = $this->get('session');
+    $session = $this->get(Session::class);
     $session->start();
     $response = $next($request, $response);
     $session->save();
