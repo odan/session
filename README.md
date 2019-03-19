@@ -63,6 +63,9 @@ $session->save();
 // Get session variable
 $foo = $session->get('foo');
 
+// Get session variable or the default value
+$bar = $session->get('bar') ?? 'my default value';
+
 // Set session variable
 $session->set('bar', 'that');
 
