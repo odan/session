@@ -22,8 +22,7 @@ composer require odan/session
 ## Usage
 
 ```php
-use Odan\Session\Adapter\PhpSessionAdapter;
-use Odan\Session\Session;
+use Odan\Session\PhpSession;
 
 // Set session options before we start
 // You can use all the standard PHP session configuration options
@@ -43,7 +42,7 @@ $session->setOptions([
 ]);
 
 // Create a standard session hanndler
-$session = new Session(new PhpSessionAdapter());
+$session = new PhpSession();
 
 // Start the session
 $session->start();
@@ -122,7 +121,7 @@ $session->getCookieParams();
 
 ## Adapter
 
-### PhpSessionAdapter
+### PHP Session
 
 * The default PHP session handler
 * Uses the native PHP session functions
@@ -130,23 +129,21 @@ $session->getCookieParams();
 Example:
 
 ```php
-use Odan\Session\Adapter\PhpSessionAdapter;
-use Odan\Session\Session;
+use Odan\Session\PhpSession;
 
-$session = new Session(new PhpSessionAdapter());
+$session = new PhpSession();
 ```
 
-### MemorySessionAdapter
+### Memory Session
 
 * Optimized for integration tests (with phpunit)
 * Prevent output buffer issues
 * Run sessions only in memory
 
 ```php
-use Odan\Session\Adapter\MemorySessionAdapter;
-use Odan\Session\Session;
+use Odan\Session\MemorySession;
 
-$session = new Session(new MemorySessionAdapter());
+$session = new MemorySession();
 ```
 
 ## Integration
@@ -172,13 +169,12 @@ $config['session'] = [
 In your `config/container.php` or wherever you add your service factories:
 
 ```php
-use Odan\Session\Adapter\MemorySessionAdapter;
-use Odan\Session\Adapter\PhpSessionAdapter;
-use Odan\Session\Session;
+use Odan\Session\PhpSession;
+use Odan\Session\SessionInterface;
 
-$container[Session::class] = function (Container $container) {
+$container[SessionInterface::class] = function (Container $container) {
     $settings = $container->get('settings');
-    $session = new Session(new PhpSessionAdapter());
+    $session = new PhpSession();
     $session->setOptions($settings['session']);
     
     return $session;
@@ -190,12 +186,12 @@ $container[Session::class] = function (Container $container) {
 Register the middleware:
 
 ```php
-use Odan\Session\Session;
+use Odan\Session\SessionInterface;
 
 // Session middleware
 $app->add(function (Request $request, Response $response, $next) {
     /* @var Container $this */
-    $session = $this->get(Session::class);
+    $session = $this->get(SessionInterface::class);
     $session->start();
     $response = $next($request, $response);
     $session->save();

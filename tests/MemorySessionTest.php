@@ -2,20 +2,19 @@
 
 namespace Odan\Test;
 
-use Odan\Session\Adapter\MemorySessionAdapter;
-use Odan\Session\Session;
+use Odan\Session\MemorySession;
 
 /**
  * MemorySessionTest.
  *
- * @coversDefaultClass \Odan\Session\Adapter\MemorySessionAdapter
+ * @coversDefaultClass \Odan\Session\MemorySession
  */
-class MemorySessionAdapterTest extends PhpSessionAdapterTest
+class MemorySessionTest extends PhpSessionTest
 {
     /** {@inheritdoc} */
     protected function setUp(): void
     {
-        $this->session = new Session(new MemorySessionAdapter());
+        $this->session = new MemorySession();
 
         $this->session->setOptions([
             'name' => 'app',

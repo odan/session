@@ -1,14 +1,13 @@
 <?php
 
-namespace Odan\Session\Adapter;
+namespace Odan\Session;
 
-use Odan\Session\SessionInterface;
 use RuntimeException;
 
 /**
  * A PHP Session handler adapter.
  */
-class PhpSessionAdapter implements SessionInterface
+class PhpSession implements SessionInterface
 {
     /**
      * {@inheritdoc}
@@ -76,6 +75,10 @@ class PhpSessionAdapter implements SessionInterface
      */
     public function setId(string $id): void
     {
+        if ($this->isStarted()) {
+            throw new RuntimeException('Cannot change session id when session is active');
+        }
+
         session_id($id);
     }
 

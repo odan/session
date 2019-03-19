@@ -2,16 +2,16 @@
 
 namespace Odan\Test;
 
-use Odan\Session\Adapter\PhpSessionAdapter;
-use Odan\Session\Session;
+use Odan\Session\PhpSession;
+use Odan\Session\SessionInterface;
 use RuntimeException;
 
 /**
  * MemorySessionTest.
  *
- * @coversDefaultClass \Odan\Session\Session
+ * @coversDefaultClass \Odan\Session\PhpSession
  */
-class PhpSessionAdapterTest extends AbstractTestCase
+class PhpSessionTest extends AbstractTestCase
 {
     /**
      * @var Session
@@ -23,7 +23,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
     {
         $_SESSION = [];
 
-        $this->session = new Session(new PhpSessionAdapter());
+        $this->session = new PhpSession();
 
         $this->session->setOptions([
             'name' => 'app',
@@ -53,13 +53,13 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers ::destroy
      * @covers ::save
      * @covers ::regenerateId
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::start
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::isStarted
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::getId
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::destroy
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::save
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::regenerateId
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::setId
+     * @covers \Odan\Session\PhpSession::start
+     * @covers \Odan\Session\PhpSession::isStarted
+     * @covers \Odan\Session\PhpSession::getId
+     * @covers \Odan\Session\PhpSession::destroy
+     * @covers \Odan\Session\PhpSession::save
+     * @covers \Odan\Session\PhpSession::regenerateId
+     * @covers \Odan\Session\PhpSession::setId
      */
     public function testStart(): void
     {
@@ -104,9 +104,9 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers ::__construct
      * @covers ::setName
      * @covers ::getName
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::start
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::setName
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::getName
+     * @covers \Odan\Session\PhpSession::start
+     * @covers \Odan\Session\PhpSession::setName
+     * @covers \Odan\Session\PhpSession::getName
      */
     public function testSetAndGetName(): void
     {
@@ -124,9 +124,9 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers ::__construct
      * @covers ::setName
      * @covers ::getName
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::start
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::setName
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::getName
+     * @covers \Odan\Session\PhpSession::start
+     * @covers \Odan\Session\PhpSession::setName
+     * @covers \Odan\Session\PhpSession::getName
      */
     public function testSetAndGetNameError(): void
     {
@@ -150,7 +150,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
      */
     public function testInstance(): void
     {
-        $this->assertInstanceOf(Session::class, $this->session);
+        $this->assertInstanceOf(SessionInterface::class, $this->session);
     }
 
     /**
@@ -161,9 +161,9 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers ::start
      * @covers ::set
      * @covers ::get
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::start
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::set
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::get
+     * @covers \Odan\Session\PhpSession::start
+     * @covers \Odan\Session\PhpSession::set
+     * @covers \Odan\Session\PhpSession::get
      */
     public function testSetAndGet(): void
     {
@@ -199,9 +199,9 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers ::start
      * @covers ::set
      * @covers ::get
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::start
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::set
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::get
+     * @covers \Odan\Session\PhpSession::start
+     * @covers \Odan\Session\PhpSession::set
+     * @covers \Odan\Session\PhpSession::get
      */
     public function testAll(): void
     {
@@ -241,14 +241,14 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers ::clear
      * @covers ::has
      * @covers ::replace
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::start
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::set
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::get
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::count
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::remove
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::clear
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::has
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::replace
+     * @covers \Odan\Session\PhpSession::start
+     * @covers \Odan\Session\PhpSession::set
+     * @covers \Odan\Session\PhpSession::get
+     * @covers \Odan\Session\PhpSession::count
+     * @covers \Odan\Session\PhpSession::remove
+     * @covers \Odan\Session\PhpSession::clear
+     * @covers \Odan\Session\PhpSession::has
+     * @covers \Odan\Session\PhpSession::replace
      */
     public function testRemoveAndClear(): void
     {
@@ -286,8 +286,8 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers ::__construct
      * @covers ::setOptions
      * @covers ::getOptions
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::setOptions
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::getOptions
+     * @covers \Odan\Session\PhpSession::setOptions
+     * @covers \Odan\Session\PhpSession::getOptions
      */
     public function testConfig(): void
     {
@@ -312,8 +312,8 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers ::__construct
      * @covers ::setCookieParams
      * @covers ::getCookieParams
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::setCookieParams
-     * @covers \Odan\Session\Adapter\PhpSessionAdapter::getCookieParams
+     * @covers \Odan\Session\PhpSession::setCookieParams
+     * @covers \Odan\Session\PhpSession::getCookieParams
      */
     public function testCookieParams(): void
     {
