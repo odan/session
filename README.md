@@ -178,8 +178,7 @@ use Odan\Session\Session;
 
 $container[Session::class] = function (Container $container) {
     $settings = $container->get('settings');
-    $adapter = new PhpSessionAdapter();
-    $session = new Session($adapter);
+    $session = new Session(new PhpSessionAdapter());
     $session->setOptions($settings['session']);
     
     return $session;
