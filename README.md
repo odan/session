@@ -67,7 +67,7 @@ $foo = $session->get('foo');
 // Set session variable
 $session->set('bar', 'that');
 
-// Get all session varaibales
+// Get all session variables
 $all = $session->all();
 
 // Delete a session variable
