@@ -2,12 +2,13 @@
 
 namespace Odan\Session\Adapter;
 
+use Odan\Session\SessionInterface;
 use RuntimeException;
 
 /**
  * A memory (array) session handler adapter.
  */
-class MemorySessionAdapter implements SessionAdapterInterface
+class MemorySessionAdapter implements SessionInterface
 {
     private $data = [];
 
@@ -117,33 +118,41 @@ class MemorySessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function has(string $name): bool
+    public function has(string $key): bool
     {
         if (empty($this->data)) {
             return false;
         }
 
-        return array_key_exists($name, $this->data);
+        return array_key_exists($key, $this->data);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function get(string $name, $default = null)
+    public function get(string $key)
     {
-        if (!$this->has($name)) {
-            return $default;
+        if ($this->has($key)) {
+            return $this->data[$key];
         }
 
-        return $this->data[$name];
+        return null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function set(string $name, $value): void
+    public function all()
     {
-        $this->data[$name] = $value;
+        return $this->data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function set(string $key, $value): void
+    {
+        $this->data[$key] = $value;
     }
 
     /**
@@ -157,9 +166,9 @@ class MemorySessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function remove(string $name): void
+    public function remove(string $key): void
     {
-        unset($this->data[$name]);
+        unset($this->data[$key]);
     }
 
     /**
@@ -206,8 +215,13 @@ class MemorySessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function setCookieParams(int $lifetime, string $path = null, string $domain = null, bool $secure = false, bool $httpOnly = false): void
-    {
+    public function setCookieParams(
+        int $lifetime,
+        string $path = null,
+        string $domain = null,
+        bool $secure = false,
+        bool $httpOnly = false
+    ): void {
         $this->cookie = [
             'lifetime' => $lifetime,
             'path' => $path,

@@ -1,13 +1,13 @@
 <?php
 
-namespace Odan\Session\Adapter;
+namespace Odan\Session;
 
 use RuntimeException;
 
 /**
- * Interface SessionAdapterInterface.
+ * Interface.
  */
-interface SessionAdapterInterface
+interface SessionInterface
 {
     /**
      * Starts the session - do not use session_start().
@@ -81,33 +81,39 @@ interface SessionAdapterInterface
     public function setName(string $name): void;
 
     /**
-     * Returns true if the attribute exists.
+     * Returns true if the key exists.
      *
-     * @param string $salt
+     * @param string $key
      *
-     * @return bool true if the attribute is defined, false otherwise
+     * @return bool true if the key is defined, false otherwise
      */
-    public function has(string $salt): bool;
+    public function has(string $key): bool;
 
     /**
      * Gets an attribute by key.
      *
-     * @param string $name The attribute name
-     * @param mixed|null $default The default value if not found
+     * @param string $key The key name or null to get all values
      *
-     * @return mixed|null
+     * @return mixed|null Should return null if the key is not found
      */
-    public function get(string $name, $default = null);
+    public function get(string $key);
+
+    /**
+     * Gets all values as array.
+     *
+     * @return mixed
+     */
+    public function all();
 
     /**
      * Sets an attribute by key.
      *
-     * @param string $name
-     * @param mixed $value
+     * @param string $key The key of the element to set
+     * @param mixed $value The data to set
      *
      * @return void
      */
-    public function set(string $name, $value): void;
+    public function set(string $key, $value): void;
 
     /**
      * Sets multiple attributes at once: takes a keyed array and sets each key => value pair.
@@ -121,11 +127,11 @@ interface SessionAdapterInterface
     /**
      * Deletes an attribute by key.
      *
-     * @param string $name
+     * @param string $key
      *
      * @return void
      */
-    public function remove(string $name): void;
+    public function remove(string $key): void;
 
     /**
      * Clear all attributes.

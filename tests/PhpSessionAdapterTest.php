@@ -199,6 +199,43 @@ class PhpSessionAdapterTest extends AbstractTestCase
      * @covers ::start
      * @covers ::set
      * @covers ::get
+     * @covers \Odan\Session\Adapter\PhpSessionAdapter::start
+     * @covers \Odan\Session\Adapter\PhpSessionAdapter::set
+     * @covers \Odan\Session\Adapter\PhpSessionAdapter::get
+     */
+    public function testAll(): void
+    {
+        $this->session->start();
+
+        // string
+        $this->session->set('key', 'value');
+        $this->assertSame(['key' => 'value'], $this->session->all());
+
+        // int
+        $this->session->set('key', 1);
+        $valueInt = $this->session->all();
+        $this->assertSame(['key' => 1], $valueInt);
+
+        // float
+        $this->session->set('key', 3.14);
+        $this->assertSame(['key' => 3.14], $this->session->all());
+
+        // bool
+        $this->session->set('key', true);
+        $this->assertSame(['key' => true], $this->session->all());
+
+        $this->session->set('key', false);
+        $this->assertSame(['key' => false], $this->session->all());
+    }
+
+    /**
+     * Test.
+     *
+     * @return void
+     * @covers ::__construct
+     * @covers ::start
+     * @covers ::set
+     * @covers ::get
      * @covers ::count
      * @covers ::remove
      * @covers ::clear
@@ -236,8 +273,7 @@ class PhpSessionAdapterTest extends AbstractTestCase
         $this->assertSame('value2-new', $this->session->get('key2'));
 
         $this->session->remove('key');
-        $this->assertSame(null, $this->session->get('key'));
-        $this->assertSame(false, $this->session->get('key', false));
+        $this->assertNull($this->session->get('key'));
 
         $this->session->clear();
         $this->assertSame(0, $this->session->count());

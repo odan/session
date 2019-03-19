@@ -2,25 +2,24 @@
 
 namespace Odan\Session;
 
-use Odan\Session\Adapter\SessionAdapterInterface;
 use RuntimeException;
 
 /**
  * Session handler.
  */
-final class Session
+final class Session implements SessionInterface
 {
     /**
-     * @var SessionAdapterInterface
+     * @var SessionInterface
      */
     private $adapter;
 
     /**
      * Constructor.
      *
-     * @param SessionAdapterInterface $adapter
+     * @param SessionInterface $adapter
      */
-    public function __construct(SessionAdapterInterface $adapter)
+    public function __construct(SessionInterface $adapter)
     {
         $this->adapter = $adapter;
     }
@@ -137,27 +136,36 @@ final class Session
     /**
      * Gets an attribute by key.
      *
-     * @param string $name The attribute name
-     * @param mixed|null $default The default value if not found
+     * @param string $key The key of the element to retrieve
      *
      * @return mixed|null
      */
-    public function get(string $name, $default = null)
+    public function get(string $key)
     {
-        return $this->adapter->get($name, $default);
+        return $this->adapter->get($key);
+    }
+
+    /**
+     * Gets an attribute by key.
+     *
+     * @return mixed|null
+     */
+    public function all()
+    {
+        return $this->adapter->all();
     }
 
     /**
      * Sets an attribute by key.
      *
-     * @param string $name
-     * @param mixed $value
+     * @param string $key The key of the element to set
+     * @param mixed $value The data to set
      *
      * @return void
      */
-    public function set(string $name, $value): void
+    public function set(string $key, $value): void
     {
-        $this->adapter->set($name, $value);
+        $this->adapter->set($key, $value);
     }
 
     /**
@@ -175,13 +183,13 @@ final class Session
     /**
      * Deletes an attribute by key.
      *
-     * @param string $name
+     * @param string $key The key to remove
      *
      * @return void
      */
-    public function remove(string $name): void
+    public function remove(string $key): void
     {
-        $this->adapter->remove($name);
+        $this->adapter->remove($key);
     }
 
     /**
@@ -245,14 +253,14 @@ final class Session
      * @see http://php.net/manual/en/function.session-set-cookie-params.php
      *
      * @param int $lifetime the lifetime of the cookie in seconds
-     * @param string $path the path where information is stored
-     * @param string $domain the domain of the cookie
+     * @param string|null $path the path where information is stored
+     * @param string|null $domain the domain of the cookie
      * @param bool $secure the cookie should only be sent over secure connections
      * @param bool $httpOnly the cookie can only be accessed through the HTTP protocol
      *
      * @return void
      */
-    public function setCookieParams(int $lifetime, string $path, string $domain, bool $secure, bool $httpOnly): void
+    public function setCookieParams(int $lifetime, string $path = null, string $domain = null, bool $secure = false, bool $httpOnly = false): void
     {
         $this->adapter->setCookieParams($lifetime, $path, $domain, $secure, $httpOnly);
     }

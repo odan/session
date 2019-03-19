@@ -61,11 +61,14 @@ $session->save();
 ## Methods
 
 ```php
-// Get session variable:
-$foo = $session->get('foo', 'some-default');
+// Get session variable
+$foo = $session->get('foo');
 
-// Set session variable:
+// Set session variable
 $session->set('bar', 'that');
+
+// Get all session varaibales
+$all = $session->all();
 
 // Delete a session variable
 $session->remove('key');
@@ -131,26 +134,6 @@ use Odan\Session\Adapter\PhpSessionAdapter;
 use Odan\Session\Session;
 
 $session = new Session(new PhpSessionAdapter());
-```
-
-### PhpSecureSessionAdapter
-
-* Longer and more secure session id's
-* Session data encryption
-* Set session cookie path, domain and secure values automatically
-
-Example:
-
-```php
-use Odan\Session\Adapter\PhpSecureSessionAdapter;
-use Odan\Session\Session;
-
-// Generate a random encryption key.
-// Load this key from your settings.
-$key = random_bytes(64);
-
-// Create a secure session instance
-$session = new Session(new PhpSecureSessionAdapter($key));
 ```
 
 ### MemorySessionAdapter

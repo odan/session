@@ -2,12 +2,13 @@
 
 namespace Odan\Session\Adapter;
 
+use Odan\Session\SessionInterface;
 use RuntimeException;
 
 /**
  * A PHP Session handler adapter.
  */
-class PhpSessionAdapter implements SessionAdapterInterface
+class PhpSessionAdapter implements SessionInterface
 {
     /**
      * {@inheritdoc}
@@ -100,31 +101,37 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function has(string $name): bool
+    public function has(string $key): bool
     {
         if (empty($_SESSION)) {
             return false;
         }
 
-        return array_key_exists($name, $_SESSION);
+        return array_key_exists($key, $_SESSION);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function get(string $name, $default = null)
+    public function get(string $key)
     {
-        return $this->has($name)
-            ? $_SESSION[$name]
-            : $default;
+        return $this->has($key) ? $_SESSION[$key] : null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function set(string $name, $value): void
+    public function all()
     {
-        $_SESSION[$name] = $value;
+        return $_SESSION;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function set(string $key, $value): void
+    {
+        $_SESSION[$key] = $value;
     }
 
     /**
@@ -138,9 +145,9 @@ class PhpSessionAdapter implements SessionAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function remove(string $name): void
+    public function remove(string $key): void
     {
-        unset($_SESSION[$name]);
+        unset($_SESSION[$key]);
     }
 
     /**
