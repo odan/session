@@ -7,14 +7,14 @@ use Odan\Session\SessionInterface;
 use RuntimeException;
 
 /**
- * MemorySessionTest.
+ * Test.
  *
  * @coversDefaultClass \Odan\Session\PhpSession
  */
 class PhpSessionTest extends AbstractTestCase
 {
     /**
-     * @var Session
+     * @var \Odan\Session\SessionInterface
      */
     protected $session;
 
