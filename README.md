@@ -220,5 +220,5 @@ $app->group('/users', function () {
     $this->post('/login', \App\Action\UserLoginSubmitAction::class);
     $this->get('/login', \App\Action\UserLoginIndexAction::class);
     $this->get('/logout', \App\Action\UserLogoutAction::class);
-})->add(SessionMiddleware::class);
+})->add(\Odan\Session\SessionMiddleware::class);
 ```
