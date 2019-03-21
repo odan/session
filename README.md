@@ -155,7 +155,9 @@ $session = new MemorySession();
 
 #### Configuration
 
-Add your application-specific settings. These are stored in the `settings` configuration key of Slim.
+Add your application-specific settings. 
+
+These are stored in the `settings` configuration key of Slim.
 
 ```php
 // Session
@@ -167,17 +169,19 @@ $config['session'] = [
 ];
 ```
 
-#### Container setup
-
-In your `config/container.php` or wherever you add your service factories:
+Add the session factory:
 
 ```php
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
+use Odan\Session\SessionMiddleware;
+use Psr\Container\ContainerInterface as Container;
 
 $container[SessionInterface::class] = function (Container $container) {
-    $settings = $container->get('settings');
     $session = new PhpSession();
+    
+    // Optional settings
+    $settings = $container->get('settings');
     $session->setOptions($settings['session']);
     
     return $session;
@@ -186,19 +190,35 @@ $container[SessionInterface::class] = function (Container $container) {
 
 #### Middleware setup
 
-Register the middleware:
+Add the middleware factory:
 
 ```php
-use Odan\Session\SessionInterface;
+$container[SessionMiddleware::class] = function (Container $container) {
+    return new SessionMiddleware($container->get(SessionInterface::class));
+};
+```
 
-// Session middleware
-$app->add(function (Request $request, Response $response, $next) {
-    /* @var Container $this */
-    $session = $this->get(SessionInterface::class);
-    $session->start();
-    $response = $next($request, $response);
-    $session->save();
-    
-    return $response;
-});
+**Add the Slim application middleware**
+
+Register middleware for all routes:
+
+```php
+$app->add(\Odan\Session\SessionMiddleware::class);
+```
+
+Register middleware for a single route:
+
+```php
+$this->get('/', \App\Action\HomeIndexAction::class)
+    ->add(\Odan\Session\SessionMiddleware::class);
+```
+
+Register the middleware for a group of routes:
+
+```php
+$app->group('/users', function () {
+    $this->post('/login', \App\Action\UserLoginSubmitAction::class);
+    $this->get('/login', \App\Action\UserLoginIndexAction::class);
+    $this->get('/logout', \App\Action\UserLogoutAction::class);
+})->add(SessionMiddleware::class);
 ```
