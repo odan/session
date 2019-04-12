@@ -222,3 +222,8 @@ $app->group('/users', function () {
     $this->get('/logout', \App\Action\UserLogoutAction::class);
 })->add(\Odan\Session\SessionMiddleware::class);
 ```
+
+## Similar packages
+
+* https://symfony.com/doc/current/components/http_foundation/sessions.html
+* https://github.com/auraphp/Aura.Session
