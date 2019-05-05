@@ -1,6 +1,6 @@
 <?php
 
-namespace Odan\Test;
+namespace Odan\Session\Test;
 
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
