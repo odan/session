@@ -36,7 +36,10 @@ class SessionMiddleware
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next): ResponseInterface
     {
-        $this->session->start();
+        if (!$this->session->isStarted()) {
+            $this->session->start();
+        }
+
         $response = $next($request, $response);
         $this->session->save();
 
