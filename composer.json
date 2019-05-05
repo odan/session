@@ -1,46 +1,58 @@
 {
-  "name": "odan/session",
-  "type": "library",
-  "description": "A Slim session handler",
-  "keywords": [
-    "slim",
-    "session"
-  ],
-  "homepage": "https://github.com/odan/session",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "odan",
-      "homepage": "https://github.com/odan"
+    "name": "odan/session",
+    "type": "library",
+    "description": "A Slim session handler",
+    "keywords": [
+        "slim",
+        "session"
+    ],
+    "homepage": "https://github.com/odan/session",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "odan",
+            "homepage": "https://github.com/odan"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "psr/http-message": "^1.0"
+    },
+    "require-dev": {
+        "overtrue/phplint": "^1.1",
+        "phpstan/phpstan-shim": "^0.11",
+        "phpunit/phpunit": "^8.0",
+        "slim/slim": "^3.12",
+        "squizlabs/php_codesniffer": "^3.4"
+    },
+    "scripts": {
+        "test": "phpunit --configuration phpunit.xml",
+        "test-coverage": "phpunit --configuration phpunit.xml --coverage-clover build/logs/clover.xml --coverage-html build/coverage",
+        "check-style": "phpcs --standard=phpcs.xml",
+        "fix-style": "phpcbf --standard=phpcs.xml",
+        "phpstan": "phpstan analyse src tests --level=max -c phpstan.neon --no-progress",
+        "lint": "phplint ./ --exclude=vendor --no-interaction --no-cache",
+        "install-cs": "php -r \"@mkdir('build'); copy('https://cs.symfony.com/download/php-cs-fixer-v2.phar', 'build/php-cs-fixer-v2.phar');\"",
+        "fix-cs": "php build/php-cs-fixer-v2.phar fix --config=.cs.php",
+        "check-cs": "php build/php-cs-fixer-v2.phar fix --dry-run --format=txt --verbose --diff --diff-format=udiff --config=.cs.php",
+        "check-all": [
+            "@lint",
+            "@check-style",
+            "@phpstan",
+            "@test-coverage"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "Odan\\Session\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Odan\\Session\\Test\\": "tests"
+        }
+    },
+    "config": {
+        "sort-packages": true
     }
-  ],
-  "require": {
-    "php": "^7.2",
-    "psr/http-message": "^1.0"
-  },
-  "require-dev": {
-    "odan/docblock-checker": "^1.1",
-    "phpstan/phpstan-shim": "^0.11",
-    "phpunit/phpunit": "^8.0",
-    "slim/slim": "^3.12"
-  },
-  "suggest": {
-    "ext-mbstring": "You need the Multibyte String extension to use PhpSecureSessionAdapter",
-    "ext-openssl": "You need the OpenSSL extension to use PhpSecureSessionAdapter"
-  },
-  "scripts": {
-    "test": "phpunit",
-    "test-coverage": "phpunit --coverage-clover build/logs/clover.xml --coverage-html build/coverage",
-    "check-style": "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests",
-    "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit -n --no-patch 1 src tests"
-  },
-  "autoload": {
-    "psr-4": {
-      "Odan\\": "src",
-      "Odan\\Test\\": "tests"
-    }
-  },
-  "config": {
-    "sort-packages": true
-  }
 }

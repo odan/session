@@ -30,14 +30,18 @@ return PhpCsFixer\Config::create()
         'phpdoc_align' => false,
         'phpdoc_no_empty_return' => false,
         'phpdoc_order' => true, // psr-5
+        'phpdoc_no_useless_inheritdoc' => false,
         'protected_to_private' => false,
         'yoda_style' => false,
         'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
+        'ordered_imports' => [
+            'sort_algorithm' => 'alpha',
+            'imports_order' => ['class', 'const', 'function']
+        ],
     ])
     ->setFinder(PhpCsFixer\Finder::create()
         ->in(__DIR__ . '/src')
         ->in(__DIR__ . '/tests')
-        //->in(__DIR__ . '/config')
         ->name('*.php')
         ->ignoreDotFiles(true)
         ->ignoreVCS(true));
