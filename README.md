@@ -223,6 +223,16 @@ $app->group('/users', function () {
 })->add(\Odan\Session\SessionMiddleware::class);
 ```
 
+Get SessionInterface from Request object:
+
+```php
+/**
+ * @var ResponseInterface $request
+ * @var SessionInterface $session
+ */
+$session = $request->getAttribute('session');
+```
+
 ## Similar packages
 
 * https://symfony.com/doc/current/components/http_foundation/sessions.html
