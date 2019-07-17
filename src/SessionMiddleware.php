@@ -40,7 +40,7 @@ class SessionMiddleware
             $this->session->start();
         }
 
-        $response = $next($request, $response);
+        $response = $next($request->withAttribute('session', $this->session), $response);
         $this->session->save();
 
         return $response;

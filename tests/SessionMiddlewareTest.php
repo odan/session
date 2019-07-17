@@ -65,11 +65,13 @@ class SessionMiddlewareTest extends AbstractTestCase
         $request = $this->createRequest('GET', '/');
 
         $next = function (Request $request, Response $response) {
+            // check `session` attribute
+            $this->assertInstanceOf(SessionInterface::class, $request->getAttribute('session'));
             return $response->withHeader('test', 'ok');
         };
         $response = $this->middleware->__invoke($request, new Response(), $next);
 
-        //session must be closed
+        // session must be closed
         $this->assertFalse($this->session->isStarted());
 
         // check next callback result
