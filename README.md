@@ -153,8 +153,6 @@ $session = new MemorySession();
 
 ### PSR-15 middleware setup
 
-For this example we use the [leage/container](https://github.com/thephpleague/container) package.
-
 #### Configuration
 
 Add your application-specific settings. 
@@ -173,6 +171,8 @@ return [
     ],
 ];
 ```
+
+For this example we use the [leage/container](https://github.com/thephpleague/container) package.
 
 Add the PSR-15 middleware factory:
 
