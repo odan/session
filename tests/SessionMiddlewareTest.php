@@ -3,22 +3,22 @@
 namespace Odan\Session\Test;
 
 use Odan\Session\PhpSession;
-use Odan\Session\SessionDoublePassMiddleware;
 use Odan\Session\SessionInterface;
+use Odan\Session\SessionMiddleware;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;
-use Slim\Http\Response;
 use Slim\Http\UploadedFile;
 use Slim\Http\Uri;
 
 /**
  * Test.
  *
- * @coversDefaultClass \Odan\Session\SessionDoublePassMiddleware
+ * @coversDefaultClass \Odan\Session\SessionMiddleware
  */
-class SessionDoublePassMiddlewareTest extends AbstractTestCase
+class SessionMiddlewareTest extends AbstractTestCase
 {
     /**
      * @var SessionInterface
@@ -26,7 +26,7 @@ class SessionDoublePassMiddlewareTest extends AbstractTestCase
     protected $session;
 
     /**
-     * @var SessionDoublePassMiddleware
+     * @var SessionMiddleware
      */
     protected $middleware;
 
@@ -50,7 +50,7 @@ class SessionDoublePassMiddlewareTest extends AbstractTestCase
         $this->session->setCookieParams($lifetime, '/', '', false, false);
         $this->session->setName('app');
 
-        $this->middleware = new SessionDoublePassMiddleware($this->session);
+        $this->middleware = new SessionMiddleware($this->session);
     }
 
     /**
@@ -58,16 +58,17 @@ class SessionDoublePassMiddlewareTest extends AbstractTestCase
      *
      * @return void
      * @covers ::__construct
-     * @covers ::__invoke
+     * @covers ::process
      */
     public function testInvoke(): void
     {
         $request = $this->createRequest('GET', '/');
 
-        $next = function (Request $request, Response $response) {
+        $callback = static function (ResponseInterface $response) {
             return $response->withHeader('test', 'ok');
         };
-        $response = $this->middleware->__invoke($request, new Response(), $next);
+        $handler = new MockedRequestHandler($callback);
+        $response = $this->middleware->process($request, $handler);
 
         //session must be closed
         $this->assertFalse($this->session->isStarted());
