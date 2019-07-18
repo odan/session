@@ -151,6 +151,67 @@ $session = new MemorySession();
 
 ## Integration
 
+### PSR-15 middleware setup
+
+For this example we use the [leage/container](https://github.com/thephpleague/container) package.
+
+Add the PSR-15 middleware factory:
+
+```php
+use League\Container\Container;
+use League\Container\ReflectionContainer;
+use Odan\Session\SessionInterface;
+use Odan\Session\SessionMiddleware;
+
+$container = new Container();
+
+$container->delegate(new ReflectionContainer());
+
+$container->share(SessionMiddleware::class, static function (Container $container) {
+    return new SessionMiddleware($container->get(SessionInterface::class));
+})->addArgument($container);
+```
+
+##### Registering middleware routes
+
+For this example we use the [league/route](https://github.com/thephpleague/container) package.
+
+Register middleware for all routes:
+
+```php
+use League\Route\Router;
+use Odan\Session\SessionMiddleware;
+
+$router = $container->get(Router::class);
+
+$router->lazyMiddleware(SessionMiddleware::class);
+```
+
+Register middleware for a routing group:
+
+```php
+use League\Route\Router;
+use Odan\Session\SessionMiddleware;
+
+$router = $container->get(Router::class);
+
+$router->group('/users', static function (RouteGroup $group): void {
+    $group->post('/login', \App\Action\UserLoginSubmitAction::class);
+})->lazyMiddleware(SessionMiddleware::class);
+```
+
+Register middleware for a single route:
+
+```php
+use League\Route\Router;
+use Odan\Session\SessionMiddleware;
+
+$router = $container->get(Router::class);
+
+$router->get('/users', \App\Action\HomeIndexAction::class)
+    ->lazyMiddleware(SessionMiddleware::class);
+```
+
 ### Slim 3 framework integration
 
 #### Configuration
@@ -186,69 +247,6 @@ $container[SessionInterface::class] = function (Container $container) {
     
     return $session;
 };
-```
-
-#### PSR-15 Middleware setup
-
-For this example we use the [leage/container](https://github.com/thephpleague/container) package.
-
-Add the PSR-15 middleware factory:
-
-```php
-use League\Container\Container;
-use League\Container\ReflectionContainer;
-use Odan\Session\SessionInterface;
-use Odan\Session\SessionMiddleware;
-
-$container = new Container();
-
-$container->delegate(new ReflectionContainer());
-
-// ...
-
-$container->share(SessionMiddleware::class, static function (Container $container) {
-    return new SessionMiddleware($container->get(SessionInterface::class));
-})->addArgument($container);
-```
-
-##### Registering the middleware
-
-For this example we use the [league/route](https://github.com/thephpleague/container) package.
-
-Register middleware for all routes:
-
-```php
-use League\Route\Router;
-use Odan\Session\SessionMiddleware;
-
-$router = $container->get(Router::class);
-
-$router->middleware($container->get(SessionMiddleware::class));
-```
-
-Register middleware for a routing group:
-
-```php
-use League\Route\Router;
-use Odan\Session\SessionMiddleware;
-
-$router = $container->get(Router::class);
-
-$router->group('/users', static function (RouteGroup $group): void {
-    $group->post('/login', \App\Action\UserLoginSubmitAction::class);
-})->middleware($container->get(SessionMiddleware::class));
-```
-
-Register middleware for a single route:
-
-```php
-use League\Route\Router;
-use Odan\Session\SessionMiddleware;
-
-$router = $container->get(Router::class);
-
-$router->get('/users', \App\Action\HomeIndexAction::class)
-    ->middleware($container->get(SessionMiddleware::class));
 ```
 
 #### Double Pass Middleware setup
