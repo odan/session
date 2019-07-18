@@ -167,6 +167,14 @@ $container = new Container();
 
 $container->delegate(new ReflectionContainer());
 
+$container->share(SessionInterface::class, static function (Container $container) {
+    $settings = $container->get('settings');
+    $session = new PhpSession();
+    $session->setOptions((array)$settings['session']);
+
+    return $session;
+})->addArgument($container);
+
 $container->share(SessionMiddleware::class, static function (Container $container) {
     return new SessionMiddleware($container->get(SessionInterface::class));
 })->addArgument($container);
