@@ -230,6 +230,7 @@ Register middleware for a routing group:
 // config/routes.php
 
 use League\Route\Router;
+use League\Route\RouteGroup;
 use Odan\Session\SessionMiddleware;
 
 $router = $container->get(Router::class);
