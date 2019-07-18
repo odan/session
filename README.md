@@ -155,9 +155,30 @@ $session = new MemorySession();
 
 For this example we use the [leage/container](https://github.com/thephpleague/container) package.
 
+#### Configuration
+
+Add your application-specific settings. 
+
+In this example we store all settings in a PHP file.
+
+```php
+// config/settings.php
+
+return [
+    'session' => [
+        'name' => 'webapp',
+        'cache_expire' => 0,
+        'cookie_httponly' => true,
+        'cookie_secure' => true,
+    ],
+];
+```
+
 Add the PSR-15 middleware factory:
 
 ```php
+// config/container.php
+
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Odan\Session\SessionInterface;
@@ -166,6 +187,10 @@ use Odan\Session\SessionMiddleware;
 $container = new Container();
 
 $container->delegate(new ReflectionContainer());
+
+$container->share('settings', static function () {
+    return require __DIR__ . '/settings.php';
+});
 
 $container->share(SessionInterface::class, static function (Container $container) {
     $settings = $container->get('settings');
@@ -187,17 +212,23 @@ For this example we use the [league/route](https://github.com/thephpleague/conta
 Register middleware for all routes:
 
 ```php
+// config/middleware.php
+
 use League\Route\Router;
 use Odan\Session\SessionMiddleware;
 
 $router = $container->get(Router::class);
 
 $router->lazyMiddleware(SessionMiddleware::class);
+
+return $router;
 ```
 
 Register middleware for a routing group:
 
 ```php
+// config/routes.php
+
 use League\Route\Router;
 use Odan\Session\SessionMiddleware;
 
@@ -206,11 +237,15 @@ $router = $container->get(Router::class);
 $router->group('/users', static function (RouteGroup $group): void {
     $group->post('/login', \App\Action\UserLoginSubmitAction::class);
 })->lazyMiddleware(SessionMiddleware::class);
+
+return $router;
 ```
 
 Register middleware for a single route:
 
 ```php
+// config/routes.php
+
 use League\Route\Router;
 use Odan\Session\SessionMiddleware;
 
@@ -218,6 +253,8 @@ $router = $container->get(Router::class);
 
 $router->get('/users', \App\Action\HomeIndexAction::class)
     ->lazyMiddleware(SessionMiddleware::class);
+    
+return $router;
 ```
 
 ### Slim 3 framework integration
