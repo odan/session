@@ -6,9 +6,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Session Middleware.
+ * Session Double Pass Middleware.
+ *
+ * It is termed "double pass" because you pass both the request
+ * and response when delegating to the next layer.
  */
-class SessionMiddleware
+class SessionDoublePassMiddleware
 {
     /**
      * @var SessionInterface
@@ -28,9 +31,9 @@ class SessionMiddleware
     /**
      * Invoke middleware.
      *
-     * @param  ServerRequestInterface $request The request
-     * @param  ResponseInterface $response The response
-     * @param  callable $next Next middleware
+     * @param ServerRequestInterface $request The request
+     * @param ResponseInterface $response The response
+     * @param callable $next Next middleware
      *
      * @return ResponseInterface The response
      */

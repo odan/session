@@ -4,7 +4,7 @@ namespace Odan\Session\Test;
 
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
-use Odan\Session\SessionMiddleware;
+use Odan\Session\SessionDoublePassMiddleware;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
@@ -16,9 +16,9 @@ use Slim\Http\Uri;
 /**
  * Test.
  *
- * @coversDefaultClass \Odan\Session\SessionMiddleware
+ * @coversDefaultClass \Odan\Session\SessionDoublePassMiddleware
  */
-class SessionMiddlewareTest extends AbstractTestCase
+class SessionDoublePassMiddlewareTest extends AbstractTestCase
 {
     /**
      * @var SessionInterface
@@ -26,7 +26,7 @@ class SessionMiddlewareTest extends AbstractTestCase
     protected $session;
 
     /**
-     * @var SessionMiddleware
+     * @var SessionDoublePassMiddleware
      */
     protected $middleware;
 
@@ -50,7 +50,7 @@ class SessionMiddlewareTest extends AbstractTestCase
         $this->session->setCookieParams($lifetime, '/', '', false, false);
         $this->session->setName('app');
 
-        $this->middleware = new SessionMiddleware($this->session);
+        $this->middleware = new SessionDoublePassMiddleware($this->session);
     }
 
     /**
