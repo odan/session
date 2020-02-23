@@ -149,11 +149,9 @@ use Odan\Session\MemorySession;
 $session = new MemorySession();
 ```
 
-## Integration
+## Slim 4 Integration
 
-### PSR-15 middleware setup
-
-#### Configuration
+### Configuration
 
 Add your application-specific settings:
 
@@ -200,7 +198,7 @@ return [
 ];
 ```
 
-##### Registering middleware routes
+### Registering middleware routes
 
 Register middleware for all routes:
 
@@ -231,9 +229,9 @@ $app->post('/example', \App\Action\ExampleAction::class)
     ->add(SessionMiddleware::class);
 ```
 
-### Slim 3 framework integration
+## Slim 3 framework integration
 
-#### Configuration
+### Configuration
 
 Add your application-specific settings. 
 
@@ -267,7 +265,7 @@ $container[SessionInterface::class] = function (Container $container) {
 };
 ```
 
-#### Double Pass Middleware setup
+### Double Pass Middleware setup
 
 > **Warning:** This middleware is deprecated. Please use the new PSR-15 middleware instead.
 
