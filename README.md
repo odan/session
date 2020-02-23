@@ -307,8 +307,6 @@ $app->group('/users', function () {
 ## Similar packages
 
 * https://github.com/laminas/laminas-session
-* https://github.com/auraphp/Aura.Session
-* https://github.com/rakit/session
 * https://symfony.com/doc/current/components/http_foundation/sessions.html
 
 ## License
