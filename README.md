@@ -7,7 +7,7 @@ A session handler for PHP
 [![Build Status](https://travis-ci.org/odan/session.svg?branch=master)](https://travis-ci.org/odan/session)
 [![Code Coverage](https://scrutinizer-ci.com/g/odan/session/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/odan/session/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/odan/session/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/odan/session/?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/odan/session.svg)](https://packagist.org/packages/odan/session)
+[![Total Downloads](https://img.shields.io/packagist/dt/odan/session.svg)](https://packagist.org/packages/odan/session/status)
 
 ## Requirements
 
@@ -155,14 +155,15 @@ $session = new MemorySession();
 
 #### Configuration
 
-Add your application-specific settings. 
-
-In this example we store all settings in a PHP file.
+Add your application-specific settings:
 
 ```php
 // config/settings.php
 
 return [
+
+    // ...
+
     'session' => [
         'name' => 'webapp',
         'cache_expire' => 0,
@@ -172,90 +173,62 @@ return [
 ];
 ```
 
-For this example we use the [leage/container](https://github.com/thephpleague/container) package.
+For this example we use the [PHP-DI](http://php-di.org/) package.
 
-Add the PSR-15 middleware factory:
+Add the container definitions as follows:
 
 ```php
-// config/container.php
-
-use League\Container\Container;
-use League\Container\ReflectionContainer;
+use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
 use Odan\Session\SessionMiddleware;
+use Psr\Container\ContainerInterface;
 
-$container = new Container();
+return [
+    // ...
 
-$container->delegate(new ReflectionContainer());
+    SessionInterface::class => function (ContainerInterface $container) {
+        $settings = $container->get('settings');
+        $session = new PhpSession();
+        $session->setOptions((array)$settings['session']);
 
-$container->share('settings', static function () {
-    return require __DIR__ . '/settings.php';
-});
+        return $session;
+    },
 
-$container->share(SessionInterface::class, static function (Container $container) {
-    $settings = $container->get('settings');
-    $session = new PhpSession();
-    $session->setOptions((array)$settings['session']);
-
-    return $session;
-})->addArgument($container);
-
-$container->share(SessionMiddleware::class, static function (Container $container) {
-    return new SessionMiddleware($container->get(SessionInterface::class));
-})->addArgument($container);
+    SessionMiddleware::class => function (ContainerInterface $container) {
+        return new SessionMiddleware($container->get(SessionInterface::class));
+    },
+];
 ```
 
 ##### Registering middleware routes
 
-For this example we use the [league/route](https://github.com/thephpleague/container) package.
-
 Register middleware for all routes:
 
 ```php
-// config/middleware.php
-
-use League\Route\Router;
 use Odan\Session\SessionMiddleware;
 
-$router = $container->get(Router::class);
-
-$router->lazyMiddleware(SessionMiddleware::class);
-
-return $router;
+$app->add(SessionMiddleware::class);
 ```
 
 Register middleware for a routing group:
 
 ```php
-// config/routes.php
-
-use League\Route\Router;
-use League\Route\RouteGroup;
 use Odan\Session\SessionMiddleware;
+use Slim\Routing\RouteCollectorProxy;
 
-$router = $container->get(Router::class);
-
-$router->group('/users', static function (RouteGroup $group): void {
-    $group->post('/login', \App\Action\UserLoginSubmitAction::class);
-})->lazyMiddleware(SessionMiddleware::class);
-
-return $router;
+// Protect the whole group
+$app->group('/admin', function (RouteCollectorProxy $group) {
+    // ...
+})->add(SessionMiddleware::class);
 ```
 
 Register middleware for a single route:
 
 ```php
-// config/routes.php
-
-use League\Route\Router;
 use Odan\Session\SessionMiddleware;
 
-$router = $container->get(Router::class);
-
-$router->get('/users', \App\Action\HomeIndexAction::class)
-    ->lazyMiddleware(SessionMiddleware::class);
-    
-return $router;
+$app->post('/example', \App\Action\ExampleAction::class)
+    ->add(SessionMiddleware::class);
 ```
 
 ### Slim 3 framework integration
@@ -281,7 +254,6 @@ Add the session factory:
 ```php
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
-use Odan\Session\SessionMiddleware;
 use Psr\Container\ContainerInterface as Container;
 
 $container[SessionInterface::class] = function (Container $container) {
@@ -336,5 +308,11 @@ $app->group('/users', function () {
 
 ## Similar packages
 
-* https://symfony.com/doc/current/components/http_foundation/sessions.html
+* https://github.com/laminas/laminas-session
 * https://github.com/auraphp/Aura.Session
+* https://github.com/rakit/session
+* https://symfony.com/doc/current/components/http_foundation/sessions.html
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE) for more information.
