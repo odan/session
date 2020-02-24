@@ -178,6 +178,8 @@ For this example we use the [PHP-DI](http://php-di.org/) package.
 Add the container definitions as follows:
 
 ```php
+<?php
+
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
 use Odan\Session\SessionMiddleware;
