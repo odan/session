@@ -24,7 +24,7 @@ composer require odan/session
 ```php
 use Odan\Session\PhpSession;
 
-// Set session options before we start
+// Set session options before you start the session
 // You can use all the standard PHP session configuration options
 // https://secure.php.net/manual/en/session.configuration.php
 
