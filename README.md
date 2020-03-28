@@ -81,7 +81,7 @@ $session->clear();
 // Generate a new session ID
 $session->regenerateId();
 
-// Clears all session data and regenerates session ID
+// Clears all session
 $session->destroy();
 
 // Get the current session ID
