@@ -1,14 +1,15 @@
 <?php
 
-namespace Odan\Session;
+namespace Odan\Session\Middleware;
 
+use Odan\Session\Interfaces\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * PSR-15 Session Middleware.
+ * A PSR-15 Session Middleware.
  */
 final class SessionMiddleware implements MiddlewareInterface
 {
