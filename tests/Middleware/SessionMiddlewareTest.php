@@ -3,16 +3,10 @@
 namespace Odan\Session\Test\Middleware;
 
 use Middlewares\Utils\Dispatcher;
-use Odan\Session\Interfaces\SessionInterface;
 use Odan\Session\Middleware\SessionMiddleware;
-use Odan\Session\Session;
+use Odan\Session\PhpSession;
+use Odan\Session\SessionInterface;
 use PHPUnit\Framework\TestCase;
-use Slim\Http\Environment;
-use Slim\Http\Headers;
-use Slim\Http\Request;
-use Slim\Http\RequestBody;
-use Slim\Http\UploadedFile;
-use Slim\Http\Uri;
 
 /**
  * Test.
@@ -36,7 +30,7 @@ class SessionMiddlewareTest extends TestCase
     {
         $_SESSION = [];
 
-        $this->session = new Session();
+        $this->session = new PhpSession();
         $this->session->setOptions([
             'name' => 'app',
             // turn off automatic sending of cache headers entirely
@@ -64,8 +58,8 @@ class SessionMiddlewareTest extends TestCase
         // Session must not be started
         $this->assertFalse($this->session->isStarted());
 
-        $response = Dispatcher::run([
-            new SessionMiddleware($this->session),
+        Dispatcher::run([
+            $this->middleware,
         ]);
 
         // Session must be closed
