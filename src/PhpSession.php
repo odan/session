@@ -7,7 +7,7 @@ use RuntimeException;
 /**
  * A PHP Session handler adapter.
  */
-class PhpSession implements SessionInterface
+final class PhpSession implements SessionInterface
 {
     /**
      * {@inheritdoc}

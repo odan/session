@@ -7,7 +7,7 @@ use RuntimeException;
 /**
  * A memory (array) session handler adapter.
  */
-class MemorySession implements SessionInterface
+final class MemorySession implements SessionInterface
 {
     private $data = [];
 
