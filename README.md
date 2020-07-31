@@ -267,45 +267,6 @@ $container[SessionInterface::class] = function (Container $container) {
 };
 ```
 
-### Double Pass Middleware setup
-
-> **Warning:** This middleware is deprecated. Please use the new PSR-15 middleware instead.
-
-Add the double pass middleware factory:
-
-```php
-use Odan\Session\SessionDoublePassMiddleware;
-
-$container[SessionDoublePassMiddleware::class] = function (Container $container) {
-    return new SessionDoublePassMiddleware($container->get(SessionInterface::class));
-};
-```
-
-**Add the Slim 3 application middleware**
-
-Register middleware for all routes:
-
-```php
-$app->add(\Odan\Session\SessionMiddleware::class);
-```
-
-Register middleware for a single route:
-
-```php
-$this->get('/', \App\Action\HomeIndexAction::class)
-    ->add(\Odan\Session\SessionDoublePassMiddleware::class);
-```
-
-Register the middleware for a group of routes:
-
-```php
-$app->group('/users', function () {
-    $this->post('/login', \App\Action\UserLoginSubmitAction::class);
-    $this->get('/login', \App\Action\UserLoginIndexAction::class);
-    $this->get('/logout', \App\Action\UserLogoutAction::class);
-})->add(\Odan\Session\SessionMiddleware::class);
-```
-
 ## Similar packages
 
 * https://github.com/laminas/laminas-session
