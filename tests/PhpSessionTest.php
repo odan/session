@@ -286,7 +286,7 @@ class PhpSessionTest extends TestCase
      *
      * @return void
      */
-    public function aaatestCookieParams(): void
+    public function testCookieParams(): void
     {
         $this->session->setCookieParams(60, '/', '', false, false);
         $actual = $this->session->getCookieParams();
