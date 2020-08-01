@@ -9,6 +9,20 @@ A session handler for PHP
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/odan/session/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/odan/session/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/odan/session.svg)](https://packagist.org/packages/odan/session/stats)
 
+## Table of contents
+
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Methods](#methods)
+* [Adapter](#adapter)
+  * [PHP Session](#php-session)
+  * [Memory Session](#memory-session)
+* [Slim 4 integration](#slim-4-integration)
+* [Slim 3 integration](#slim-3-integration)
+* [Similar packages](#similar-packages)
+* [License](#license)
+
 ## Requirements
 
 * PHP 7.2+
@@ -231,7 +245,7 @@ $app->post('/example', \App\Action\ExampleAction::class)
     ->add(SessionMiddleware::class);
 ```
 
-## Slim 3 framework integration
+## Slim 3 integration
 
 ### Configuration
 
