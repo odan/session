@@ -19,6 +19,7 @@ A session handler for PHP
   * [PHP Session](#php-session)
   * [Memory Session](#memory-session)
 * [Slim 4 integration](#slim-4-integration)
+* [Flash messages](#flash-messages)
 * [Similar packages](#similar-packages)
 * [License](#license)
 
@@ -243,6 +244,103 @@ use Odan\Session\SessionMiddleware;
 $app->post('/example', \App\Action\ExampleAction::class)
     ->add(SessionMiddleware::class);
 ```
+
+## Flash messages
+
+The [slim/flash](https://github.com/slimphp/Slim-Flash) may be a useful integration package to 
+add flash massages to your application.
+
+```
+composer require slim/flash
+```
+
+Add the container definition:
+
+```php
+
+use Slim\Flash\Messages;
+
+return [
+    // ...
+    Messages::class => function () {
+        return new Messages();
+    },
+];
+```
+
+Action usage:
+
+```php
+<?php
+
+namespace App\Action\Auth;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Flash\Messages;
+
+final class FooAction
+{
+    /**
+     * @var Messages
+     */
+    private $flash;
+
+    public function __construct(Messages $flash)
+    {
+        $this->flash = $flash;
+    }
+
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        // Add flash message for the next request
+        $this->flash->addMessage('Test', 'This is a message');
+
+
+        // or add flash message for current request
+        $this->flash->addMessageNow('Test', 'This is a message');
+
+        // Render response
+        // ...
+
+        return $response;
+    }
+}
+
+```
+
+### Using with Twig-View
+
+If you use [Twig-View](https://github.com/slimphp/Twig-View),
+then [slim-twig-flash](https://github.com/kanellov/slim-twig-flash) may be a useful integration package.
+
+You could also just add the Slim flash instance as global twig variable:
+
+```php
+use Slim\Flash\Messages;
+// ...
+
+$twig = Twig::create($settings, $options);
+// ...
+
+$flash = $container->get(Messages::class);
+$environment = $twig->getEnvironment()->addGlobal('flash', $flash);
+```
+
+In your Twig templates you can use `flash.getMessages()` or `flash.getMessage('some_key')` 
+to fetch messages from the Flash service.
+
+{% raw %}
+```twig
+{% for message in flash.getMessage('error') %}
+    <div class="alert alert-danger" role="alert">
+        {{ message }}
+    </div>
+{% endfor %}
+```
+{% endraw %}
 
 ## Similar packages
 
