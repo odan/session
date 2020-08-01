@@ -19,7 +19,6 @@ A session handler for PHP
   * [PHP Session](#php-session)
   * [Memory Session](#memory-session)
 * [Slim 4 integration](#slim-4-integration)
-* [Slim 3 integration](#slim-3-integration)
 * [Similar packages](#similar-packages)
 * [License](#license)
 
@@ -243,42 +242,6 @@ use Odan\Session\SessionMiddleware;
 
 $app->post('/example', \App\Action\ExampleAction::class)
     ->add(SessionMiddleware::class);
-```
-
-## Slim 3 integration
-
-### Configuration
-
-Add your application-specific settings. 
-
-These are stored in the `settings` configuration key of Slim.
-
-```php
-// Session
-$config['session'] = [
-    'name' => 'webapp',
-    'cache_expire' => 0,
-    'cookie_httponly' => true,
-    'cookie_secure' => true,
-];
-```
-
-Add the session factory:
-
-```php
-use Odan\Session\PhpSession;
-use Odan\Session\SessionInterface;
-use Psr\Container\ContainerInterface as Container;
-
-$container[SessionInterface::class] = function (Container $container) {
-    $session = new PhpSession();
-    
-    // Optional settings
-    $settings = $container->get('settings');
-    $session->setOptions($settings['session']);
-    
-    return $session;
-};
 ```
 
 ## Similar packages
