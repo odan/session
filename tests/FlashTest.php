@@ -64,11 +64,11 @@ class FlashTest extends TestCase
     public function testSet(): void
     {
         $flash = new Flash(new ArrayObject());
-        $flash->set('key1', 'value1');
+        $flash->set('key1', ['value1']);
         $this->assertSame([0 => 'value1'], $flash->get('key1'));
 
         $flash = new Flash(new ArrayObject());
-        $flash->set('key2', ...['value1', 'value2']);
+        $flash->set('key2', ['value1', 'value2']);
         $this->assertSame([0 => 'value1', 1 => 'value2'], $flash->get('key2'));
     }
 

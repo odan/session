@@ -160,9 +160,7 @@ $messages = $flash->get('error');
 $has =  $flash->has('error');
 
 // Set all messages
-$flash->set('error', 'My message');
-// or
-$flash->set('error', ...['Message 1', 'Message 2']);
+$flash->set('error', ['Message 1', 'Message 2']);
 
 // Gets all flash messages
 $messages = $flash->all();

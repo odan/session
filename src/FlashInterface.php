@@ -44,7 +44,7 @@ interface FlashInterface
      * @param string $key The key to clear
      * @param array<int, string> $messages The messages
      */
-    public function set(string $key, string ...$messages): void;
+    public function set(string $key, array $messages): void;
 
     /**
      * Gets all flash messages.

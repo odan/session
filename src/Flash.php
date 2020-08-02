@@ -85,7 +85,7 @@ final class Flash implements FlashInterface
     /**
      * {@inheritdoc}
      */
-    public function set(string $key, string ...$messages): void
+    public function set(string $key, array $messages): void
     {
         $this->storage[$this->storageKey][$key] = $messages;
     }
