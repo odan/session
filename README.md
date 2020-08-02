@@ -157,7 +157,7 @@ $flash->add('error', 'Login failed');
 $messages = $flash->get('error');
 
 // Has flash message
-$has =  $flash->has('error');
+$has = $flash->has('error');
 
 // Set all messages
 $flash->set('error', ['Message 1', 'Message 2']);
