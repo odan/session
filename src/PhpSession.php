@@ -93,6 +93,10 @@ final class PhpSession implements SessionInterface
             throw new SessionException('Cannot regenerate the session ID for non-active sessions.');
         }
 
+        if (headers_sent()) {
+            throw new SessionException('Headers have already been sent.');
+        }
+
         if (!session_regenerate_id(true)) {
             throw new SessionException('The session ID could not be regenerated.');
         }
