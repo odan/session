@@ -37,9 +37,6 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
-      - name: Create session directory
-        run: mkdir /var/lib/php/session/
-
       - name: Change session permissions
         run: chmod -R 775 /var/lib/php/session/
 
