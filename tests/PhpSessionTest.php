@@ -34,7 +34,7 @@ class PhpSessionTest extends TestCase
             'gc_probability' => 1,
             'gc_divisor' => 1,
             'gc_maxlifetime' => 30 * 24 * 60 * 60,
-            'save_path' => '/tmp',
+            'save_path' => getenv('GITHUB_ACTIONS') ? '/tmp' : '',
         ]);
 
         $lifetime = strtotime('20 minutes') - time();
