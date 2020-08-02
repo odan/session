@@ -71,15 +71,13 @@ final class MemorySession implements SessionInterface
     /**
      * {@inheritdoc}
      */
-    public function start(): bool
+    public function start(): void
     {
         if (!$this->id) {
             $this->regenerateId();
         }
 
         $this->started = true;
-
-        return true;
     }
 
     /**
@@ -93,22 +91,18 @@ final class MemorySession implements SessionInterface
     /**
      * {@inheritdoc}
      */
-    public function regenerateId(): bool
+    public function regenerateId(): void
     {
         $this->id = str_replace('.', '', uniqid('sess_', true));
-
-        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function destroy(): bool
+    public function destroy(): void
     {
         $this->storage->exchangeArray([]);
         $this->regenerateId();
-
-        return true;
     }
 
     /**

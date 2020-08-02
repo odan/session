@@ -3,7 +3,7 @@
 namespace Odan\Session;
 
 use ArrayObject;
-use RuntimeException;
+use Odan\Session\Exception\SessionException;
 
 /**
  * A PHP Session handler adapter.
@@ -52,14 +52,28 @@ final class PhpSession implements SessionInterface
     /**
      * {@inheritdoc}
      */
-    public function start(): bool
+    public function start(): void
     {
-        $result = session_start();
+        if ($this->isStarted()) {
+            throw new SessionException('Failed to start the session: Already started.');
+        }
 
-        // Restore session from request
+        if (filter_var(ini_get('session.use_cookies'), FILTER_VALIDATE_BOOLEAN) && headers_sent($file, $line)) {
+            throw new SessionException(
+                sprintf(
+                    'Failed to start the session because headers have already been sent by "%s" at line %d.',
+                    $file,
+                    $line
+                ));
+        }
+
+        // Try and start the session
+        if (!session_start()) {
+            throw new SessionException('Failed to start the session.');
+        }
+
+        // Load the session
         $this->storage->exchangeArray($_SESSION ?? []);
-
-        return $result;
     }
 
     /**
@@ -73,20 +87,28 @@ final class PhpSession implements SessionInterface
     /**
      * {@inheritdoc}
      */
-    public function regenerateId(): bool
+    public function regenerateId(): void
     {
-        $this->clear();
+        if (!$this->isStarted()) {
+            throw new SessionException('Cannot regenerate the session ID for non-active sessions.');
+        }
 
-        return session_regenerate_id(true);
+        if (!session_regenerate_id(true)) {
+            throw new SessionException('The session ID could not be regenerated.');
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function destroy(): bool
+    public function destroy(): void
     {
+        // Cannot regenerate the session ID for non-active sessions.
+        if (!$this->isStarted()) {
+            return;
+        }
+
         $this->clear();
-        $this->save();
 
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
@@ -101,12 +123,13 @@ final class PhpSession implements SessionInterface
             );
         }
 
-        if ($this->isStarted()) {
-            session_destroy();
-            session_unset();
+        if (session_unset() === false) {
+            throw new SessionException('The session could not be unset.');
         }
 
-        return true;
+        if (session_destroy() === false) {
+            throw new SessionException('The session could not be destroyed.');
+        }
     }
 
     /**
@@ -123,7 +146,7 @@ final class PhpSession implements SessionInterface
     public function setId(string $id): void
     {
         if ($this->isStarted()) {
-            throw new RuntimeException('Cannot change session id when session is active');
+            throw new SessionException('Cannot change session id when session is active');
         }
 
         session_id($id);
@@ -143,7 +166,7 @@ final class PhpSession implements SessionInterface
     public function setName(string $name): void
     {
         if ($this->isStarted()) {
-            throw new RuntimeException('Cannot change session name when session is active');
+            throw new SessionException('Cannot change session name when session is active');
         }
         session_name($name);
     }

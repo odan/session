@@ -55,17 +55,16 @@ class PhpSessionTest extends TestCase
      */
     public function testStart(): void
     {
-        $this->assertTrue($this->session->start());
+        $this->session->start();
         $this->assertTrue($this->session->isStarted());
         $this->assertNotEmpty($this->session->getId());
 
         $oldId = $this->session->getId();
-        $this->assertTrue($this->session->regenerateId());
+        $this->session->regenerateId();
         $newId = $this->session->getId();
         $this->assertNotSame($oldId, $newId);
 
-        $this->assertTrue($this->session->destroy());
-        $this->session->save();
+        $this->session->destroy();
     }
 
     /**
@@ -106,12 +105,13 @@ class PhpSessionTest extends TestCase
     public function testSetIdWithError(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->assertTrue($this->session->start());
+        $this->session->start();
         $this->assertTrue($this->session->isStarted());
         $this->assertNotEmpty($this->session->getId());
 
         $oldId = $this->session->getId();
-        $this->assertTrue($this->session->regenerateId());
+        $this->session->regenerateId();
+        $this->session->start();
         $newId = $this->session->getId();
         $this->assertNotSame($oldId, $newId);
 
