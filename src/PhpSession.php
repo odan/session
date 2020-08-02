@@ -64,7 +64,8 @@ final class PhpSession implements SessionInterface
                     'Failed to start the session because headers have already been sent by "%s" at line %d.',
                     $file,
                     $line
-                ));
+                )
+            );
         }
 
         // Try and start the session
