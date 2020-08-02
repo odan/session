@@ -37,11 +37,14 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
+      - name: Create session directory
+        run: mkdir /var/lib/php/session/
+
       - name: Change session permissions
-        run: chown -R www-data:www-data /var/lib/php/session/
+        run: chmod -R 775 /var/lib/php/session/
 
       - name: Change session owner
-        run: chmod -R 775 /var/lib/php/session/
+        run: chown -R www-data:www-data /var/lib/php/session/
 
       - name: Run test suite
         run: composer check
