@@ -2,6 +2,7 @@
 
 namespace Odan\Session;
 
+use ArrayObject;
 use RuntimeException;
 
 /**
@@ -10,11 +11,55 @@ use RuntimeException;
 final class PhpSession implements SessionInterface
 {
     /**
+     * @var ArrayObject
+     */
+    private $storage;
+
+    /**
+     * @var FlashInterface
+     */
+    private $flash;
+
+    /**
+     * The constructor.
+     */
+    public function __construct()
+    {
+        $this->storage = new ArrayObject();
+        $this->flash = new Flash($this->storage);
+    }
+
+    /**
+     * Get storage.
+     *
+     * @return ArrayObject The storage
+     */
+    public function getStorage(): ArrayObject
+    {
+        return $this->storage;
+    }
+
+    /**
+     * Get flash instance.
+     *
+     * @return FlashInterface The flash instance
+     */
+    public function getFlash(): FlashInterface
+    {
+        return $this->flash;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function start(): bool
     {
-        return session_start();
+        $result = session_start();
+
+        // Restore session from request
+        $this->storage->exchangeArray($_SESSION ?? []);
+
+        return $result;
     }
 
     /**
@@ -30,6 +75,8 @@ final class PhpSession implements SessionInterface
      */
     public function regenerateId(): bool
     {
+        $this->clear();
+
         return session_regenerate_id(true);
     }
 
@@ -39,6 +86,7 @@ final class PhpSession implements SessionInterface
     public function destroy(): bool
     {
         $this->clear();
+        $this->save();
 
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
@@ -57,7 +105,6 @@ final class PhpSession implements SessionInterface
             session_destroy();
             session_unset();
         }
-        session_write_close();
 
         return true;
     }
@@ -106,11 +153,11 @@ final class PhpSession implements SessionInterface
      */
     public function has(string $key): bool
     {
-        if (empty($_SESSION)) {
+        if (empty($this->storage)) {
             return false;
         }
 
-        return array_key_exists($key, $_SESSION);
+        return $this->storage->offsetExists($key);
     }
 
     /**
@@ -118,15 +165,15 @@ final class PhpSession implements SessionInterface
      */
     public function get(string $key)
     {
-        return $this->has($key) ? $_SESSION[$key] : null;
+        return $this->has($key) ? $this->storage->offsetGet($key) : null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function all()
+    public function all(): array
     {
-        return $_SESSION;
+        return (array)$this->storage;
     }
 
     /**
@@ -134,7 +181,7 @@ final class PhpSession implements SessionInterface
      */
     public function set(string $key, $value): void
     {
-        $_SESSION[$key] = $value;
+        $this->storage->offsetSet($key, $value);
     }
 
     /**
@@ -142,7 +189,9 @@ final class PhpSession implements SessionInterface
      */
     public function replace(array $values): void
     {
-        $_SESSION = array_replace_recursive($_SESSION, $values);
+        $this->storage->exchangeArray(
+            array_replace_recursive($this->storage->getArrayCopy(), $values)
+        );
     }
 
     /**
@@ -150,7 +199,7 @@ final class PhpSession implements SessionInterface
      */
     public function remove(string $key): void
     {
-        unset($_SESSION[$key]);
+        $this->storage->offsetUnset($key);
     }
 
     /**
@@ -158,7 +207,7 @@ final class PhpSession implements SessionInterface
      */
     public function clear(): void
     {
-        $_SESSION = [];
+        $this->storage->exchangeArray([]);
     }
 
     /**
@@ -166,7 +215,7 @@ final class PhpSession implements SessionInterface
      */
     public function count(): int
     {
-        return count($_SESSION);
+        return $this->storage->count();
     }
 
     /**
@@ -174,6 +223,7 @@ final class PhpSession implements SessionInterface
      */
     public function save(): void
     {
+        $_SESSION = (array)$this->storage;
         session_write_close();
     }
 

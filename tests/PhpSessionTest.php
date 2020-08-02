@@ -45,7 +45,6 @@ class PhpSessionTest extends TestCase
     /**
      * Test.
      *
-     * @return void
      * @covers ::start
      * @covers ::isStarted
      * @covers ::getId
@@ -71,8 +70,6 @@ class PhpSessionTest extends TestCase
 
     /**
      * Test.
-     *
-     * @return void
      */
     public function testSetId(): void
     {
@@ -85,8 +82,6 @@ class PhpSessionTest extends TestCase
 
     /**
      * Test.
-     *
-     * @return void
      */
     public function testSetIdWithError(): void
     {
@@ -107,7 +102,6 @@ class PhpSessionTest extends TestCase
     /**
      * Test.
      *
-     * @return void
      * @covers ::setName
      * @covers ::getName
      */
@@ -123,7 +117,6 @@ class PhpSessionTest extends TestCase
      *
      * session_name(): Cannot change session name when session is active
      *
-     * @return void
      * @covers ::setName
      * @covers ::getName
      */
@@ -143,8 +136,6 @@ class PhpSessionTest extends TestCase
 
     /**
      * Test.
-     *
-     * @return void
      */
     public function testInstance(): void
     {
@@ -154,7 +145,6 @@ class PhpSessionTest extends TestCase
     /**
      * Test.
      *
-     * @return void
      * @covers ::start
      * @covers ::set
      * @covers ::get
@@ -188,7 +178,6 @@ class PhpSessionTest extends TestCase
     /**
      * Test.
      *
-     * @return void
      * @covers ::all
      */
     public function testAll(): void
@@ -219,7 +208,6 @@ class PhpSessionTest extends TestCase
     /**
      * Test.
      *
-     * @return void
      * @covers ::start
      * @covers ::set
      * @covers ::get
@@ -228,6 +216,8 @@ class PhpSessionTest extends TestCase
      * @covers ::clear
      * @covers ::has
      * @covers ::replace
+     *
+     * @return void
      */
     public function testRemoveAndClear(): void
     {
@@ -261,7 +251,6 @@ class PhpSessionTest extends TestCase
     /**
      * Test.
      *
-     * @return void
      * @covers ::setOptions
      * @covers ::getOptions
      */
@@ -283,8 +272,6 @@ class PhpSessionTest extends TestCase
 
     /**
      * Test.
-     *
-     * @return void
      */
     public function testCookieParams(): void
     {

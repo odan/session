@@ -5,6 +5,7 @@ A session handler for PHP
 [![Latest Version on Packagist](https://img.shields.io/github/release/odan/session.svg)](https://github.com/odan/session/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/odan/session.svg?branch=master)](https://travis-ci.org/odan/session)
+[![Build Status](https://github.com/odan/session/workflows/build/badge.svg)](https://github.com/odan/session/actions)
 [![Code Coverage](https://scrutinizer-ci.com/g/odan/session/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/odan/session/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/odan/session/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/odan/session/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/odan/session.svg)](https://packagist.org/packages/odan/session/stats)
@@ -13,13 +14,13 @@ A session handler for PHP
 
 * [Requirements](#requirements)
 * [Installation](#installation)
-* [Usage](#usage)
 * [Methods](#methods)
+* [Flash messages](#flash-messages)
 * [Adapter](#adapter)
   * [PHP Session](#php-session)
   * [Memory Session](#memory-session)
 * [Slim 4 integration](#slim-4-integration)
-* [Flash messages](#flash-messages)
+* [Slim Flash integration](#slim-flash-integration)
 * [Similar packages](#similar-packages)
 * [License](#license)
 
@@ -38,6 +39,9 @@ composer require odan/session
 ```php
 use Odan\Session\PhpSession;
 
+// Create a standard session hanndler
+$session = new PhpSession();
+
 // Set session options before you start the session
 // You can use all the standard PHP session configuration options
 // https://secure.php.net/manual/en/session.configuration.php
@@ -54,9 +58,6 @@ $session->setOptions([
     'cookie_httponly' => true,
     'cookie_secure' => true,
 ]);
-
-// Create a standard session hanndler
-$session = new PhpSession();
 
 // Start the session
 $session->start();
@@ -136,6 +137,62 @@ $session->setCookieParams(4200, '/', '', false, false);
 $session->getCookieParams();
 ```
 
+## Flash messages
+
+The library provides its own implementation of Flash messages.
+
+### Usage
+
+```php
+// Get flash object
+$flash = $session->getFlash();
+
+// Clear all flash messages
+$flash->clear();
+
+// Add flash message
+$flash->add('error', 'Login failed');
+
+// Get flash messages
+$messages = $flash->get('error');
+
+// Has flash message
+$has =  $flash->has('error');
+
+// Set all messages
+$flash->set('error', 'My message');
+// or
+$flash->set('error', ...['Message 1', 'Message 2']);
+
+// Gets all flash messages
+$messages = $flash->all();
+```
+
+### Twig flash messages
+
+Add the Flash instance as global twig variable within the `Twig::class` container definiton:
+
+```php
+use Odan\Session\SessionInterface;
+
+// ...
+
+$flash = $container->get(SessionInterface::class)->getFlash();
+$twig->getEnvironment()->addGlobal('flash', $flash);
+```
+
+Twig template example:
+
+{% raw %}
+```twig
+{% for message in flash.get('error') %}
+    <div class="alert alert-danger" role="alert">
+        {{ message }}
+    </div>
+{% endfor %}
+```
+{% endraw %}
+
 ## Adapter
 
 ### PHP Session
@@ -214,9 +271,9 @@ return [
 ];
 ```
 
-### Registering middleware routes
+### Session middleware
 
-Register middleware for all routes:
+Register the session middleware for all routes:
 
 ```php
 use Odan\Session\SessionMiddleware;
@@ -245,9 +302,12 @@ $app->post('/example', \App\Action\ExampleAction::class)
     ->add(SessionMiddleware::class);
 ```
 
-## Flash messages
+## Slim Flash integration
 
-The [slim/flash](https://github.com/slimphp/Slim-Flash) may be a useful integration package to 
+Although this component already comes with its own Flash message implementation, 
+you can still integrate other components. 
+
+The [slim/flash](https://github.com/slimphp/Slim-Flash) may be useful integration package to 
 add flash massages to your application.
 
 ```
@@ -263,9 +323,66 @@ use Slim\Flash\Messages;
 return [
     // ...
     Messages::class => function () {
-        return new Messages();
+        // Don't use $_SESSION here, because the session is not started at this moment.
+        // The middleware changes the storage. 
+        $storage = [];
+
+        return new Messages($storage);
     },
 ];
+```
+
+Add a custom Middleware to pass the session storage, e.g. in `src/Middleware/SlimFlashMiddleware.php`:
+
+```php
+<?php
+
+namespace App\Middleware;
+
+use Odan\Session\SessionInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Flash\Messages;
+
+final class SlimFlashMiddleware implements MiddlewareInterface
+{
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * @var Messages
+     */
+    private $flash;
+
+    public function __construct(SessionInterface $session, Messages $flash)
+    {
+        $this->session = $session;
+        $this->flash = $flash;
+    }
+
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        $storage = $this->session->getStorage();
+
+        // Set flash message storage
+        $this->flash->__construct($storage);
+
+        return $handler->handle($request);
+    }
+}
+```
+
+The session must be started first. To prevent an error like 
+`Fatal error: Uncaught RuntimeException: Flash messages middleware failed. Session not found.`
+add the `SessionFlashMiddleware` middleware **before** the `SessionMiddleware`.
+
+```
+$app->add(SessionFlashMiddleware::class); // <--- here
+$app->add(SessionMiddleware::class);
 ```
 
 Action usage:
@@ -311,7 +428,7 @@ final class FooAction
 
 ```
 
-### Using with Twig-View
+### Using Slim Flash with Twig-View
 
 If you use [Twig-View](https://github.com/slimphp/Twig-View),
 then [slim-twig-flash](https://github.com/kanellov/slim-twig-flash) may be a useful integration package.
@@ -326,7 +443,7 @@ $twig = Twig::create($settings, $options);
 // ...
 
 $flash = $container->get(Messages::class);
-$environment = $twig->getEnvironment()->addGlobal('flash', $flash);
+$twig->getEnvironment()->addGlobal('flash', $flash);
 ```
 
 In your Twig templates you can use `flash.getMessages()` or `flash.getMessage('some_key')` 
@@ -345,8 +462,10 @@ to fetch messages from the Flash service.
 ## Similar packages
 
 * https://github.com/laminas/laminas-session
+* https://github.com/psr7-sessions/storageless
 * https://github.com/dflydev/dflydev-fig-cookies
 * https://github.com/bryanjhv/slim-session
+* https://github.com/auraphp/Aura.Session
 * https://symfony.com/doc/current/components/http_foundation/sessions.html
 
 ## License

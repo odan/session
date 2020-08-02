@@ -49,7 +49,6 @@ class SessionMiddlewareTest extends TestCase
     /**
      * Test.
      *
-     * @return void
      * @covers ::__construct
      * @covers ::process
      */

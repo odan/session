@@ -2,6 +2,7 @@
 
 namespace Odan\Session;
 
+use ArrayObject;
 use RuntimeException;
 
 /**
@@ -9,7 +10,15 @@ use RuntimeException;
  */
 final class MemorySession implements SessionInterface
 {
-    private $data = [];
+    /**
+     * @var ArrayObject
+     */
+    private $storage;
+
+    /**
+     * @var Flash
+     */
+    private $flash;
 
     private $id = '';
 
@@ -22,10 +31,13 @@ final class MemorySession implements SessionInterface
     private $cookie = [];
 
     /**
-     * Constructor.
+     * The constructor.
      */
     public function __construct()
     {
+        $this->storage = new ArrayObject();
+        $this->flash = new Flash($this->storage);
+
         $this->setCookieParams(0, '/', '', false, true);
 
         $config = [];
@@ -34,6 +46,26 @@ final class MemorySession implements SessionInterface
         }
 
         $this->setOptions($config);
+    }
+
+    /**
+     * Get storage.
+     *
+     * @return ArrayObject The storage
+     */
+    public function getStorage(): ArrayObject
+    {
+        return $this->storage;
+    }
+
+    /**
+     * Get flash instance.
+     *
+     * @return FlashInterface The flash instance
+     */
+    public function getFlash(): FlashInterface
+    {
+        return $this->flash;
     }
 
     /**
@@ -73,7 +105,7 @@ final class MemorySession implements SessionInterface
      */
     public function destroy(): bool
     {
-        $this->data = [];
+        $this->storage->exchangeArray([]);
         $this->regenerateId();
 
         return true;
@@ -123,11 +155,11 @@ final class MemorySession implements SessionInterface
      */
     public function has(string $key): bool
     {
-        if (empty($this->data)) {
+        if (empty($this->storage)) {
             return false;
         }
 
-        return array_key_exists($key, $this->data);
+        return $this->storage->offsetExists($key);
     }
 
     /**
@@ -136,7 +168,7 @@ final class MemorySession implements SessionInterface
     public function get(string $key)
     {
         if ($this->has($key)) {
-            return $this->data[$key];
+            return $this->storage->offsetGet($key);
         }
 
         return null;
@@ -145,9 +177,9 @@ final class MemorySession implements SessionInterface
     /**
      * {@inheritdoc}
      */
-    public function all()
+    public function all(): array
     {
-        return $this->data;
+        return (array)$this->storage;
     }
 
     /**
@@ -155,7 +187,7 @@ final class MemorySession implements SessionInterface
      */
     public function set(string $key, $value): void
     {
-        $this->data[$key] = $value;
+        $this->storage[$key] = $value;
     }
 
     /**
@@ -163,7 +195,7 @@ final class MemorySession implements SessionInterface
      */
     public function replace(array $values): void
     {
-        $this->data = array_replace_recursive($this->data, $values);
+        $this->storage->exchangeArray(array_replace_recursive($this->storage->getArrayCopy(), $values));
     }
 
     /**
@@ -171,7 +203,7 @@ final class MemorySession implements SessionInterface
      */
     public function remove(string $key): void
     {
-        unset($this->data[$key]);
+        $this->storage->offsetUnset($key);
     }
 
     /**
@@ -179,7 +211,7 @@ final class MemorySession implements SessionInterface
      */
     public function clear(): void
     {
-        $this->data = [];
+        $this->storage->exchangeArray([]);
     }
 
     /**
@@ -187,7 +219,7 @@ final class MemorySession implements SessionInterface
      */
     public function count(): int
     {
-        return count($this->data);
+        return $this->storage->count();
     }
 
     /**

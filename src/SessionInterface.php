@@ -2,6 +2,7 @@
 
 namespace Odan\Session;
 
+use ArrayObject;
 use RuntimeException;
 
 /**
@@ -17,9 +18,23 @@ interface SessionInterface
     public function start(): bool;
 
     /**
+     * Get storage.
+     *
+     * @return ArrayObject The storage
+     */
+    public function getStorage(): ArrayObject;
+
+    /**
+     * Get flash handler.
+     *
+     * @return FlashInterface The flash handler
+     */
+    public function getFlash(): FlashInterface;
+
+    /**
      * Checks if the session was started.
      *
-     * @return bool
+     * @return bool Session status
      */
     public function isStarted(): bool;
 
@@ -40,7 +55,8 @@ interface SessionInterface
      *
      * Invalidates the current session.
      *
-     * Clears all session attributes and flashes and regenerates the session and deletes the old session from persistence.
+     * Clears all session attributes and flashes and regenerates the session
+     * and deletes the old session from persistence.
      *
      * @return bool True if session invalidated, false if error
      */
@@ -56,9 +72,7 @@ interface SessionInterface
     /**
      * Sets the session ID.
      *
-     * @param string $id
-     *
-     * @return void
+     * @param string $id The session id
      */
     public function setId(string $id): void;
 
@@ -72,18 +86,14 @@ interface SessionInterface
     /**
      * Sets the session name.
      *
-     * @param string $name
-     *
      * @throws RuntimeException Cannot change session name when session is active
-     *
-     * @return void
      */
     public function setName(string $name): void;
 
     /**
      * Returns true if the key exists.
      *
-     * @param string $key
+     * @param string $key The key
      *
      * @return bool true if the key is defined, false otherwise
      */
@@ -100,36 +110,26 @@ interface SessionInterface
 
     /**
      * Gets all values as array.
-     *
-     * @return mixed
      */
-    public function all();
+    public function all(): array;
 
     /**
      * Sets an attribute by key.
      *
      * @param string $key The key of the element to set
      * @param mixed $value The data to set
-     *
-     * @return void
      */
     public function set(string $key, $value): void;
 
     /**
      * Sets multiple attributes at once: takes a keyed array and sets each key => value pair.
      *
-     * @param array $attributes
-     *
-     * @return void
+     * @param array $attributes The new atributes
      */
     public function replace(array $attributes): void;
 
     /**
      * Deletes an attribute by key.
-     *
-     * @param string $key
-     *
-     * @return void
      */
     public function remove(string $key): void;
 
@@ -140,8 +140,6 @@ interface SessionInterface
 
     /**
      * Returns the number of attributes.
-     *
-     * @return int
      */
     public function count(): int;
 
@@ -150,17 +148,11 @@ interface SessionInterface
      *
      * This method is generally not required for real sessions as the session
      * will be automatically saved at the end of code execution.
-     *
-     * @return void
      */
     public function save(): void;
 
     /**
      * Set session runtime configuration.
-     *
-     * @param array $config
-     *
-     * @return void
      *
      * @see http://php.net/manual/en/session.configuration.php
      */
@@ -168,8 +160,6 @@ interface SessionInterface
 
     /**
      * Get session runtime configuration.
-     *
-     * @return array
      */
     public function getOptions(): array;
 
@@ -179,21 +169,23 @@ interface SessionInterface
      * @see http://php.net/manual/en/function.session-set-cookie-params.php
      *
      * @param int $lifetime the lifetime of the cookie in seconds
-     * @param string $path the path where information is stored
-     * @param string $domain the domain of the cookie
+     * @param string|null $path the path where information is stored
+     * @param string|null $domain the domain of the cookie
      * @param bool $secure the cookie should only be sent over secure connections
      * @param bool $httpOnly the cookie can only be accessed through the HTTP protocol
-     *
-     * @return void
      */
-    public function setCookieParams(int $lifetime, string $path = null, string $domain = null, bool $secure = false, bool $httpOnly = false): void;
+    public function setCookieParams(
+        int $lifetime,
+        string $path = null,
+        string $domain = null,
+        bool $secure = false,
+        bool $httpOnly = false
+    ): void;
 
     /**
      * Get cookie parameters.
      *
      * @see http://php.net/manual/en/function.session-get-cookie-params.php
-     *
-     * @return array
      */
     public function getCookieParams(): array;
 }
