@@ -20,14 +20,29 @@ final class MemorySession implements SessionInterface
      */
     private $flash;
 
+    /**
+     * @var string
+     */
     private $id = '';
 
+    /**
+     * @var bool
+     */
     private $started = false;
 
+    /**
+     * @var string
+     */
     private $name = '';
 
+    /**
+     * @var array
+     */
     private $config = [];
 
+    /**
+     * @var array
+     */
     private $cookie = [];
 
     /**

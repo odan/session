@@ -272,7 +272,7 @@ final class PhpSession implements SessionInterface
     {
         $config = [];
 
-        foreach (ini_get_all('session') as $key => $value) {
+        foreach ((array)ini_get_all('session') as $key => $value) {
             $config[substr($key, 8)] = $value['local_value'];
         }
 

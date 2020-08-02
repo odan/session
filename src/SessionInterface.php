@@ -122,6 +122,8 @@ interface SessionInterface
      *
      * @param string $key The key of the element to set
      * @param mixed $value The data to set
+     *
+     * @return void
      */
     public function set(string $key, $value): void;
 
