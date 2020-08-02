@@ -38,20 +38,6 @@ final class Flash implements FlashInterface
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $flashes): void
-    {
-        $this->clear();
-
-        foreach ($flashes as $key => $messages) {
-            foreach ($messages as $message) {
-                $this->add($key, $message);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function add(string $key, string $message): void
     {
         // Create array for this key
@@ -91,7 +77,9 @@ final class Flash implements FlashInterface
      */
     public function clear(): void
     {
-        unset($this->storage[$this->storageKey]);
+        if ($this->storage->offsetExists($this->storageKey)) {
+            $this->storage->offsetUnset($this->storageKey);
+        }
     }
 
     /**

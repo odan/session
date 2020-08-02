@@ -8,13 +8,6 @@ namespace Odan\Session;
 interface FlashInterface
 {
     /**
-     * Initializes the flash messages.
-     *
-     * @param array $flashes The flashes
-     */
-    public function initialize(array $flashes): void;
-
-    /**
      * Add flash message.
      *
      * @param string $key The key to store the message under
