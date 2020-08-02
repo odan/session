@@ -34,7 +34,10 @@ class PhpSessionTest extends TestCase
             'gc_probability' => 1,
             'gc_divisor' => 1,
             'gc_maxlifetime' => 30 * 24 * 60 * 60,
+            'save_path' => '/tmp',
         ]);
+
+        session_save_path('/tmp');
 
         $lifetime = strtotime('20 minutes') - time();
         $this->session->setCookieParams($lifetime, '/', '', false, false);
