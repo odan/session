@@ -39,6 +39,7 @@ class SessionMiddlewareTest extends TestCase
             'gc_probability' => 1,
             'gc_divisor' => 1,
             'gc_maxlifetime' => 30 * 24 * 60 * 60,
+            'save_path' => '/tmp',
         ]);
 
         $this->session->setName('app');

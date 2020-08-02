@@ -37,8 +37,6 @@ class PhpSessionTest extends TestCase
             'save_path' => '/tmp',
         ]);
 
-        session_save_path('/tmp');
-
         $lifetime = strtotime('20 minutes') - time();
         $this->session->setCookieParams($lifetime, '/', '', false, false);
 
