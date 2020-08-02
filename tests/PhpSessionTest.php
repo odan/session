@@ -71,6 +71,26 @@ class PhpSessionTest extends TestCase
     /**
      * Test.
      */
+    public function testGetStorage(): void
+    {
+        $this->session->set('key', 'value');
+        $storage = $this->session->getStorage();
+        $this->assertSame(['key' => 'value'], (array)$storage);
+    }
+
+    /**
+     * Test.
+     */
+    public function testGetFlash(): void
+    {
+        $flash = $this->session->getFlash();
+        $flash->add('key', 'value');
+        $this->assertSame([0 => 'value'], $flash->get('key'));
+    }
+
+    /**
+     * Test.
+     */
     public function testSetId(): void
     {
         $this->session->setId('123');
@@ -216,8 +236,6 @@ class PhpSessionTest extends TestCase
      * @covers ::clear
      * @covers ::has
      * @covers ::replace
-     *
-     * @return void
      */
     public function testRemoveAndClear(): void
     {
