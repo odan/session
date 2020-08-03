@@ -14,8 +14,10 @@ A session handler for PHP
 
 * [Requirements](#requirements)
 * [Installation](#installation)
+* [Usage](#usage)
 * [Methods](#methods)
 * [Flash messages](#flash-messages)
+  * [Twig flash messages](twig-flash-messages)
 * [SameSite Cookies](#samesite-cookies)
 * [Adapter](#adapter)
   * [PHP Session](#php-session)
