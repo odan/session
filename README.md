@@ -378,7 +378,7 @@ The session must be started first. To prevent an error like
 `Fatal error: Uncaught RuntimeException: Flash messages middleware failed. Session not found.`
 add the `SessionFlashMiddleware` middleware **before** the `SessionMiddleware`.
 
-```
+```php
 $app->add(SessionFlashMiddleware::class); // <--- here
 $app->add(SessionMiddleware::class);
 ```
