@@ -16,6 +16,7 @@ A session handler for PHP
 * [Installation](#installation)
 * [Methods](#methods)
 * [Flash messages](#flash-messages)
+* [SameSite Cookies](#samesite-cookies)
 * [Adapter](#adapter)
   * [PHP Session](#php-session)
   * [Memory Session](#memory-session)
