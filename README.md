@@ -200,7 +200,7 @@ $session->setOptions([
     // Optional: Sent cookie only over https
     'cookie_secure' => true,
     // Optional: Additional XSS protection
-    // The cookie ist not accessible for JavaScript!
+    // Note: The cookie is not accessible for JavaScript!
     'cookie_httponly' => false,
 ]);
 
