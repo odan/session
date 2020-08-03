@@ -249,7 +249,7 @@ Add the container definitions as follows:
 
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
-use Odan\Session\SessionMiddleware;
+use Odan\Session\Middleware\SessionMiddleware;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -274,7 +274,7 @@ return [
 Register the session middleware for all routes:
 
 ```php
-use Odan\Session\SessionMiddleware;
+use Odan\Session\Middleware\SessionMiddleware;
 
 $app->add(SessionMiddleware::class);
 ```
@@ -282,7 +282,7 @@ $app->add(SessionMiddleware::class);
 Register middleware for a routing group:
 
 ```php
-use Odan\Session\SessionMiddleware;
+use Odan\Session\Middleware\SessionMiddleware;
 use Slim\Routing\RouteCollectorProxy;
 
 // Protect the whole group
@@ -294,7 +294,7 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
 Register middleware for a single route:
 
 ```php
-use Odan\Session\SessionMiddleware;
+use Odan\Session\Middleware\SessionMiddleware;
 
 $app->post('/example', \App\Action\ExampleAction::class)
     ->add(SessionMiddleware::class);
