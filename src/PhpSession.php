@@ -58,7 +58,7 @@ final class PhpSession implements SessionInterface
             throw new SessionException('Failed to start the session: Already started.');
         }
 
-        if (filter_var(ini_get('session.use_cookies'), FILTER_VALIDATE_BOOLEAN) && headers_sent($file, $line)) {
+        if (headers_sent($file, $line) && filter_var(ini_get('session.use_cookies'), FILTER_VALIDATE_BOOLEAN)) {
             throw new SessionException(
                 sprintf(
                     'Failed to start the session because headers have already been sent by "%s" at line %d.',
