@@ -22,11 +22,14 @@ final class PhpSession implements SessionInterface
 
     /**
      * The constructor.
+     *
+     * @param ArrayObject|null $storage The session storage
+     * @param FlashInterface|null $flash The flash component
      */
-    public function __construct()
+    public function __construct(ArrayObject $storage = null, FlashInterface $flash = null)
     {
-        $this->storage = new ArrayObject();
-        $this->flash = new Flash($this->storage);
+        $this->storage = $storage ?? new ArrayObject();
+        $this->flash = $flash ?? new Flash($this->storage);
     }
 
     /**
