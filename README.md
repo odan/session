@@ -48,15 +48,6 @@ $session = new PhpSession();
 
 $session->setOptions([
     'name' => 'app',
-    // turn off automatic sending of cache headers entirely
-    'cache_limiter' => '',
-    // garbage collection
-    'gc_probability' => 1,
-    'gc_divisor' => 1,
-    'gc_maxlifetime' => 30 * 24 * 60 * 60,
-    // security on
-    'cookie_httponly' => true,
-    'cookie_secure' => true,
 ]);
 
 // Start the session
@@ -190,6 +181,37 @@ Twig template example:
 {% endfor %}
 ```
 {% endraw %}
+
+## SameSite Cookies
+
+A SameSite cookie that tells browser to send the cookie to the server only 
+when the request is made from the same domain of the website.
+
+```php
+use Odan\Session\PhpSession;
+
+$session = new PhpSession();
+
+$session->setOptions([
+    'name' => 'app',
+    // Lax will sent the cookie for cross-domain GET requests
+    'cookie_samesite' => 'Lax',   
+    // Optional: Sent cookie only over https
+    'cookie_secure' => true,
+    // Optional: Additional XSS protection
+    // The cookie ist not accessible for JavaScript!
+    'cookie_httponly' => false,
+]);
+
+$session->start();
+```
+
+Read more:
+
+* [SameSite cookie middleware](https://github.com/selective-php/samesite-cookie)
+* https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-samesite
+* https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-httponly
+* https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-secure
 
 ## Adapter
 
