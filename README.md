@@ -328,7 +328,7 @@ $app->post('/example', \App\Action\ExampleAction::class)
 ## Slim Flash integration
 
 Although this component already comes with its own Flash message implementation, 
-you can still integrate other components. 
+you can still integrate other flash components. 
 
 The [slim/flash](https://github.com/slimphp/Slim-Flash) may be useful integration package to 
 add flash massages to your application.
@@ -401,9 +401,16 @@ final class SlimFlashMiddleware implements MiddlewareInterface
 
 The session must be started first. To prevent an error like 
 `Fatal error: Uncaught RuntimeException: Flash messages middleware failed. Session not found.`
-add the `SessionFlashMiddleware` middleware **before** the `SessionMiddleware`.
+add the `SessionFlashMiddleware` **before** the `SessionMiddleware`.
 
 ```php
+<?php
+
+use App\Middleware\SessionFlashMiddleware;
+use Odan\Session\Middleware\SessionMiddleware;
+
+// ...
+
 $app->add(SessionFlashMiddleware::class); // <--- here
 $app->add(SessionMiddleware::class);
 ```
