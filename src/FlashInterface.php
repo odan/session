@@ -12,6 +12,8 @@ interface FlashInterface
      *
      * @param string $key The key to store the message under
      * @param string $message Message to show on next request
+     *
+     * @return void
      */
     public function add(string $key, string $message): void;
 
@@ -35,6 +37,8 @@ interface FlashInterface
 
     /**
      * Clear all messages.
+     *
+     * @return void
      */
     public function clear(): void;
 
@@ -43,11 +47,15 @@ interface FlashInterface
      *
      * @param string $key The key to clear
      * @param array<int, string> $messages The messages
+     *
+     * @return void
      */
     public function set(string $key, array $messages): void;
 
     /**
      * Gets all flash messages.
+     *
+     * @return array All messages. Can be an empty array.
      */
     public function all(): array;
 }
