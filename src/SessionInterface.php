@@ -130,7 +130,7 @@ interface SessionInterface
     /**
      * Sets multiple attributes at once: takes a keyed array and sets each key => value pair.
      *
-     * @param array $attributes The new atributes
+     * @param array $attributes The new attributes
      */
     public function replace(array $attributes): void;
 
@@ -168,7 +168,7 @@ interface SessionInterface
      *
      * @see http://php.net/manual/en/session.configuration.php
      *
-     * @param array $config The sesssion options
+     * @param array $config The session options
      */
     public function setOptions(array $config): void;
 

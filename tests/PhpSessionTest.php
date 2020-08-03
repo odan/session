@@ -300,7 +300,7 @@ class PhpSessionTest extends TestCase
         $this->assertSame(60, $actual['lifetime']);
         $this->assertSame('/', $actual['path']);
         $this->assertSame('', $actual['domain']);
-        $this->assertSame(false, $actual['secure']);
-        $this->assertSame(false, $actual['httponly']);
+        $this->assertFalse($actual['secure']);
+        $this->assertFalse($actual['httponly']);
     }
 }
