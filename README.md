@@ -10,6 +10,6 @@
 
 A session handler for PHP
 
-* Create issues at: <https://github.com/odan/session/issues>
-* Documentation for v4 is at: <https://odan.github.io/session/v4/>
-* Documentation for v5 (WIP) is at: <https://odan.github.io/session/v5/>
+* Issues: <https://github.com/odan/session/issues>
+* Documentation for v4: <https://odan.github.io/session/v4/>
+* Documentation for v5 (WIP): <https://odan.github.io/session/v5/>
