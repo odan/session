@@ -21,5 +21,5 @@ composer require odan/session
 
 * Issues: <https://github.com/odan/session/issues>
 * Source: <https://github.com/odan/session>
-* Documentation for v4 is at: <https://odan.github.io/session/v4/>
-* Documentation for v5 is at: <https://odan.github.io/session/v5/>
+* Documentation for v4: <https://odan.github.io/session/v4/>
+* Documentation for v5: <https://odan.github.io/session/v5/>

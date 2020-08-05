@@ -7,7 +7,7 @@ description: "Version 5"
 
 # Session v5 Documentation
 
-:warning: **Version 5 and is under construction** 
+⚠ **Version 5 and is under construction** 
 
 ## Table of contents
 
