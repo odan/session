@@ -26,7 +26,7 @@ description: "Version 4"
 ## Installation
 
 ```
-composer require odan/session "^4"
+composer require odan/session:"^4"
 ```
 
 ## Usage
