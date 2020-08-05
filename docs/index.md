@@ -7,5 +7,19 @@ description: "Home"
 
 # Session
 
+A session handler for PHP.
+
+## Installation
+
+Using Composer
+
+```
+composer require odan/session
+```
+
+## Support
+
+* Issues: <https://github.com/odan/session/issues>
+* Source: <https://github.com/odan/session>
 * Documentation for v4 is at: <https://odan.github.io/session/v4/>
 * Documentation for v5 is at: <https://odan.github.io/session/v5/>
