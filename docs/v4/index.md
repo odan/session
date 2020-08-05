@@ -7,8 +7,6 @@ description: "Version 4"
 
 # Session v4 Documentation
 
-A session handler for PHP
-
 ## Table of contents
 
 * [Requirements](#requirements)
