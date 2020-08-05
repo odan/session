@@ -10,6 +10,8 @@ A session handler for PHP
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/odan/session/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/odan/session/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/odan/session.svg)](https://packagist.org/packages/odan/session/stats)
 
+Please note: This documentation is for version 5.
+
 ## Table of contents
 
 * [Requirements](#requirements)
@@ -347,7 +349,7 @@ return [
     // ...
     Messages::class => function () {
         // Don't use $_SESSION here, because the session is not started at this moment.
-        // The middleware changes the storage. 
+        // The middleware changes the storage.
         $storage = [];
 
         return new Messages($storage);
