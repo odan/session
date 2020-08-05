@@ -1,3 +1,10 @@
+---
+layout: default
+title: Version 5
+nav_order: 3
+description: "Version 5"
+---
+
 # Session v5 Documentation
 
 ## Table of contents

@@ -1,3 +1,10 @@
+---
+layout: default
+title: Version 4
+nav_order: 2
+description: "Version 4"
+---
+
 # Session v4 Documentation
 
 A session handler for PHP
