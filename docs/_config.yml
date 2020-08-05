@@ -1,0 +1,13 @@
+plugins:
+  - jekyll-include-cache
+
+remote_theme: "pmarsceill/just-the-docs"
+
+# Name of your site (displayed in the header)
+name: Session
+
+# Name of website (site.title)
+title: Session
+
+# Short description of your site
+description: A session handler for PHP
