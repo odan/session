@@ -12,24 +12,24 @@ A session handler for PHP
 
 ## Table of contents
 
-* [Requirements](#requirements)
-* [Installation](#installation)
-* [Usage](#usage)
-* [Methods](#methods)
-* [Flash messages](#flash-messages)
-  * [Twig flash messages](twig-flash-messages)
-* [SameSite Cookies](#samesite-cookies)
-* [Adapter](#adapter)
-  * [PHP Session](#php-session)
-  * [Memory Session](#memory-session)
-* [Slim 4 integration](#slim-4-integration)
-* [Slim Flash integration](#slim-flash-integration)
-* [Similar packages](#similar-packages)
-* [License](#license)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Methods](#methods)
+- [Flash messages](#flash-messages)
+  - [Twig flash messages](twig-flash-messages)
+- [SameSite Cookies](#samesite-cookies)
+- [Adapter](#adapter)
+  - [PHP Session](#php-session)
+  - [Memory Session](#memory-session)
+- [Slim 4 integration](#slim-4-integration)
+- [Slim Flash integration](#slim-flash-integration)
+- [Similar packages](#similar-packages)
+- [License](#license)
 
 ## Requirements
 
-* PHP 7.3+
+- PHP 7.3+
 
 ## Installation
 
@@ -175,7 +175,6 @@ $twig->getEnvironment()->addGlobal('flash', $flash);
 
 Twig template example:
 
-{% raw %}
 ```twig
 {% for message in flash.get('error') %}
     <div class="alert alert-danger" role="alert">
@@ -183,11 +182,10 @@ Twig template example:
     </div>
 {% endfor %}
 ```
-{% endraw %}
 
 ## SameSite Cookies
 
-A SameSite cookie that tells browser to send the cookie to the server only 
+A SameSite cookie that tells browser to send the cookie to the server only
 when the request is made from the same domain of the website.
 
 ```php
@@ -198,7 +196,7 @@ $session = new PhpSession();
 $session->setOptions([
     'name' => 'app',
     // Lax will sent the cookie for cross-domain GET requests
-    'cookie_samesite' => 'Lax',   
+    'cookie_samesite' => 'Lax',
     // Optional: Sent cookie only over https
     'cookie_secure' => true,
     // Optional: Additional XSS protection
@@ -211,17 +209,17 @@ $session->start();
 
 Read more:
 
-* [SameSite cookie middleware](https://github.com/selective-php/samesite-cookie)
-* https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-samesite
-* https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-httponly
-* https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-secure
+- [SameSite cookie middleware](https://github.com/selective-php/samesite-cookie)
+- https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-samesite
+- https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-httponly
+- https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-secure
 
 ## Adapter
 
 ### PHP Session
 
-* The default PHP session handler
-* Uses the native PHP session functions
+- The default PHP session handler
+- Uses the native PHP session functions
 
 Example:
 
@@ -233,9 +231,9 @@ $session = new PhpSession();
 
 ### Memory Session
 
-* Optimized for integration tests (with phpunit)
-* Prevent output buffer issues
-* Run sessions only in memory
+- Optimized for integration tests (with phpunit)
+- Prevent output buffer issues
+- Run sessions only in memory
 
 ```php
 use Odan\Session\MemorySession;
@@ -250,12 +248,10 @@ $session = new MemorySession();
 Add your application-specific settings:
 
 ```php
-// config/settings.php
+// app/settings.php
 
 return [
-
     // ...
-
     'session' => [
         'name' => 'webapp',
         'cache_expire' => 0,
@@ -272,18 +268,20 @@ Add the container definitions as follows:
 ```php
 <?php
 
+// app/dependencies.php
+
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
-use Odan\Session\Middleware\SessionMiddleware;
+use Odan\Session\SessionMiddleware;
 use Psr\Container\ContainerInterface;
 
 return [
     // ...
 
     SessionInterface::class => function (ContainerInterface $container) {
-        $settings = $container->get('settings');
+        $sessionParams = $c->get('settings')['session'];
         $session = new PhpSession();
-        $session->setOptions((array)$settings['session']);
+        $session->setOptions($sessionParams);
 
         return $session;
     },
@@ -299,15 +297,25 @@ return [
 Register the session middleware for all routes:
 
 ```php
-use Odan\Session\Middleware\SessionMiddleware;
+// app/middleware.php
 
-$app->add(SessionMiddleware::class);
+declare(strict_types=1);
+
+use Odan\Session\SessionMiddleware;
+use Slim\App;
+
+return function (App $app) {
+    // ...
+    $app->add(SessionMiddleware::class);
+};
 ```
 
 Register middleware for a routing group:
 
 ```php
-use Odan\Session\Middleware\SessionMiddleware;
+// app/routes.php
+
+use Odan\Session\SessionMiddleware;
 use Slim\Routing\RouteCollectorProxy;
 
 // Protect the whole group
@@ -319,7 +327,7 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
 Register middleware for a single route:
 
 ```php
-use Odan\Session\Middleware\SessionMiddleware;
+use Odan\Session\SessionMiddleware;
 
 $app->post('/example', \App\Action\ExampleAction::class)
     ->add(SessionMiddleware::class);
@@ -327,10 +335,10 @@ $app->post('/example', \App\Action\ExampleAction::class)
 
 ## Slim Flash integration
 
-Although this component already comes with its own Flash message implementation, 
-you can still integrate other flash components. 
+Although this component already comes with its own Flash message implementation,
+you can still integrate other flash components.
 
-The [slim/flash](https://github.com/slimphp/Slim-Flash) may be useful integration package to 
+The [slim/flash](https://github.com/slimphp/Slim-Flash) may be useful integration package to
 add flash massages to your application.
 
 ```
@@ -340,6 +348,7 @@ composer require slim/flash
 Add the container definition:
 
 ```php
+// app/dependencies.php
 
 use Slim\Flash\Messages;
 
@@ -347,7 +356,7 @@ return [
     // ...
     Messages::class => function () {
         // Don't use $_SESSION here, because the session is not started at this moment.
-        // The middleware changes the storage. 
+        // The middleware changes the storage.
         $storage = [];
 
         return new Messages($storage);
@@ -389,30 +398,31 @@ final class SlimFlashMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $storage = $this->session->getStorage();
-
-        // Set flash message storage
-        $this->flash->__construct($storage);
-
+        $this->flash->__construct();
         return $handler->handle($request);
     }
 }
 ```
 
-The session must be started first. To prevent an error like 
+The session must be started first. To prevent an error like
 `Fatal error: Uncaught RuntimeException: Flash messages middleware failed. Session not found.`
 add the `SessionFlashMiddleware` **before** the `SessionMiddleware`.
 
 ```php
 <?php
 
-use App\Middleware\SessionFlashMiddleware;
-use Odan\Session\Middleware\SessionMiddleware;
+// app/middlewares.php
 
-// ...
+declare(strict_types=1);
 
-$app->add(SessionFlashMiddleware::class); // <--- here
-$app->add(SessionMiddleware::class);
+use App\Middleware\SlimFlashMiddleware;
+use Odan\Session\SessionMiddleware;
+use Slim\App;
+
+return function (App $app) {
+    $app->add(SlimFlashMiddleware::class); // <--- here
+    $app->add(SessionMiddleware::class);
+};
 ```
 
 Action usage:
@@ -445,7 +455,6 @@ final class FooAction
         // Add flash message for the next request
         $this->flash->addMessage('Test', 'This is a message');
 
-
         // or add flash message for current request
         $this->flash->addMessageNow('Test', 'This is a message');
 
@@ -476,10 +485,11 @@ $flash = $container->get(Messages::class);
 $twig->getEnvironment()->addGlobal('flash', $flash);
 ```
 
-In your Twig templates you can use `flash.getMessages()` or `flash.getMessage('some_key')` 
+In your Twig templates you can use `flash.getMessages()` or `flash.getMessage('some_key')`
 to fetch messages from the Flash service.
 
 {% raw %}
+
 ```twig
 {% for message in flash.getMessage('error') %}
     <div class="alert alert-danger" role="alert">
@@ -487,16 +497,17 @@ to fetch messages from the Flash service.
     </div>
 {% endfor %}
 ```
+
 {% endraw %}
 
 ## Similar packages
 
-* https://github.com/laminas/laminas-session
-* https://github.com/psr7-sessions/storageless
-* https://github.com/dflydev/dflydev-fig-cookies
-* https://github.com/bryanjhv/slim-session
-* https://github.com/auraphp/Aura.Session
-* https://symfony.com/doc/current/components/http_foundation/sessions.html
+- https://github.com/laminas/laminas-session
+- https://github.com/psr7-sessions/storageless
+- https://github.com/dflydev/dflydev-fig-cookies
+- https://github.com/bryanjhv/slim-session
+- https://github.com/auraphp/Aura.Session
+- https://symfony.com/doc/current/components/http_foundation/sessions.html
 
 ## License
 
