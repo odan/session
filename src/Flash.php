@@ -2,7 +2,7 @@
 
 namespace Odan\Session;
 
-use ArrayAccess;
+use ArrayObject;
 
 /**
  * Flash messages.
@@ -12,7 +12,7 @@ final class Flash implements FlashInterface
     /**
      * Message storage.
      *
-     * @var ArrayAccess
+     * @var ArrayObject
      */
     private $storage;
 
@@ -26,10 +26,10 @@ final class Flash implements FlashInterface
     /**
      * The constructor.
      *
-     * @param ArrayAccess $storage The storage
+     * @param ArrayObject $storage The storage
      * @param string $storageKey The flash storage key
      */
-    public function __construct(ArrayAccess $storage, string $storageKey = '_flash')
+    public function __construct(ArrayObject $storage, string $storageKey = '_flash')
     {
         $this->storage = $storage;
         $this->storageKey = $storageKey;

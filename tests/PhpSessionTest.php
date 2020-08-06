@@ -26,16 +26,18 @@ class PhpSessionTest extends TestCase
 
         $this->session = new PhpSession();
 
-        $this->session->setOptions([
-            'name' => 'app',
-            // turn off automatic sending of cache headers entirely
-            'cache_limiter' => '',
-            // garbage collection
-            'gc_probability' => 1,
-            'gc_divisor' => 1,
-            'gc_maxlifetime' => 30 * 24 * 60 * 60,
-            'save_path' => getenv('GITHUB_ACTIONS') ? '/tmp' : '',
-        ]);
+        $this->session->setOptions(
+            [
+                'name' => 'app',
+                // turn off automatic sending of cache headers entirely
+                'cache_limiter' => '',
+                // garbage collection
+                'gc_probability' => 1,
+                'gc_divisor' => 1,
+                'gc_maxlifetime' => 30 * 24 * 60 * 60,
+                'save_path' => getenv('GITHUB_ACTIONS') ? '/tmp' : '',
+            ]
+        );
 
         $lifetime = strtotime('20 minutes') - time();
         $this->session->setCookieParams($lifetime, '/', '', false, false);
@@ -71,18 +73,10 @@ class PhpSessionTest extends TestCase
     /**
      * Test.
      */
-    public function testGetStorage(): void
-    {
-        $this->session->set('key', 'value');
-        $storage = $this->session->getStorage();
-        $this->assertSame(['key' => 'value'], (array)$storage);
-    }
-
-    /**
-     * Test.
-     */
     public function testGetFlash(): void
     {
+        $this->session->set('key', 'value1');
+
         $flash = $this->session->getFlash();
         $flash->add('key', 'value');
         $this->assertSame([0 => 'value'], $flash->get('key'));
@@ -253,10 +247,12 @@ class PhpSessionTest extends TestCase
         $this->session->set('key2', 'value');
         $this->assertSame(2, $this->session->count());
 
-        $this->session->replace([
-            'key' => 'value-new',
-            'key2' => 'value2-new',
-        ]);
+        $this->session->replace(
+            [
+                'key' => 'value-new',
+                'key2' => 'value2-new',
+            ]
+        );
         $this->assertSame('value-new', $this->session->get('key'));
         $this->assertSame('value2-new', $this->session->get('key2'));
 
