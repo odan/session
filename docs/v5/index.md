@@ -206,9 +206,9 @@ $session->start();
 Read more:
 
 * [SameSite cookie middleware](https://github.com/selective-php/samesite-cookie)
-* https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-samesite
-* https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-httponly
-* https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-secure
+* <https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-samesite>
+* <https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-httponly>
+* <https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-secure>
 
 ## Adapter
 
@@ -253,8 +253,6 @@ return [
     'session' => [
         'name' => 'webapp',
         'cache_expire' => 0,
-        'cookie_httponly' => true,
-        'cookie_secure' => true,
     ],
 ];
 ```
