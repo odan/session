@@ -2,7 +2,6 @@
 
 namespace Odan\Session;
 
-use ArrayObject;
 use Odan\Session\Exception\SessionException;
 
 /**
@@ -14,13 +13,6 @@ interface SessionInterface
      * Starts the session - do not use session_start().
      */
     public function start(): void;
-
-    /**
-     * Get storage.
-     *
-     * @return ArrayObject The storage
-     */
-    public function getStorage(): ArrayObject;
 
     /**
      * Get flash handler.
@@ -184,11 +176,11 @@ interface SessionInterface
      *
      * @see http://php.net/manual/en/function.session-set-cookie-params.php
      *
-     * @param int $lifetime the lifetime of the cookie in seconds
-     * @param string|null $path the path where information is stored
-     * @param string|null $domain the domain of the cookie
-     * @param bool $secure the cookie should only be sent over secure connections
-     * @param bool $httpOnly the cookie can only be accessed through the HTTP protocol
+     * @param int $lifetime The lifetime of the cookie in seconds
+     * @param string|null $path The path where information is stored
+     * @param string|null $domain The domain of the cookie
+     * @param bool $secure The cookie should only be sent over secure connections
+     * @param bool $httpOnly The cookie can only be accessed through the HTTP protocol
      */
     public function setCookieParams(
         int $lifetime,

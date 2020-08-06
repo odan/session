@@ -33,16 +33,6 @@ final class PhpSession implements SessionInterface
     }
 
     /**
-     * Get storage.
-     *
-     * @return ArrayObject The storage
-     */
-    public function getStorage(): ArrayObject
-    {
-        return $this->storage;
-    }
-
-    /**
      * Get flash instance.
      *
      * @return FlashInterface The flash instance
