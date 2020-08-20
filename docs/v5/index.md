@@ -56,7 +56,7 @@ $session->set('bar', 'foo');
 // Get session value
 echo $session->get('bar'); // foo
 
-// Optional: Force the session to be saved and closed
+// Commit and close the session
 $session->save();
 ```
 
