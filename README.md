@@ -11,7 +11,7 @@ A session handler for PHP
 
 ## Requirements
 
-* PHP 7.2+
+* PHP 7.2+ or 8.0+
 
 ## Installation
 
