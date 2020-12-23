@@ -135,7 +135,7 @@ final class PhpSession implements SessionInterface
      */
     public function getId(): string
     {
-        return session_id() ?? '';
+        return (string)session_id();
     }
 
     /**
@@ -155,7 +155,7 @@ final class PhpSession implements SessionInterface
      */
     public function getName(): string
     {
-        return session_name();
+        return (string)session_name();
     }
 
     /**
