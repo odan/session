@@ -286,6 +286,14 @@ return [
 
 ### Session middleware
 
+**Lazy session start**
+
+The DI container should (must) never start a session automatically because:
+
+* The DI container is not responsible for the HTTP context.
+* In some use cases an API call from a REST client generates a session.
+* Only a HTTP middleware or an action handler should start the session.
+
 Register the session middleware for all routes:
 
 ```php
