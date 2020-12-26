@@ -21,15 +21,22 @@ description: "Version 5"
   * [Memory Session](#memory-session)
 * [Slim 4 integration](#slim-4-integration)
 
-## Requirements
-
-* PHP 7.3+ or 8.0+
-
 ## Installation
 
 ```
 composer require odan/session
 ```
+
+## Requirements
+
+* PHP 7.3+ or 8.0+
+
+## Features
+
+* PSR-7 and PSR-15 (middleware) support
+* DI container (PSR-11) support
+* Lazy session start
+* PHP 8 support
 
 ## Usage
 
