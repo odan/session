@@ -11,6 +11,7 @@ description: "Version 5"
 
 * [Requirements](#requirements)
 * [Installation](#installation)
+* [Features](#features)
 * [Usage](#usage)
 * [Methods](#methods)
 * [Flash messages](#flash-messages)
@@ -21,15 +22,15 @@ description: "Version 5"
   * [Memory Session](#memory-session)
 * [Slim 4 integration](#slim-4-integration)
 
+## Requirements
+
+* PHP 7.3+ or 8.0+
+
 ## Installation
 
 ```
 composer require odan/session
 ```
-
-## Requirements
-
-* PHP 7.3+ or 8.0+
 
 ## Features
 
