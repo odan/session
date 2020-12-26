@@ -7,7 +7,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/odan/session/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/odan/session/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/odan/session.svg)](https://packagist.org/packages/odan/session/stats)
 
-A session handler for PHP
+A session handler for PHP.
 
 * Issues: <https://github.com/odan/session/issues>
 * Documentation for v4: <https://odan.github.io/session/v4/>

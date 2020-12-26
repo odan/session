@@ -23,7 +23,7 @@ description: "Version 5"
 
 ## Requirements
 
-* PHP 7.3+
+* PHP 7.3+ or 8.0+
 
 ## Installation
 
