@@ -330,10 +330,3 @@ use Odan\Session\Middleware\SessionMiddleware;
 $app->post('/example', \App\Action\ExampleAction::class)
     ->add(SessionMiddleware::class);
 ```
-
-## Similar packages
-
-The components `laminas-session` and `Slim-Flash` can be used together to obtain the same functionality.
-
-* <https://github.com/laminas/laminas-session>
-* <https://github.com/slimphp/Slim-Flash>
