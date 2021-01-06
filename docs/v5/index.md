@@ -334,8 +334,8 @@ $app->post('/example', \App\Action\ExampleAction::class)
 ## Similar packages
 
 * <https://github.com/laminas/laminas-session>
+* <https://github.com/bryanjhv/slim-session>
+* <https://github.com/slimphp/Slim-Flash>
 * <https://github.com/psr7-sessions/storageless>
 * <https://github.com/dflydev/dflydev-fig-cookies>
-* <https://github.com/bryanjhv/slim-session>
-* <https://github.com/auraphp/Aura.Session>
 * <https://symfony.com/doc/current/components/http_foundation/sessions.html>
