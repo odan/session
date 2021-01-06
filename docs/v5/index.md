@@ -333,9 +333,7 @@ $app->post('/example', \App\Action\ExampleAction::class)
 
 ## Similar packages
 
+The components `laminas-session` and `Slim-Flash` can be used together to obtain the same functionality.
+
 * <https://github.com/laminas/laminas-session>
-* <https://github.com/bryanjhv/slim-session>
 * <https://github.com/slimphp/Slim-Flash>
-* <https://github.com/psr7-sessions/storageless>
-* <https://github.com/dflydev/dflydev-fig-cookies>
-* <https://symfony.com/doc/current/components/http_foundation/sessions.html>
