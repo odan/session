@@ -272,7 +272,6 @@ Add the container definitions as follows:
 
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
-use Odan\Session\Middleware\SessionMiddleware;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -284,10 +283,6 @@ return [
         $session->setOptions((array)$settings['session']);
 
         return $session;
-    },
-
-    SessionMiddleware::class => function (ContainerInterface $container) {
-        return new SessionMiddleware($container->get(SessionInterface::class));
     },
 ];
 ```
@@ -330,12 +325,3 @@ use Odan\Session\Middleware\SessionMiddleware;
 $app->post('/example', \App\Action\ExampleAction::class)
     ->add(SessionMiddleware::class);
 ```
-
-## Similar packages
-
-* <https://github.com/laminas/laminas-session>
-* <https://github.com/psr7-sessions/storageless>
-* <https://github.com/dflydev/dflydev-fig-cookies>
-* <https://github.com/bryanjhv/slim-session>
-* <https://github.com/auraphp/Aura.Session>
-* <https://symfony.com/doc/current/components/http_foundation/sessions.html>

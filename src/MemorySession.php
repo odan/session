@@ -164,7 +164,7 @@ final class MemorySession implements SessionInterface
      */
     public function has(string $key): bool
     {
-        if (empty($this->storage)) {
+        if (!count($this->storage)) {
             return false;
         }
 
