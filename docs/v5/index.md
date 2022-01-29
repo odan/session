@@ -272,7 +272,6 @@ Add the container definitions as follows:
 
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
-use Odan\Session\Middleware\SessionMiddleware;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -284,10 +283,6 @@ return [
         $session->setOptions((array)$settings['session']);
 
         return $session;
-    },
-
-    SessionMiddleware::class => function (ContainerInterface $container) {
-        return new SessionMiddleware($container->get(SessionInterface::class));
     },
 ];
 ```
