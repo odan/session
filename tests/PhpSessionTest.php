@@ -4,7 +4,7 @@ namespace Odan\Session\Test;
 
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
-use PHPStan\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
