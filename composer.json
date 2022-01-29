@@ -10,35 +10,35 @@
     "license": "MIT",
     "require": {
         "php": "^7.3 || ^8.0",
-        "psr/http-message": "^1.0",
-        "psr/http-server-handler": "^1.0",
-        "psr/http-server-middleware": "^1.0"
+        "psr/http-message": "^1",
+        "psr/http-server-handler": "^1",
+        "psr/http-server-middleware": "^1"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "middlewares/utils": "^3.1",
-        "overtrue/phplint": "^2.0",
-        "phpstan/phpstan": "0.*",
+        "friendsofphp/php-cs-fixer": "^3",
+        "middlewares/utils": "^3",
+        "overtrue/phplint": "^2",
+        "phpstan/phpstan": "^1",
         "phpunit/phpunit": "^7 || ^8 || ^9",
-        "slim/psr7": "^1.1",
-        "squizlabs/php_codesniffer": "^3.4"
+        "slim/psr7": "^1",
+        "squizlabs/php_codesniffer": "^3"
     },
     "scripts": {
-        "check": [
+        "cs:check": "php-cs-fixer fix --dry-run --format=txt --verbose --diff --config=.cs.php",
+        "cs:fix": "php-cs-fixer fix --config=.cs.php",
+        "lint": "phplint ./ --exclude=vendor --no-interaction --no-cache",
+        "stan": "phpstan analyse -c phpstan.neon --no-progress --ansi",
+        "sniffer:check": "phpcs --standard=phpcs.xml",
+        "sniffer:fix": "phpcbf --standard=phpcs.xml",
+        "test": "phpunit --configuration phpunit.xml --do-not-cache-result --colors=always",
+        "test:all": [
             "@lint",
             "@cs:check",
             "@sniffer:check",
-            "@phpstan",
-            "@test:coverage"
+            "@stan",
+            "@test"
         ],
-        "cs:check": "php-cs-fixer fix --dry-run --format=txt --verbose --diff --diff-format=udiff --config=.cs.php",
-        "cs:fix": "php-cs-fixer fix --config=.cs.php",
-        "lint": "phplint ./ --exclude=vendor --no-interaction --no-cache",
-        "phpstan": "phpstan analyse src --level=max -c phpstan.neon --no-progress --ansi",
-        "sniffer:check": "phpcs --standard=phpcs.xml",
-        "sniffer:fix": "phpcbf --standard=phpcs.xml",
-        "test": "phpunit --configuration phpunit.xml --do-not-cache-result",
-        "test:coverage": "phpunit --configuration phpunit.xml --do-not-cache-result --coverage-clover build/logs/clover.xml --coverage-html build/coverage"
+        "test:coverage": "php -d xdebug.mode=coverage -r \"require 'vendor/bin/phpunit';\" -- --configuration phpunit.xml --do-not-cache-result --colors=always --coverage-clover build/logs/clover.xml --coverage-html build/coverage"
     },
     "autoload": {
         "psr-4": {
