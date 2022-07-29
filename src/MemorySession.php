@@ -64,9 +64,7 @@ final class MemorySession implements SessionInterface
     }
 
     /**
-     * Get storage.
-     *
-     * @return ArrayObject The storage
+     * {@inheritdoc}
      */
     public function getStorage(): ArrayObject
     {

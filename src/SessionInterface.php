@@ -2,6 +2,7 @@
 
 namespace Odan\Session;
 
+use ArrayObject;
 use Odan\Session\Exception\SessionException;
 
 /**
@@ -198,4 +199,11 @@ interface SessionInterface
      * @return array The cookie parameters
      */
     public function getCookieParams(): array;
+
+    /**
+     * Get storage.
+     *
+     * @return ArrayObject The storage
+     */
+    public function getStorage(): ArrayObject;
 }

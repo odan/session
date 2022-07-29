@@ -292,4 +292,12 @@ final class PhpSession implements SessionInterface
     {
         return session_get_cookie_params();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStorage(): ArrayObject
+    {
+        return $this->storage;
+    }
 }

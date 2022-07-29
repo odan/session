@@ -2,6 +2,7 @@
 
 namespace Odan\Session\Test;
 
+use ArrayObject;
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
 use PHPUnit\Framework\TestCase;
@@ -298,5 +299,15 @@ class PhpSessionTest extends TestCase
         $this->assertSame('', $actual['domain']);
         $this->assertFalse($actual['secure']);
         $this->assertFalse($actual['httponly']);
+    }
+
+    /**
+     * Test.
+     *
+     * @covers ::getStorage
+     */
+    public function testGetStorage(): void
+    {
+        $this->assertInstanceOf(ArrayObject::class, $this->session->getStorage());
     }
 }
