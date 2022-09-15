@@ -2,40 +2,21 @@
 
 namespace Odan\Session\Middleware;
 
-use Odan\Session\SessionInterface;
+use Odan\Session\SessionManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-/**
- * A PSR-15 Session Middleware.
- */
 final class SessionMiddleware implements MiddlewareInterface
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    private SessionManagerInterface $session;
 
-    /**
-     * Constructor.
-     *
-     * @param SessionInterface $session The session handler
-     */
-    public function __construct(SessionInterface $session)
+    public function __construct(SessionManagerInterface $session)
     {
         $this->session = $session;
     }
 
-    /**
-     * Invoke middleware.
-     *
-     * @param ServerRequestInterface $request The request
-     * @param RequestHandlerInterface $handler The handler
-     *
-     * @return ResponseInterface The response
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (!$this->session->isStarted()) {

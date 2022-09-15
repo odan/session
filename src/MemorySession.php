@@ -2,90 +2,43 @@
 
 namespace Odan\Session;
 
-use ArrayObject;
-use RuntimeException;
-
 /**
  * A memory (array) session handler adapter.
  */
-final class MemorySession implements SessionInterface
+final class MemorySession implements SessionInterface, SessionManagerInterface
 {
-    /**
-     * @var ArrayObject
-     */
-    private $storage;
+    private array $options = [
+        'name' => 'app',
+        'lifetime' => 7200,
+    ];
 
-    /**
-     * @var Flash
-     */
-    private $flash;
+    private array $storage;
 
-    /**
-     * @var string
-     */
-    private $id = '';
+    private Flash $flash;
 
-    /**
-     * @var bool
-     */
-    private $started = false;
+    private string $id = '';
 
-    /**
-     * @var string
-     */
-    private $name = '';
+    private bool $started = false;
 
-    /**
-     * @var array
-     */
-    private $config = [];
-
-    /**
-     * @var array
-     */
-    private $cookie = [];
-
-    /**
-     * The constructor.
-     */
-    public function __construct()
+    public function __construct(array $options = [])
     {
-        $this->storage = new ArrayObject();
-        $this->flash = new Flash($this->storage);
-
-        $this->setCookieParams(0, '/', '', false, true);
-
-        $config = [];
-        foreach ((array)ini_get_all('session') as $key => $value) {
-            $config[substr($key, 8)] = $value['local_value'];
+        $keys = array_keys($this->options);
+        foreach ($keys as $key) {
+            if (array_key_exists($key, $options)) {
+                $this->options[$key] = $options[$key];
+            }
         }
 
-        $this->setOptions($config);
+        $session = [];
+        $this->storage = &$session;
+        $this->flash = new Flash($session);
     }
 
-    /**
-     * Get storage.
-     *
-     * @return ArrayObject The storage
-     */
-    public function getStorage(): ArrayObject
-    {
-        return $this->storage;
-    }
-
-    /**
-     * Get flash instance.
-     *
-     * @return FlashInterface The flash instance
-     */
     public function getFlash(): FlashInterface
     {
         return $this->flash;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function start(): void
     {
         if (!$this->id) {
@@ -95,191 +48,71 @@ final class MemorySession implements SessionInterface
         $this->started = true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isStarted(): bool
     {
         return $this->started;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function regenerateId(): void
     {
         $this->id = str_replace('.', '', uniqid('sess_', true));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function destroy(): void
     {
-        $this->storage->exchangeArray([]);
+        $keys = array_keys($this->storage);
+        foreach ($keys as $key) {
+            unset($this->storage[$key]);
+        }
         $this->regenerateId();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setId(string $id): void
-    {
-        if ($this->isStarted()) {
-            throw new RuntimeException('Cannot change session id when session is active');
-        }
-
-        $this->id = $id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
-        return $this->name;
+        return $this->options['name'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setName(string $name): void
+    public function get(string $key, $default = null)
     {
-        if ($this->isStarted()) {
-            throw new RuntimeException('Cannot change session name when session is active');
-        }
-        $this->name = $name;
+        return $this->storage[$key] ?? $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function has(string $key): bool
-    {
-        if (!count($this->storage)) {
-            return false;
-        }
-
-        return $this->storage->offsetExists($key);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function get(string $key)
-    {
-        if ($this->has($key)) {
-            return $this->storage->offsetGet($key);
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function all(): array
     {
         return (array)$this->storage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function set(string $key, $value): void
     {
         $this->storage[$key] = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function replace(array $values): void
+    public function setValues(array $values): void
     {
-        $this->storage->exchangeArray(array_replace_recursive($this->storage->getArrayCopy(), $values));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove(string $key): void
-    {
-        $this->storage->offsetUnset($key);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function clear(): void
-    {
-        $this->storage->exchangeArray([]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function count(): int
-    {
-        return $this->storage->count();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save(): void
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $config): void
-    {
-        foreach ($config as $key => $value) {
-            $this->config[$key] = $value;
+        foreach ($values as $key => $value) {
+            $this->storage[$key] = $value;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptions(): array
+    public function delete(string $key): void
     {
-        return $this->config;
+        unset($this->storage[$key]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setCookieParams(
-        int $lifetime,
-        string $path = null,
-        string $domain = null,
-        bool $secure = false,
-        bool $httpOnly = false
-    ): void {
-        $this->cookie = [
-            'lifetime' => $lifetime,
-            'path' => $path,
-            'domain' => $domain,
-            'secure' => $secure,
-            'httponly' => $httpOnly,
-        ];
+    public function clear(): void
+    {
+        $keys = array_keys($this->storage);
+        foreach ($keys as $key) {
+            unset($this->storage[$key]);
+        }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCookieParams(): array
+    public function save(): void
     {
-        return $this->cookie;
     }
 }

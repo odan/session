@@ -2,49 +2,44 @@
 
 namespace Odan\Session;
 
-use ArrayObject;
 use Odan\Session\Exception\SessionException;
 
 /**
  * A PHP Session handler adapter.
  */
-final class PhpSession implements SessionInterface
+final class PhpSession implements SessionInterface, SessionManagerInterface
 {
-    /**
-     * @var ArrayObject
-     */
-    private $storage;
+    private array $storage;
 
-    /**
-     * @var FlashInterface
-     */
-    private $flash;
+    private FlashInterface $flash;
 
-    /**
-     * The constructor.
-     *
-     * @param ArrayObject|null $storage The session storage
-     * @param FlashInterface|null $flash The flash component
-     */
-    public function __construct(ArrayObject $storage = null, FlashInterface $flash = null)
+    private array $options = [
+        'name' => 'app',
+        'lifetime' => 7200,
+        'path' => null,
+        'domain' => null,
+        'secure' => false,
+        'httponly' => true,
+        // public, private_no_expire, private, nocache
+        // Setting the cache limiter to '' will turn off automatic sending of cache headers entirely.
+        'cache_limiter' => 'nocache',
+    ];
+
+    public function __construct(array $options = [])
     {
-        $this->storage = $storage ?? new ArrayObject();
-        $this->flash = $flash ?? new Flash($this->storage);
+        $keys = array_keys($this->options);
+        foreach ($keys as $key) {
+            if (array_key_exists($key, $options)) {
+                $this->options[$key] = $options[$key];
+                unset($options[$key]);
+            }
+        }
+
+        foreach ($options as $key => $value) {
+            ini_set('session.' . $key, $value);
+        }
     }
 
-    /**
-     * Get flash instance.
-     *
-     * @return FlashInterface The flash instance
-     */
-    public function getFlash(): FlashInterface
-    {
-        return $this->flash;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function start(): void
     {
         if ($this->isStarted()) {
@@ -61,26 +56,33 @@ final class PhpSession implements SessionInterface
             );
         }
 
+        $current = session_get_cookie_params();
+
+        $lifetime = (int)($this->options['lifetime'] ?: $current['lifetime']);
+        $path = $this->options['path'] ?: $current['path'];
+        $domain = $this->options['domain'] ?: $current['domain'];
+        $secure = (bool)$this->options['secure'];
+        $httponly = (bool)$this->options['httponly'];
+
+        session_set_cookie_params($lifetime, $path, $domain, $secure, $httponly);
+        session_name($this->options['name']);
+        session_cache_limiter($this->options['cache_limiter']);
+
         // Try and start the session
         if (!session_start()) {
             throw new SessionException('Failed to start the session.');
         }
 
         // Load the session
-        $this->storage->exchangeArray($_SESSION ?? []);
+        $this->storage = &$_SESSION;
+        $this->flash = new Flash($_SESSION);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isStarted(): bool
     {
         return session_status() === PHP_SESSION_ACTIVE;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function regenerateId(): void
     {
         if (!$this->isStarted()) {
@@ -96,9 +98,6 @@ final class PhpSession implements SessionInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function destroy(): void
     {
         // Cannot regenerate the session ID for non-active sessions.
@@ -130,166 +129,59 @@ final class PhpSession implements SessionInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId(): string
     {
         return (string)session_id();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setId(string $id): void
-    {
-        if ($this->isStarted()) {
-            throw new SessionException('Cannot change session id when session is active');
-        }
-
-        session_id($id);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return (string)session_name();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setName(string $name): void
+    public function get(string $key, $default = null)
     {
-        if ($this->isStarted()) {
-            throw new SessionException('Cannot change session name when session is active');
-        }
-        session_name($name);
+        return $this->storage[$key] ?? $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function has(string $key): bool
-    {
-        if (!count($this->storage)) {
-            return false;
-        }
-
-        return $this->storage->offsetExists($key);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function get(string $key)
-    {
-        return $this->has($key) ? $this->storage->offsetGet($key) : null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function all(): array
     {
         return (array)$this->storage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function set(string $key, $value): void
     {
-        $this->storage->offsetSet($key, $value);
+        $this->storage[$key] = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function replace(array $values): void
+    public function setValues(array $values): void
     {
-        $this->storage->exchangeArray(
-            array_replace_recursive($this->storage->getArrayCopy(), $values)
-        );
+        foreach ($values as $key => $value) {
+            $this->storage[$key] = $value;
+        }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function remove(string $key): void
+    public function delete(string $key): void
     {
-        $this->storage->offsetUnset($key);
+        unset($this->storage[$key]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function clear(): void
     {
-        $this->storage->exchangeArray([]);
+        $keys = array_keys($this->storage);
+        foreach ($keys as $key) {
+            unset($this->storage[$key]);
+        }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function count(): int
-    {
-        return $this->storage->count();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function save(): void
     {
-        $_SESSION = (array)$this->storage;
+        // $_SESSION = (array)$this->storage;
         session_write_close();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(array $config): void
+    public function getFlash(): FlashInterface
     {
-        foreach ($config as $key => $value) {
-            ini_set('session.' . $key, $value);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptions(): array
-    {
-        $config = [];
-
-        foreach ((array)ini_get_all('session') as $key => $value) {
-            $config[substr($key, 8)] = $value['local_value'];
-        }
-
-        return $config;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCookieParams(
-        int $lifetime,
-        string $path = null,
-        string $domain = null,
-        bool $secure = false,
-        bool $httpOnly = false
-    ): void {
-        session_set_cookie_params($lifetime, $path ?? '/', $domain, $secure, $httpOnly);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCookieParams(): array
-    {
-        return session_get_cookie_params();
+        return $this->flash;
     }
 }
