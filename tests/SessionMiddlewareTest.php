@@ -1,11 +1,10 @@
 <?php
 
-namespace Odan\Session\Test\Middleware;
+namespace Odan\Session\Test;
 
 use Middlewares\Utils\Dispatcher;
 use Odan\Session\Middleware\SessionMiddleware;
 use Odan\Session\PhpSession;
-use Odan\Session\SessionInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -15,23 +14,15 @@ use PHPUnit\Framework\TestCase;
  */
 class SessionMiddlewareTest extends TestCase
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    private PhpSession $session;
 
-    /**
-     * @var SessionMiddleware
-     */
-    private $middleware;
+    private SessionMiddleware $middleware;
 
-    /** {@inheritdoc} */
     protected function setUp(): void
     {
         $_SESSION = [];
 
-        $this->session = new PhpSession();
-        $this->session->setOptions([
+        $this->session = new PhpSession([
             'name' => 'app',
             // turn off automatic sending of cache headers entirely
             'cache_limiter' => '',
@@ -42,17 +33,9 @@ class SessionMiddlewareTest extends TestCase
             'save_path' => getenv('GITHUB_ACTIONS') ? '/tmp' : '',
         ]);
 
-        $this->session->setName('app');
-
         $this->middleware = new SessionMiddleware($this->session);
     }
 
-    /**
-     * Test.
-     *
-     * @covers ::__construct
-     * @covers ::process
-     */
     public function testInvoke(): void
     {
         // Session must not be started
