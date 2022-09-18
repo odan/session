@@ -43,8 +43,12 @@ class PhpSessionTest extends TestCase
 
     protected function tearDown(): void
     {
-        $this->manager->destroy();
+        if (isset($this->manager) && $this->manager->isStarted()) {
+            $this->manager->destroy();
+        }
+
         unset($this->session);
+        unset($this->manager);
     }
 
     public function testStart(): void
@@ -150,5 +154,21 @@ class PhpSessionTest extends TestCase
 
         $this->session->clear();
         $this->assertEmpty($this->session->all());
+    }
+
+    public function testGetId(): void
+    {
+        $session = new PhpSession(
+            [
+                'id' => 'test123',
+                'name' => 'app',
+                'save_path' => getenv('GITHUB_ACTIONS') ? '/tmp' : '',
+            ]
+        );
+        $session->start();
+
+        $this->assertSame('test123', $session->getId());
+
+        $session->destroy();
     }
 }
