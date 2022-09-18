@@ -14,6 +14,7 @@ final class PhpSession implements SessionInterface, SessionManagerInterface
     private FlashInterface $flash;
 
     private array $options = [
+        'id' => null,
         'name' => 'app',
         'lifetime' => 7200,
         'path' => null,
@@ -27,6 +28,11 @@ final class PhpSession implements SessionInterface, SessionManagerInterface
 
     public function __construct(array $options = [])
     {
+        // Prevent uninitialized state
+        $empty = [];
+        $this->storage = &$empty;
+        $this->flash = new Flash($empty);
+
         $keys = array_keys($this->options);
         foreach ($keys as $key) {
             if (array_key_exists($key, $options)) {
@@ -68,6 +74,11 @@ final class PhpSession implements SessionInterface, SessionManagerInterface
         session_name($this->options['name']);
         session_cache_limiter($this->options['cache_limiter']);
 
+        $sessionId = $this->options['id'] ?: null;
+        if ($sessionId) {
+            session_id($sessionId);
+        }
+
         // Try and start the session
         if (!session_start()) {
             throw new SessionException('Failed to start the session.');
@@ -100,7 +111,6 @@ final class PhpSession implements SessionInterface, SessionManagerInterface
 
     public function destroy(): void
     {
-        // Cannot regenerate the session ID for non-active sessions.
         if (!$this->isStarted()) {
             return;
         }
@@ -176,7 +186,6 @@ final class PhpSession implements SessionInterface, SessionManagerInterface
 
     public function save(): void
     {
-        // $_SESSION = (array)$this->storage;
         session_write_close();
     }
 
