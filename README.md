@@ -9,7 +9,4 @@
 
 A middleware (PSR-15) oriented session and flash message handler for PHP.
 
-* Blog post: <https://odan.github.io/2021/01/15/slim4-session.html>
-* Documentation for v4: <https://odan.github.io/session/v4/>
-* Documentation for v5: <https://odan.github.io/session/v5/>
-* Issues: <https://github.com/odan/session/issues>
+* Documentation for v6: <https://odan.github.io/session/v6/>
