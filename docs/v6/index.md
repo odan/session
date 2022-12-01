@@ -5,7 +5,7 @@ nav_order: 3
 description: "Version 6"
 ---
 
-# Session v5 Documentation
+# Session v6 Documentation
 
 ## Table of contents
 
