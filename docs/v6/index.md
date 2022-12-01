@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Version 5
+title: Version 6
 nav_order: 3
-description: "Version 5"
+description: "Version 6"
 ---
 
 # Session v5 Documentation
@@ -15,16 +15,16 @@ description: "Version 5"
 * [Usage](#usage)
 * [Methods](#methods)
 * [Flash messages](#flash-messages)
-  * [Twig flash messages](#twig-flash-messages)
+    * [Twig flash messages](#twig-flash-messages)
 * [SameSite Cookies](#samesite-cookies)
 * [Adapter](#adapter)
-  * [PHP Session](#php-session)
-  * [Memory Session](#memory-session)
+    * [PHP Session](#php-session)
+    * [Memory Session](#memory-session)
 * [Slim 4 integration](#slim-4-integration)
 
 ## Requirements
 
-* PHP 7.3+ or 8.0+
+* PHP 8.0+
 
 ## Installation
 
@@ -37,23 +37,16 @@ composer require odan/session
 * PSR-7 and PSR-15 (middleware) support
 * DI container (PSR-11) support
 * Lazy session start
-* PHP 8 support
 
 ## Usage
 
 ```php
-use Odan\Session\PhpSession;
+$config = [
+    'name' => 'app',
+];
 
 // Create a standard session handler
-$session = new PhpSession();
-
-// Set session options before you start the session
-// You can use all the standard PHP session configuration options
-// https://secure.php.net/manual/en/session.configuration.php
-
-$session->setOptions([
-    'name' => 'app',
-]);
+$session = new \Odan\Session\PhpSession($config);
 
 // Start the session
 $session->start();
@@ -64,8 +57,8 @@ $session->set('bar', 'foo');
 // Get session value
 echo $session->get('bar'); // foo
 
-// Commit and close the session
-$session->save();
+// Add flash message
+$session->getFlash()->add('error', 'My flash message')
 ```
 
 ## Methods
@@ -75,16 +68,22 @@ $session->save();
 $foo = $session->get('foo');
 
 // Get session variable or the default value
-$bar = $session->get('bar') ?? 'my default value';
+$bar = $session->get('bar', 'my default value');
 
 // Set session variable
-$session->set('bar', 'that');
+$session->set('bar', 'new value');
+
+// Sets multiple values at once
+$session->setValues(['foo' => 'value1', 'bar' => 'value2']);
 
 // Get all session variables
-$all = $session->all();
+$values = $session->all();
+
+// Returns true if the attribute exists
+$hasKey = $session->has('foo');
 
 // Delete a session variable
-$session->remove('key');
+$session->delete('key');
 
 // Clear all session variables
 $session->clear();
@@ -96,41 +95,13 @@ $session->regenerateId();
 $session->destroy();
 
 // Get the current session ID
-$session->getId();
-
-// Set the session ID
-$session->setId('...');
+$sessionId = $session->getId();
 
 // Get the session name
-$session->getName();
-
-// Set the session name
-$session->setName('my-app');
-
-// Returns true if the attribute exists
-$session->has('foo');
-
-// Sets multiple values at once
-$session->replace(['foo' => 'value1', 'bar' => 'value2']);
-
-// Get the number of values.
-$session->count();
+$sessionName = $session->getName();
 
 // Force the session to be saved and closed
 $session->save();
-
-// Set session runtime configuration
-// All supported keys: http://php.net/manual/en/session.configuration.php
-$session->setOptions($options);
-
-// Get session runtime configuration
-$session->getOptions();
-
-// Set cookie parameters
-$session->setCookieParams(4200, '/', '', false, false);
-
-// Get cookie parameters
-$session->getCookieParams();
 ```
 
 ## Flash messages
@@ -187,15 +158,13 @@ Twig template example:
 
 ## SameSite Cookies
 
-A SameSite cookie that tells browser to send the cookie to the server only 
+A SameSite cookie that tells browser to send the cookie to the server only
 when the request is made from the same domain of the website.
 
 ```php
 use Odan\Session\PhpSession;
 
-$session = new PhpSession();
-
-$session->setOptions([
+$options = [
     'name' => 'app',
     // Lax will send the cookie for cross-domain GET requests
     'cookie_samesite' => 'Lax',   
@@ -204,8 +173,9 @@ $session->setOptions([
     // Optional: Additional XSS protection
     // Note: The cookie is not accessible for JavaScript!
     'cookie_httponly' => false,
-]);
+];
 
+$session = new PhpSession($options);
 $session->start();
 ```
 
@@ -250,16 +220,14 @@ $session = new MemorySession();
 Add your application-specific settings:
 
 ```php
-// config/settings.php
-
-return [
-
-    // ...
-
-    'session' => [
-        'name' => 'webapp',
-        'cache_expire' => 0,
-    ],
+$settings['session'] = [
+    'name' => 'app',
+    'lifetime' => 7200,
+    'path' => null,
+    'domain' => null,
+    'secure' => false,
+    'httponly' => true,
+    'cache_limiter' => 'nocache',
 ];
 ```
 
@@ -272,17 +240,20 @@ Add the container definitions as follows:
 
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
+use Odan\Session\SessionManagerInterface;
 use Psr\Container\ContainerInterface;
 
 return [
     // ...
 
-    SessionInterface::class => function (ContainerInterface $container) {
-        $settings = $container->get('settings');
-        $session = new PhpSession();
-        $session->setOptions((array)$settings['session']);
+    SessionManagerInterface::class => function (ContainerInterface $container) {
+        return $container->get(SessionInterface::class);
+    },
 
-        return $session;
+    SessionInterface::class => function (ContainerInterface $container) {
+        $options = $container->get('settings')['session'];
+
+        return new PhpSession($options);
     },
 ];
 ```
@@ -295,33 +266,34 @@ The DI container should (must) never start a session automatically because:
 
 * The DI container is not responsible for the HTTP context.
 * In some use cases an API call from a REST client generates a session.
-* Only a HTTP middleware or an action handler should start the session.
+* Only an HTTP middleware or an action handler should start the session.
 
 Register the session middleware for all routes:
 
 ```php
-use Odan\Session\Middleware\SessionMiddleware;
+use Odan\Session\Middleware\SessionStartMiddleware;
+//...
 
-$app->add(SessionMiddleware::class);
+$app->add(SessionStartMiddleware::class);
 ```
 
 Register middleware for a routing group:
 
 ```php
-use Odan\Session\Middleware\SessionMiddleware;
+use Odan\Session\Middleware\SessionStartMiddleware;
 use Slim\Routing\RouteCollectorProxy;
 
 // Protect the whole group
 $app->group('/admin', function (RouteCollectorProxy $group) {
     // ...
-})->add(SessionMiddleware::class);
+})->add(SessionStartMiddleware::class);
 ```
 
 Register middleware for a single route:
 
 ```php
-use Odan\Session\Middleware\SessionMiddleware;
+use Odan\Session\Middleware\SessionStartMiddleware;
 
 $app->post('/example', \App\Action\ExampleAction::class)
-    ->add(SessionMiddleware::class);
+    ->add(SessionStartMiddleware::class);
 ```
