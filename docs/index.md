@@ -19,5 +19,3 @@ composer require odan/session
 
 * Issues: <https://github.com/odan/session/issues>
 * Source: <https://github.com/odan/session>
-* Documentation for v5: <https://odan.github.io/session/v5/>
-* Documentation for v6: <https://odan.github.io/session/v6/>
