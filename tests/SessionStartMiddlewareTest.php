@@ -3,20 +3,20 @@
 namespace Odan\Session\Test;
 
 use Middlewares\Utils\Dispatcher;
-use Odan\Session\Middleware\SessionMiddleware;
+use Odan\Session\Middleware\SessionStartMiddleware;
 use Odan\Session\PhpSession;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Test.
  *
- * @coversDefaultClass \Odan\Session\Middleware\SessionMiddleware
+ * @coversDefaultClass \Odan\Session\Middleware\SessionStartMiddleware
  */
-class SessionMiddlewareTest extends TestCase
+class SessionStartMiddlewareTest extends TestCase
 {
     private PhpSession $session;
 
-    private SessionMiddleware $middleware;
+    private SessionStartMiddleware $middleware;
 
     protected function setUp(): void
     {
@@ -33,7 +33,7 @@ class SessionMiddlewareTest extends TestCase
             'save_path' => getenv('GITHUB_ACTIONS') ? '/tmp' : '',
         ]);
 
-        $this->middleware = new SessionMiddleware($this->session);
+        $this->middleware = new SessionStartMiddleware($this->session);
     }
 
     public function testInvoke(): void
