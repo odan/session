@@ -77,7 +77,7 @@ final class MemorySession implements SessionInterface, SessionManagerInterface
         return $this->options['name'];
     }
 
-    public function get(string $key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
         return $this->storage[$key] ?? $default;
     }
@@ -87,7 +87,7 @@ final class MemorySession implements SessionInterface, SessionManagerInterface
         return (array)$this->storage;
     }
 
-    public function set(string $key, $value): void
+    public function set(string $key, mixed $value): void
     {
         $this->storage[$key] = $value;
     }

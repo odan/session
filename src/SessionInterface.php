@@ -3,7 +3,7 @@
 namespace Odan\Session;
 
 /**
- * Interface.
+ * The session data operations.
  */
 interface SessionInterface
 {
@@ -11,11 +11,11 @@ interface SessionInterface
      * Gets an attribute by key.
      *
      * @param string $key The key name or null to get all values
-     * @param null $default The default value
+     * @param mixed $default The default value
      *
-     * @return mixed|null Should return null if the key is not found
+     * @return mixed The value. Returns null if the key is not found
      */
-    public function get(string $key, $default = null);
+    public function get(string $key, mixed $default = null): mixed;
 
     /**
      * Gets all values as array.
@@ -32,7 +32,7 @@ interface SessionInterface
      *
      * @return void
      */
-    public function set(string $key, $value): void;
+    public function set(string $key, mixed $value): void;
 
     /**
      * Sets multiple attributes at once: takes a keyed array and sets each key => value pair.
