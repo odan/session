@@ -42,6 +42,15 @@ interface SessionInterface
     public function setValues(array $values): void;
 
     /**
+     * Check if an attribute key exists.
+     *
+     * @param string $key The key
+     *
+     * @return bool True if the key is set or not
+     */
+    public function has(string $key): bool;
+
+    /**
      * Deletes an attribute by key.
      *
      * @param string $key The key to remove
