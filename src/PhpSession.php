@@ -171,6 +171,11 @@ final class PhpSession implements SessionInterface, SessionManagerInterface
         }
     }
 
+    public function has(string $key): bool
+    {
+        return array_key_exists($key, $this->storage);
+    }
+
     public function delete(string $key): void
     {
         unset($this->storage[$key]);

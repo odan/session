@@ -29,9 +29,9 @@ interface FlashInterface
     /**
      * Has flash message.
      *
-     * @param string $key The key to get the message from
+     * @param string $key The key
      *
-     * @return bool Whether the message is set or not
+     * @return bool Whether the key is set or not
      */
     public function has(string $key): bool;
 
