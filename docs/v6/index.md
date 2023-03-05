@@ -130,7 +130,16 @@ $messages = $flash->all();
 
 ### Twig flash messages
 
-Add the Flash instance as global twig variable within the `Twig::class` container definition:
+To display the Flash messages, you can pass the Flash 
+object in the array of options as the second argument:
+
+```php
+$flash = $session->getFlash();
+$html = $twig->render('filename.html.twig', ['flash' => $flash]);
+```
+
+Another approach would be to add the Flash instance 
+as global Twig variable within the DI container definition of `Twig::class`:
 
 ```php
 use Odan\Session\SessionInterface;
