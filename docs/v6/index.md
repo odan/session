@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Version 6
-nav_order: 3
+nav_order: 4
 description: "Version 6"
 ---
 
@@ -177,7 +177,7 @@ $options = [
     // Optional: Send cookie only over https
     'cookie_secure' => true,
     // Optional: Additional XSS protection
-    // Note: The cookie is not accessible for JavaScript!
+    // Note: This cookie is not accessible in JavaScript!
     'cookie_httponly' => false,
 ];
 
