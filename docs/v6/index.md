@@ -24,7 +24,7 @@ description: "Version 6"
 
 ## Requirements
 
-* PHP 8.0+
+* PHP 8.2+
 
 ## Installation
 
