@@ -7,11 +7,17 @@ namespace Odan\Session;
  */
 final class MemorySession implements SessionInterface, SessionManagerInterface
 {
+    /**
+     * @var array<string, mixed>
+     */
     private array $options = [
         'name' => 'app',
         'lifetime' => 7200,
     ];
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $storage;
 
     private Flash $flash;
@@ -20,6 +26,9 @@ final class MemorySession implements SessionInterface, SessionManagerInterface
 
     private bool $started = false;
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function __construct(array $options = [])
     {
         $keys = array_keys($this->options);

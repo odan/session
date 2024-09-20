@@ -9,10 +9,16 @@ use Odan\Session\Exception\SessionException;
  */
 final class PhpSession implements SessionInterface, SessionManagerInterface
 {
+    /**
+     * @var array<string, mixed>
+     */
     private array $storage;
 
     private FlashInterface $flash;
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $options = [
         'id' => null,
         'name' => 'app',
@@ -26,6 +32,9 @@ final class PhpSession implements SessionInterface, SessionManagerInterface
         'cache_limiter' => 'nocache',
     ];
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function __construct(array $options = [])
     {
         // Prevent uninitialized state
