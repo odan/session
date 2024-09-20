@@ -7,7 +7,7 @@ use Odan\Session\MemorySession;
 /**
  * Memory Session Test.
  *
- * @coversDefaultClass \Odan\Session\MemorySession
+ * #[\PHPUnit\Framework\Attributes\CoversClass(\Odan\Session\MemorySession)]
  */
 class MemorySessionTest extends PhpSessionTest
 {
