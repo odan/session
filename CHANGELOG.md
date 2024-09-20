@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.2.0] - 2024-09-20
+
+### Added
+
+* Add support for PHP 8.3
+* Add support for psr/http-message 2.x
+
+### Changes
+
+* Upgrade tests to PHPUnit 11
+
+### Removed
+
+* Drop support for PHP 8.0 and 8.1
+
+## [6.1.0] - 2023-02-22
+
+### Added
+
+* Add `has` method to `SessionInterface` #30 #29
+* Add PHP 8.2 to build pipeline
+
+### Changed
+
+* Update docs
+
 ## [6.0.0] - 2022-12-04
 
 ### Changes
