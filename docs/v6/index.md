@@ -229,7 +229,7 @@ Add your application-specific settings:
 $settings['session'] = [
     'name' => 'app',
     'lifetime' => 7200,
-    'path' => null,
+    'save_path' => null,
     'domain' => null,
     'secure' => false,
     'httponly' => true,
