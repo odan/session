@@ -47,8 +47,7 @@ class PhpSessionTest extends TestCase
             $this->manager->destroy();
         }
 
-        unset($this->session);
-        unset($this->manager);
+        $this->session->clear();
     }
 
     public function testStart(): void

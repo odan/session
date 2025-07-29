@@ -46,7 +46,7 @@ interface FlashInterface
      * Set all messages.
      *
      * @param string $key The key to clear
-     * @param array<int, string> $messages The messages
+     * @param array<int|string, string> $messages The messages
      *
      * @return void
      */
@@ -55,7 +55,7 @@ interface FlashInterface
     /**
      * Gets all flash messages.
      *
-     * @return array<int, string> All messages. Can be an empty array.
+     * @return array<int|string, string> All messages. Can be an empty array.
      */
     public function all(): array;
 }

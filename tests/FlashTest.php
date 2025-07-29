@@ -61,6 +61,25 @@ class FlashTest extends TestCase
         $this->assertSame([0 => 'value1', 1 => 'value2'], $flash->get('key2'));
     }
 
+    public function testSetStringAsKey(): void
+    {
+        $session = [];
+        $flash = new Flash($session);
+        $flash->set('input', ['email' => 'john@example.com']);
+        $this->assertSame(['email' => 'john@example.com'], $flash->get('input'));
+
+        $session = [];
+        $flash = new Flash($session);
+        $flash->set('message', [
+            'type' => 'error',
+            'text' => 'Invalid email or password.',
+        ]);
+        $this->assertSame([
+            'type' => 'error',
+            'text' => 'Invalid email or password.',
+        ], $flash->get('message'));
+    }
+
     public function testClear(): void
     {
         $session = [];
