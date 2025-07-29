@@ -9,10 +9,16 @@ use ArrayAccess;
  */
 final class Flash implements FlashInterface
 {
+    /**
+     * @var array<string, mixed>|ArrayAccess<string, mixed>
+     */
     private array|ArrayAccess $storage;
 
     private string $storageKey;
 
+    /**
+     * @param array<string, mixed>|ArrayAccess<string, mixed> $storage
+     */
     public function __construct(array|ArrayAccess &$storage, string $storageKey = '_flash')
     {
         $this->storage = &$storage;

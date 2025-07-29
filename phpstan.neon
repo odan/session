@@ -3,6 +3,3 @@ parameters:
 	paths:
 		- src
 		- tests
-	checkGenericClassInNonGenericObjectType: false
-	checkMissingIterableValueType: false
-	inferPrivatePropertyTypeFromConstructor: true

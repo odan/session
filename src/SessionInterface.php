@@ -20,7 +20,7 @@ interface SessionInterface
     /**
      * Gets all values as array.
      *
-     * @return array The session values
+     * @return array<string, mixed> The session values
      */
     public function all(): array;
 
@@ -37,7 +37,7 @@ interface SessionInterface
     /**
      * Sets multiple attributes at once: takes a keyed array and sets each key => value pair.
      *
-     * @param array $values The new values
+     * @param array<string, mixed> $values The new values
      */
     public function setValues(array $values): void;
 

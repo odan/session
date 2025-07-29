@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Test.
  *
- * @coversDefaultClass \Odan\Session\Middleware\SessionStartMiddleware
+ * #[\PHPUnit\Framework\Attributes\CoversClass(\Odan\Session\Middleware\SessionStartMiddleware)]
  */
 class SessionStartMiddlewareTest extends TestCase
 {

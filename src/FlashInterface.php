@@ -22,7 +22,7 @@ interface FlashInterface
      *
      * @param string $key The key to get the message from
      *
-     * @return array The messages
+     * @return array<int, string> The messages
      */
     public function get(string $key): array;
 
@@ -55,7 +55,7 @@ interface FlashInterface
     /**
      * Gets all flash messages.
      *
-     * @return array All messages. Can be an empty array.
+     * @return array<int, string> All messages. Can be an empty array.
      */
     public function all(): array;
 }

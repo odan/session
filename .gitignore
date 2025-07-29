@@ -1,11 +1,18 @@
-nbproject/
-.idea/
-composer.phar
+# Composer
 composer.lock
-.DS_STORE
-cache.properties
+/vendor
+
+# PHPUnit
+/.phpunit.cache
 .phpunit.result.cache
-.php_cs.cache
-.vscode
-vendor/
-build/ 
+
+# IDEs
+/.fleet
+/.idea
+/.vscode
+
+# Build artifacts and temporary files
+.DS_Store
+clover.xml
+/build
+/coverage
