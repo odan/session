@@ -264,6 +264,49 @@ return [
 ];
 ```
 
+### Single action controller usage
+
+Depending on the use case, define `Odan\Session\SessionInterface` or/and ` Odan\Session\SessionManagerInterface` 
+within the class constructor.
+
+**Example:**
+
+```php
+<?php
+
+namespace App\Action;
+
+use Odan\Session\SessionInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+final class HomeAction
+{
+    private SessionInterface $session;
+
+    public function __construct(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        // Store a value in session
+        $this->session->set('message', 'Hello from session');
+
+        // or read value from session
+        $message = $this->session->get('message');
+
+        $response->getBody()->write($message);
+
+        return $response;
+    }
+}
+```
+
+
 ### Session middleware
 
 **Lazy session start**

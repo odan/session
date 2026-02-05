@@ -14,12 +14,12 @@ jobs:
     strategy:
       matrix:
         operating-system: [ ubuntu-latest ]
-        php-versions: [ '8.2', '8.3', '8.4' ]
+        php-versions: [ '8.2', '8.3', '8.4', '8.5' ]
     name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v5
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -48,9 +48,9 @@ jobs:
         run: composer stan
 
       - name: Run tests
-        if: ${{ matrix.php-versions != '8.4' }}
+        if: ${{ matrix.php-versions != '8.5' }}
         run: composer test
 
       - name: Run tests with coverage
-        if: ${{ matrix.php-versions == '8.4' }}
+        if: ${{ matrix.php-versions == '8.5' }}
         run: composer test:coverage
