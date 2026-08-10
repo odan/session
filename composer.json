@@ -20,7 +20,7 @@
         "nyholm/psr7": "^1.5",
         "phpstan/phpstan": "^2",
         "phpunit/phpunit": "^11",
-        "squizlabs/php_codesniffer": "^3"
+        "squizlabs/php_codesniffer": "^3 || ^4"
     },
     "scripts": {
         "cs:check": [
